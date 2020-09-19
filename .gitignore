@@ -16,8 +16,6 @@
 *.xml
 *-blx.bib
 
-*.pdf
-
 releases/*
 !releases/.gitkeep
 
