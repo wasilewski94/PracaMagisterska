@@ -1,0 +1,175 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bachelor's & Master's Thesis Template             %%
+%% Copyleft by Artur M. Brodzki & Piotr Woźniak      %%
+%% Faculty of Electronics and Information Technology %%
+%% Warsaw University of Technology, 2019-2020        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[
+    left=2.5cm,         % Sadly, generic margin parameter
+    right=2.5cm,        % doesnt't work, as it is
+    top=2.5cm,          % superseded by more specific
+    bottom=3cm,         % left...bottom parameters.
+    bindingoffset=6mm,  % Optional binding offset.
+    nohyphenation=false % You may turn off hyphenation, if don't like.
+]{eiti/eiti-thesis}
+
+\langpol % Dla języka angielskiego mamy \langeng
+\graphicspath{{img/}}             % Katalog z obrazkami.
+\addbibresource{bibliografia.bib} % Plik .bib z bibliografią
+
+\begin{document}
+
+%--------------------------------------
+% Strona tytułowa
+%--------------------------------------
+\MasterThesis % Dla pracy inżynierskiej mamy \EngineerThesis
+\instytut{Systemów Elektronicznych}
+\kierunek{Elektronika}
+\specjalnosc{Mikrosystemy i Systemy Elektroniczne}
+\title{
+    Implementacja sztucznych sieci neuronowych w systemach\\
+    SoC i MPSoC z wykorzystaniem akceleratorów, realizowanych\\w technice HLS
+}
+\engtitle{ % Tytuł po angielsku do angielskiego streszczenia
+    Artificial Neural Networks implementation in SoC and MPSoC systems using accelerators synthesized by HLS method
+}
+\author{Krzysztof Wasilewski}
+\album{265956}
+\promotor{dr inż. Wojciech Zabołotny}
+\date{\the\year}
+\maketitle
+
+%--------------------------------------
+% Streszczenie po polsku
+%--------------------------------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+% \setcounter{page}{1} % W szablonie nie było tej linii i strona tytułowa była numerowana
+
+\streszczenie
+Sztuczne Sieci Neuronowe są w dzisiejszych czasach wykorzystywane w wielu 
+zastosowaniach. Duża złożoność algorytmów Sztucznej Inteligencji wymaga 
+dużej mocy obliczeniowej oraz odpowiednich metod optymalizacji 
+i właściwego wyboru sprzętu. W przypadku obliczeń, które można 
+zrównoleglić, rozsądnym wyborem są układy FPGA (ang. \emph{Field Programmable Gate 
+Array}). 
+
+Głównym celem pracy było zaprojektowanie i implementacja sztucznej sieci
+neuronowej przy wykorzystaniu systemu SoC (ang. \emph{System on Chip}) z układem 
+FPGA i techniki HLS (ang. \emph{High Level Synthesis}). Użycie techniki HLS
+pozwala na projektowanie przy wykorzystaniu języka C, C++ lub System 
+C i umożliwia korzystanie z wielu bibliotek zaimplementowanych w języku 
+C i C++, co znacznie przyspiesza pracę nad projektem.
+
+Założeniem pracy było stworzenie akceleratora, umożliwiającego osiągnięcie
+wzrostu wydajności algorytmu detekcji obiektów znajdujących się na 
+obrazie w czasie rzeczywistym. W~ostatnich latach można zaobserwować 
+wielki postęp w dziedzinie komputerowego rozpoznawania obrazów 
+(ang. \emph{Computer Vision}), jednak większość dostępnych implementacji jest 
+przeznaczona do uruchomienia na komputerze PC.
+
+\slowakluczowe Sztuczne Sieci Neuronowe, HLS, komputerowe rozpoznawanie 
+obrazów, FPGA
+
+%--------------------------------------
+% Streszczenie po angielsku
+%--------------------------------------
+\cleardoublepage  % Zaczynamy od nieparzystej strony
+
+\abstract
+Nowadays, Artificial Neural Networks (ANN) are used in many applications. 
+High complexity of Artificial Intelligence algorithms requires high 
+computing power, appropriate optimization methods and efficient hardware. 
+In the case of computation that is easy to parallelize it is reasonable 
+to use FPGA systems.
+
+The main aim of the thesis was to design and implement an Artificial 
+Neural Network algorithm using SoC (System on Chip) with FPGA system 
+and HLS (High-Level Synthesis) method. HLS method allows to design a 
+project using C, C++ or System C language and use lots of C libraries, 
+which makes working on the project faster.
+
+
+Assumption was made that the created accelerator will allow to achieve 
+efficiency improvement in the real-time object detection algorithm. 
+Recently, it is seen that huge improvement was made in the field of 
+Computer Vision, but most of the available implementations are made to 
+run on PC.
+
+\keywords Artificial Neural Networks, HLS, Computer Vision, FPGA
+
+%--------------------------------------
+% Oświadczenie o autorstwie
+%--------------------------------------
+\cleardoublepage  % Zaczynamy od nieparzystej strony
+\pagestyle{plain}
+\makeauthorship
+% \setcounter{page}{2}
+%--------------------------------------
+% Spis treści
+%--------------------------------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\tableofcontents
+
+%--------------------------------------
+% Rozdziały
+%--------------------------------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\pagestyle{headings}
+
+\input{tex/1-wstep}                      % Wygodnie jest trzymać każdy rozdział w osobnym pliku.
+\input{tex/2-cel_i_zakres_pracy.tex}
+\input{tex/3-wybor_sprzetu}              % Umożliwia to również łatwą migrację do nowej wersji szablonu:
+\input{tex/4-implementacja}              % wystarczy podmienić swoje pliki main.tex i eiti-thesis.cls
+\input{tex/5-wyniki_i_wnioski}           % na nowe wersje, a cały tekst pracy pozostaje nienaruszony.
+\input{tex/6-podsumowanie}
+
+%--------------------------------------------
+% Literatura
+%--------------------------------------------
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\printbibliography
+
+%--------------------------------------------
+% Spisy (opcjonalne)
+%--------------------------------------------
+\newpage
+\pagestyle{plain}
+
+% Wykaz symboli i skrótów.
+% Pamiętaj, żeby posortować symbole alfabetycznie
+% we własnym zakresie. Ponieważ mało kto używa takiego wykazu,
+% uznałem, że robienie automatycznie sortowanej listy
+% na poziomie LaTeXa to za duży overkill.
+% Makro \acronymlist generuje właściwy tytuł sekcji,
+% w zależności od języka.
+% Makro \acronym dodaje skrót/symbol do listy,
+% zapewniając podstawowe formatowanie.
+% //AB
+
+\vspace{0.8cm}
+\acronymlist
+\acronym{ANN}{ang. \emph{Artificial Neural Network}}
+\acronym{ASIC}{ang. \emph{Application-Specific Integrated Circuit}}
+\acronym{DVP}{ang. \emph{Digital Video Port}}
+\acronym{FPGA}{ang. \emph{Field Programmable Gate Array}}
+\acronym{FPGA}{ang. \emph{Graphics Processing Unit}}
+\acronym{HLS}{ang. \emph{High Level Synthesis}}
+\acronym{MPSoC}{ang. \emph{Multi-Processor System-on-Chip}}
+\acronym{SBC}{ang. \emph{Single Board Computer}}
+\acronym{SoC}{ang. \emph{System on Chip}}
+\acronym{SSH}{ang. \emph{Secure Shell}}
+
+
+
+\listoffigurestoc     % Spis rysunków.
+\vspace{1cm}          % vertical space
+\listoftablestoc      % Spis tabel.
+% \vspace{1cm}          % vertical space
+% \listofappendicestoc  % Spis załączników
+
+% Używając powyższych spisów jako szablonu,
+% możesz tu dodać swój własny wykaz bądź listę,
+% np. spis algorytmów.
+
+\end{document} % Dobranoc.

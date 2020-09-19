@@ -1,0 +1,29 @@
+\newpage % Rozdziały zaczynamy od nowej strony.
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\pagestyle{headings}
+
+\section{Cel i zakres pracy}
+Celem pracy było zaprojektowanie i implementacja sztucznej sieci neuronowej 
+przy wykorzystaniu systemu SoC (ang. System on Chip) i techniki HLS. 
+Użycie metody HLS pozwala na projektowanie  przy wykorzystaniu języka 
+C, C++ lub System C, co przyspiesza pracę nad projektem. Dodatkowo HLS umożliwia
+korzystanie z wielu bibliotek, które pozwalają wygodnie używać funkcji,
+które są wykorzystywane w implementacji Sztucznych Sieci Neuronowych. 
+Efektem pracy powinno być stworzenie akceleratora, umożliwiającego osiągnięcie 
+wzrostu wydajności w stosunku do rozwiązań software’owych.
+
+\subsection{Motywacja}
+Sztuczne Sieci Neuronowe są związane z dużą ilością obliczeń, które mogą 
+być wykonywane równolegle. Pozwala to osiągnąć krótszy czas wykonania 
+programu, co ma duże znaczenie dla zastosowań w systemach działających 
+w czasie rzeczywistym np. w branży Automotive. Aby osiągnąć przyspieszenie 
+obliczeń stosuje się różne metody. Jednym z najpopularniejszych obecnie sposobów 
+na zwiększenie wydajności algorytmów AI jest wykorzystanie kart graficznych GPU 
+(ang. \emph{Graphics Processing Unit}). Metodą najbardziej przyspieszającą obliczenia,
+lecz wymagającą najdłuższego czasu projektowania i najbardziej kosztowną,
+jest zastosowanie specjalizowanych układów ASIC (ang. \emph{Application-Specific 
+Integrated Circuit}). Opcją pośrednią pomiędzy powyższymi dwoma rozwiązaniami
+jest zastosowanie układów FPGA. To podejście umożliwia osiągnięcie znacznego
+przyspieszenia wykonywania obliczeń i nie powoduje wielkiego wzrostu kosztów. Dodatkowo 
+zastosowanie metody HLS ułatwia i minimalizuje czas tworzenia sprzętowej implementacji 
+modelu ANN oraz wprowadzanie zmian w projekcie. 
