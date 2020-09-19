@@ -1,0 +1,2 @@
+# PracaMagisterska
+My Master Thesis
