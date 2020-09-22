@@ -30,9 +30,12 @@ Trzeba tu tylko uważać, żeby nie powielać tekstu z rozdziału cel i zakres p
 
 \subsection{Z-turn Board}
 
-Z-turn Board (Rys. \ref{zturn_board} jest komputerem jednopłytkowym (ang. SBC – \emph{Single Board Computer}),
-opartym o układ SoC Xilinx Zynq-7020 (XC7Z020-1CLG400C), zawierający dwurdzeniowy 
-procesor ARM Cortex-A9 i układ FPGA Artix 7. 
+Z-turn Board (Rys. \ref{zturn_board} jest komputerem jednopłytkowym 
+(ang. SBC – \emph{Single Board Computer}), opartym o układ SoC Xilinx 
+Zynq-7020 (XC7Z020-1CLG400C), zawierającym dwurdzeniowy procesor ARM Cortex-A9 
+i układ FPGA Artix 7. Producentem płytki jest firma MYIR Tech Limited (ang. \emph{Make 
+Your Ideas Real} ), dostarczająca sprzęt bazujący na procesorach ARM oraz 
+oprogramowanie do swoich produktów\cite{myir}. 
 
 \begin{figure}[h]
   \centering
@@ -42,7 +45,7 @@ procesor ARM Cortex-A9 i układ FPGA Artix 7.
 \end{figure}
 
 Biorąc pod uwagę parametry, płytka 
-charakteryzuje się wysokim stodunkiem ceny do jakości, podstawowa wersja kosztuje 
+charakteryzuje się wysokim stosunkiem ceny do jakości, podstawowa wersja kosztuje
 99\$. Dla porównania płytka Zybo Z7-20 kosztuje 199\$. Zestawienie cen płytek 
 zawierających układ Zynq XC7Z010 oraz XC7Z020 znajduje się w Tabeli \ref{tab:ceny}. 
 
@@ -54,7 +57,7 @@ i protokołu SSH (ang. \emph{Secure Shell}). Istnieje również możliwość pod
 wyświetlacza bezpośrednio do płytki przy użyciu portu HDMI. Dodatkowo producent 
 oferuje płytkę rozszerzeniową Z-turn IO-Cape (Rys. \ref{iocape}), która zawiera 
 porty do podłączenia kamery przez protokół DVP (ang. \emph{Digital Video Port}) 
-oraz wyświetlacza LCD. 
+oraz wyświetlacza LCD.
 
 \begin{figure}[h]
   \centering
@@ -64,6 +67,17 @@ oraz wyświetlacza LCD.
 \end{figure}
 
 \subsection{Kamera}
+
+Aby przetestować działanie systemu w czasie rzeczywistym zewnętrzny wykorzystano moduł 
+kamery. Przy wyborze istotna była ceną modułu, interfejs komunikacji oraz 
+kompatybilność z SBC Z-turn Board. W przypadku zastosowania kamery w czasie 
+rzeczywistym bardzo ważna jest niska latencja i duża przpustowość interfejsu, służącego 
+
+wysyłającego kolejne ramki obrazu.  
+
+Producent płytki Z-Turn Board oferuje dwa moduły kamer
+poprawne działanie kamery 
+Przy wyborze kamery 
 
 \subsection{Xilinx Platform Cable}
 

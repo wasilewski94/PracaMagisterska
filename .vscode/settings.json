@@ -1,0 +1,45 @@
+{
+    "ltex.language": "pl-PL",
+    "ltex.workspaceFolderDictionary": {
+        "pl-PL": [
+            "ASIC",
+            "Automotive",
+            "Backpropagation",
+            "bench",
+            "Circuit",
+            "constraints",
+            "cpp",
+            "DATABASE",
+            "digits",
+            "Export",
+            "FPGA",
+            "Graphics",
+            "handwritten",
+            "HLS",
+            "hlsbiases",
+            "hlsinput",
+            "hlsweights",
+            "Integrated",
+            "Intellectual",
+            "keras",
+            "keras2fpga",
+            "kosymulacja",
+            "kosymulacji",
+            "Level",
+            "LTS",
+            "MLP",
+            "MNIST",
+            "Petalinuxa",
+            "Processing",
+            "py",
+            "testcore",
+            "Vivado"
+        ]
+    },
+    "ltex.ignoreRuleInSentence": [
+        {
+            "rule": "COMMA_PARENTHESIS_WHITESPACE",
+            "sentence": "^\\QWynikiem symulacji jest plik .log, w którym można znaleźć informacje o tym, jak przebiegało wywołanie testowanych funkcji.\\E$"
+        }
+    ]
+}

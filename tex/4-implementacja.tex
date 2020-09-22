@@ -21,7 +21,7 @@ System składa się z dwóch głównych części (Rys. \ref{schemat_blokowy}):
   \label{schemat_blokowy}
 \end{figure}
 
-\subsection{Wybór i narzędzi}
+\subsection{Wybór narzędzi}
 
 Użycie w pracy płytki z układem Zynq determinuje użycie narzędzi wspieranych 
 przez firmę Xilinx. Zdecydowano się na użycie najnowszej (w momencie rozpoczęcia 
@@ -52,20 +52,40 @@ dokumentacją\cite{PetalinuxGuide} jest to jedna z trzech dystrybucji:
 \bigskip
 Aby zapewnić poprawne działanie narzędzi oraz z racji na sporą popularność i duże 
 wsparcie społeczności wybrano dystrybucję Ubuntu 18.04.02 LTS. Przy instalacji 
-Petalinuxa warto również zwrócić uwagę, że zalecane jest aż 100GB wolnego miejsca 
+Petalinuxa warto również zwrócić uwagę, że zalecane jest aż 100 GB wolnego miejsca 
 na dysku twardym. 
 
 \subsection{Projekt systemu w środowisku Vivado}
 
-Zdecydowano się na zastosowanie blokówpamięci BRAM do komunikacji pomiędzy 
-blokiem IP implementowanym z użyciem HLS, a procesorem. Zrzut ekranu przedstawiający 
-schemat systemu w środowisku Vivado umieszczono na Rys. \ref{vivado-block-design}
+Zdecydowano się na zastosowanie bloków pamięci BRAM do komunikacji pomiędzy 
+blokiem IP implementowanym z użyciem HLS a procesorem. Zrzut ekranu przedstawiający 
+schemat systemu w środowisku Vivado umieszczono na Rys. \ref{vivado-block-design}.
+Znajduje się na nim m.in. blok IP \emph{ZYNQ7 Processing System}, przedstawiający 
+procesor, oraz blok \emph{AXI Interconnect}, umożliwiający podłączenie peryferiów 
+do procesora. Po podwójnym kliknięciu na blok procesora pojawia się okno, w którym
+można ustawić odpowiednią konfigurację układu. 
 
-\begin{figure}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/vivado-block-design.png}
+  \includegraphics[width=\textwidth]{img/vivado-block-design.png}
   \caption{Schemat systemu przedstawiony w narzędziu Vivado}
   \label{vivado-block-design}
+\end{figure}
+
+\subsubsection{Pamięć Block RAM}
+Zdecydowano się na zastosowanie bloków pamięci BRAM do komunikacji pomiędzy 
+blokiem IP implementowanym z użyciem HLS a procesorem. Zaletą pamięci BRAM jest szybkość 
+działania jednak ilość pamięci jaką można wykorzystać jest mocno ograniczona. 
+Dzięki temu możliwy jest dostęp z poziomu sterownika w systemie Linux do danych
+przetworzonych przez blok HLS. Pamięć alokowana jest przy użyciu bloku 
+\emph{Block Memory Generator} i podłączana do procesora dzięki blokom 
+\emph{AXI BRAM Controler}(Rys. \ref{vivado-block-neural}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/vivado-neuralnet.png}
+  \caption{Szczegółowy schemat części systemu \emph{neural\_net}}
+  \label{vivado-block-neural}
 \end{figure}
 
 
@@ -75,7 +95,7 @@ Intellectual Property), który następnie jest umieszczany w katalogu IP i możn
 go wielokrotnie wykorzystać w projekcie RTL (ang. Register Transfer Level).
 Do projektu z użyciem HLS (Rys.\ref{hls_design_flow}) potrzebny jest plik 
 z algorytmem w języku C/C++ lub System C, plik testowy napisany w języku C 
-(ang. test bench) oraz plik z opisem ograniczeń sprzętowych (ang. constraints).
+(ang. \emph{test bench}) oraz plik z opisem ograniczeń sprzętowych (ang. constraints).
 Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 
 \begin{enumerate}
@@ -87,9 +107,9 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 \end{enumerate}
 
 
-\begin{figure}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/hls_design_flow.png}
+  \includegraphics[width=0.7\textwidth]{img/hls_design_flow.png}
   \caption{Proces projektowania przy użyciu metody HLS}
   \label{hls_design_flow}
 \end{figure}
@@ -100,8 +120,8 @@ Dodatkową zaletą metody HLS jest dostępność bibliotek do przetwarzania
 obrazów oraz ułatwiających implementację operacji matematycznych. 
 
 Przy tworzeniu nowego projektu w Vivado HLS (Rys. \ref{hls_new_project}) trzeba podać 
-urządzenie na którym uruchamiany będzie blok IP. Jeśli płytka nie jest widoczna na 
-liście należy dodać pliki opisujące ją w odpowiednim katalogu, gdzie zostało 
+urządzenie, na którym uruchamiany będzie blok IP. Jeśli płytka nie jest widoczna na 
+liście, należy dodać pliki opisujące ją w odpowiednim katalogu, gdzie zostało 
 zainstalowane narzędzie Vivado HLS.  
 
 \begin{figure}
@@ -130,7 +150,6 @@ Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopaso
 modelu do danych wejściowych. Najczęściej odbywa się to poprzez wielokrotne testowanie
 systemu dla różnych parametrów sieci. W tej pracy początkowym wyborem była architektura
 MLP. Przy użyciu pakietu \emph{keras} zaimplementowano model zawierający 3 warstwy:
-
 \begin{itemize}
   \item warstwę wejściową (784 neuronów)
   \item warstwę ukrytą (16 neuronów)
@@ -155,11 +174,11 @@ model.add(Dense(num_classes, use_bias=True, activation='sigmoid'))
   \end{lstlisting}
   \end{addmargin}
 
-Podczas testowania modelu użyto zbioru MNIST, który zaimportowano wykorzystując
-funkcją z pakietu keras. Dokonano uczenia sieci neuronowej przy użyciu zbioru 60000 
+Podczas testowania modelu użyto zbioru MNIST, który zaimportowano, wykorzystując
+funkcję z pakietu keras. Dokonano uczenia sieci neuronowej przy użyciu zbioru 60000 
 obrazów i testowania modelu, podając na wejście sieci 10000 obrazów. Osiągnięto 
 dokładność na poziomie 93,6\%. 
-Zmiany w postaci dodawania większej ilości nauronów w warstwie ukrytej nie powodowały 
+Zmiany w postaci dodawania większej ilości neuronów w warstwie ukrytej nie powodowały 
 zwiększenia dokładności, więc podjęto decyzję o wykorzystaniu tego modelu w dalszej 
 części projektu.
 
@@ -169,7 +188,7 @@ Test accuracy: 0.9355999827384949
 
 \subsubsection{Implementacja modelu przy użyciu narzędzia Vivado HLS}
 
-Korzystając z narzędzia Vivado HLS napisano program w języku C++ implementujący 
+Korzystając z narzędzia Vivado HLS, napisano program w języku C++ implementujący 
 zaprojektowany wcześniej model sieci. W procesie uczenia ustalono wartości wag i 
 biasów. Dwa główne pliki projektu w narzędziu Vivado HLS to core.cpp, zawierający 
 implementację algorytmu ANN oraz test\_core.cpp, który służy do przetestowania
@@ -181,7 +200,10 @@ Pierwszym etapem jest Symulacja C, która jest wstępną weryfikacją poprawnoś
 algorytmu. Do przeprowadzenia symulacji wykorzystano dane wyeksportowane przy użyciu 
 skryptu \emph{keras2fpga.py} i zapisane w plikach hls\_biases.h, hls\_weights.h oraz 
 hls\_input.h. Wynikiem symulacji jest plik .log, w którym można znaleźć informacje o
-tym jak przebigało wywołanie testowanych funkcji.\ref{hls_design_sim}
+tym, jak przebiegało wywołanie testowanych funkcji.\ref{hls_design_sim}
+Symulację w języku C wykonuje się dużo szybciej niż późniejszą symulację RTL, więc
+stosuje się ją jako pierwszy etap przed podjęciem dalszych kroków, które zajmują 
+więcej czasu.
 
 \begin{figure}
   \centering
