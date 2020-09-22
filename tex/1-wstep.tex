@@ -54,9 +54,9 @@ Na działanie algorytmu znaczny wpływ może mieć dobór odpowiedniej
 funkcji aktywacji. Wśród najczęściej stosowanych funkcji aktywacji
 wyróżnia się:
 \begin{itemize}
-    \item funkcję ReLu: $\phi(u) = max(0, x)$
-    \item funkcję sigmoid: $\phi(u) = \frac{a}{a + exp(-bu)}$
-    \item funkcję softmax: $\phi(u) = \frac{a}{a + exp(-bu)}$
+    \item funkcję ReLu: $\phi(x) = max(0, x)$
+    \item funkcję sigmoid: $\phi(x) = \frac{a}{a + e^{-bx}}$
+    \item funkcję softmax: $\phi(x_j) = \frac{e^{x_j}}{\sum_{k=1}^{K}{e^{x_k}}}$ dla j = 1,...,N
 \end{itemize}
 
 \subsubsection{Perceptron wielowarstwowy}
@@ -73,12 +73,13 @@ Connected Network}).
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{img/mlp2.png}
+  \includegraphics[width=0.5\textwidth]{img/mlp.png}
   \caption{Model Perceptronu Wielowarstwowego}
   \label{mlp}
 \end{figure}
 
-\subsubsection{Uczenie Głębokie}
+
+\subsubsection{Sieci Głębokie}
 
 Rozwój algorytmów AI doprowadził do powstania Głębokich Sieci Neuronowych (ang. 
 \emph{DNN - Deep Neural Networks}), czyli takich, które posiadają wiele 
@@ -91,7 +92,7 @@ całych kształtów i obiektów.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.6\textwidth]{img/dnn-object-recog.png}
+  \includegraphics[width=0.8\textwidth]{img/dnn-object-recog.png}
   \caption{Model Głębokiego Uczenia sieci}
   \label{dnn}
 \end{figure}
@@ -105,7 +106,9 @@ wstecz błędu przez całą sieć pozwala dostosować wartość wagi każdej z k
 w taki sposób aby zminimalizować wartość funkcji kosztu.
 
 - learning rule (w szczególności delta rule)
+- hiper-parametry
 - uczenie nadzorowane/nienadzorowane
+- loss function
 
 
 

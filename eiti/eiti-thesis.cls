@@ -529,3 +529,4 @@
 %--------------------------------
 
 \usepackage{tablefootnote} % to use \footnote inside tabular
+\usepackage{svg}
