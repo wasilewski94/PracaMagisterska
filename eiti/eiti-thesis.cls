@@ -528,5 +528,9 @@
 % Moje własne zmiany
 %--------------------------------
 
-\usepackage{tablefootnote} % to use \footnote inside tabular
+\usepackage{tablefootnote} % żeby móc użyć \footnote w środku tabulara
 \usepackage{svg}
+
+% Rysowanie diagramów ANN
+\usepackage{tikz}
+\usetikzlibrary{positioning}

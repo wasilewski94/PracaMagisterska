@@ -68,18 +68,48 @@ oraz wyświetlacza LCD.
 
 \subsection{Kamera}
 
-Aby przetestować działanie systemu w czasie rzeczywistym zewnętrzny wykorzystano moduł 
-kamery. Przy wyborze istotna była ceną modułu, interfejs komunikacji oraz 
-kompatybilność z SBC Z-turn Board. W przypadku zastosowania kamery w czasie 
-rzeczywistym bardzo ważna jest niska latencja i duża przpustowość interfejsu, służącego 
+Aby przetestować działanie systemu w czasie rzeczywistym wykorzystano zewnętrzny 
+moduł kamery. Przy wyborze sprzętu istotna była ceną modułu, interfejs komunikacji
+oraz kompatybilność z SBC Z-turn Board. W przypadku wykorzystania kamery w czasie 
+rzeczywistym bardzo ważna jest niska opóźnienie w wysyłaniu kolejnych ramek obrazu 
+i duża przpustowość interfejsu. 
 
-wysyłającego kolejne ramki obrazu.  
+Producent płytki Z-Turn Board oferuje kilka modułów kamer. Wśród nich znajdują się dwa moduły, które zostały przetestowane: MY-CAM002U USB Digital Camera Module (Rys.\ref{cam-usb}) oraz MY-CAM011B BUS Camera Module. (Rys. \ref{cam-dvp}).
+% \begin{itemize}
+%   \item MY-CAM002U USB Digital Camera Module \ref{cam-usb}
+%   \item MY-CAM011B BUS Camera Module. \ref{cam-dvp}
+% \end{itemize}}
+  
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/my-cam011b.png}
+    \caption{Moduł kamery MY-CAM011B BUS Camera Module}
+    \label{cam-usb}
+  \end{figure}
 
-Producent płytki Z-Turn Board oferuje dwa moduły kamer
-poprawne działanie kamery 
-Przy wyborze kamery 
+Kamera MY-CAM011B zapewnia dużo lepsze parametry od kamery podłączanej pod USB 
+MY-CAM002U. Pomimo znajdującego się na płytce IO-Cape portu interfejsu DVP, moduł kamery MY-CAM011B niestety okazał się niekompatybilny z płytką Z-turn Board. 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/MY-CAM001U.jpg}
+  \caption{Moduł kamery MY-CAM002U USB Digital Camera Module}
+  \label{cam-dvp}
+\end{figure}
+
+
 
 \subsection{Xilinx Platform Cable}
+
+Bardzo przydatnym podczas pracy z układami FPGA firmy \emph{Xilinx} jest programator JTAG pod nazwą \emph{Xilinx Platform Cable}. 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/platform-cable.jpg}
+  \caption{USB Platform Cable}
+  \label{platform-bcable}
+\end{figure}
+
 
 \subsection{Opcje bootowania systemu}
 
