@@ -24,14 +24,11 @@ z różnymi parametrami i właściwościami sieci. Aby w pełni wykorzystać pot
 
 \subsection{Wstęp teoretyczny}
 
-Sieć neuronowa jest algorytmem przetwarzającym dane, inspirowanym działaniem mózgu.
-ANN składa się z wielu elementów przetwarzających informacje -- neuronów. Model
-przetwarzania informacji jest inspirowany ludzkim mózgiem jednak w stosunku do
-komórki nerwowej, Neuron w Sztucznej Sieci Neuronowej jest bardzo uproszczony
+Sieć neuronowa jest algorytmem przetwarzającym dane, inspirowanym działaniem mózgu. ANN składa się z wielu elementów przetwarzających informacje -- neuronów. Model przetwarzania informacji jest inspirowany ludzkim mózgiem jednak w stosunku do komórki nerwowej, Neuron w Sztucznej Sieci Neuronowej jest bardzo uproszczony
 \cite{tadeusiewicz1993sieci}. Pomimo to ANN umożliwiają rozwiązywanie złożonych
 problemów w wielu dziedzinach z dużą dokładnością.
 
-Neurony są połączone ze sobą krawędziami sieci. Każda krawędź ma swoją wagę, która 
+Pomiędzy neuronami prowadzone są połączenia, z których każde ma swoją wagę, która 
 zmienia wartość w trakcie uczenia sieci. Warstwę sieci, w której wszystkie wyjścia każdego z neuronów są podłączone do wszystkich neuronów w warstwie następnej, nazywa się warstwą w pełni połączoną (ang. FC — \emph{Fully Connected}).
 Sieć posiadająca wszystkie warstwy w pełni połączone jest zwana siecią w pełni połączoną. 
 
@@ -59,7 +56,7 @@ neuronu — Perceptron\cite{Omondi2006FPGAIO} składa się z następujących ele
   \item funkcji aktywacji $\phi(u)$ 
   \item wyjścia neuronu $y$. 
 \end{itemize}
-Wagi obciążające (bias) umożliwiają, niezależnie od wartości wejściowych, kontrolowanie progu aktywacji neuronu. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w kierunku poziomym. Wyjście neuronu można policzyć stosując następujące wzory:
+Wagi obciążające (bias) umożliwiają, niezależnie od wartości wejściowych, kontrolowanie progu aktywacji neuronu. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w kierunku poziomym. Wyjście neuronu można policzyć, stosując następujące wzory:
 $$u_k = \sum_{j=1}^{N}{w_{kj}x_j} $$ 
 $$y_k = \phi(u_k + b_k) $$ 
 
@@ -123,10 +120,9 @@ wszystkich wejść neuronów w warstwie następnej.
 
 Rozwój algorytmów AI doprowadził do powstania Głębokich Sieci Neuronowych (ang. 
 \emph{DNN — Deep Neural Networks}), czyli takich, które posiadają wiele 
-warstw ukrytych\cite{Goodfellow-et-al-2016}. Algorytm Uczenia Głębokiego (ang. 
+warstw ukrytych \cite{Goodfellow-et-al-2016}. Algorytm Uczenia Głębokiego (ang. 
 \emph{Deep Learning}) umożliwia rozwiązywanie skomplikowanych problemów takich 
-jak rozpoznawanie i klasyfikację obiektów na obrazie (Rys.\ref{dnn}). Seria warstw 
-ukrytych (ang. \emph{hidden layers}) umożliwia ekstrakcję cech obiektów. 
+jak rozpoznawanie i klasyfikację obiektów na obrazie (Rys.\ref{dnn}). Seria warstw ukrytych (ang. \emph{hidden layers}) umożliwia ekstrakcję cech obiektów. 
 Kolejne warstwy umożliwiają wykrywanie krawędzi, potem konturów, a na końcu 
 całych kształtów i obiektów.
 
@@ -137,22 +133,37 @@ całych kształtów i obiektów.
   \label{dnn}
 \end{figure}
 
-
 \subsubsection{Splotowe Sieci Neuronowe}
 
-Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są sieciami głębokimi, zawierającymi warstwę splotową (ang. \emph{Convolutional Layer}).
-Są one z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów i dźwięków. 
+Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są sieciami głębokimi, zawierającymi warstwę splotową (ang. \emph{Convolutional Layer}). Są one z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcenie i inne zakłócenia. 
+
+\subsubsection{Proces uczenia sieci}
+
+Proces uczenia sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i biasów tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
+
+
+$$\Delta w_{kj} = \eta e_k(n)x_j(n) $$
+$$ e_k(n) = d_k(n) - y_k(n) $$
+
+gdzie $d_k(n)$ jest wzorcowym rozwiązaniem, a $y_k(n)$ rozwiązaniem otrzymanym.
+Wartość $\eta$ oznacza współczynnnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces.
+
+\subsubsection{Funkcja kosztu}
 
 \subsubsection{Wsteczna propagacja błędu}
 Architekturę sieci MLP często stosuje się wraz z algorytmem wstecznej 
-propagacji błędu (ang. \emph{Backpropagation}), która umożliwia proces uczenia sieci.
-Poprzez obliczenie błędu w neuronach warstwy wyjściowej i propagacji 
-wstecz błędu przez całą sieć pozwala dostosować wartość wagi każdej z krawędzi 
+propagacji błędu (ang. \emph{Backpropagation}), która umożliwia proces uczenia sieci. Poprzez obliczenie błędu w neuronach warstwy wyjściowej i propagacji 
+wstecz błędu przez całą sieć pozwala dostosować wartość wagi każdego z połączeń
 w taki sposób, aby zminimalizować wartość funkcji kosztu.
 
--learning rule (w szczególności delta rule)
--loss function
--hiperparametry
+
+\subsubsection{Hiperparametry}
+W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci. 
+
+\subsubsection{Overfitting}
+
+
+
 -uczenie nadzorowane/nienadzorowane
 
 
