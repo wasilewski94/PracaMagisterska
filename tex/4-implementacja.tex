@@ -107,7 +107,7 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 \end{enumerate}
 
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
   \includegraphics[width=0.7\textwidth]{img/hls_design_flow.png}
   \caption{Proces projektowania przy użyciu metody HLS}
@@ -124,13 +124,12 @@ urządzenie, na którym uruchamiany będzie blok IP. Jeśli płytka nie jest wid
 liście, należy dodać pliki opisujące ją w odpowiednim katalogu, gdzie zostało 
 zainstalowane narzędzie Vivado HLS.  
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/vivado-hls-new.png}
+  \includegraphics[width=\textwidth]{img/vivado-hls-new.png}
   \caption{Wybór płytki podczas tworzenia projektu w Vivado HLS}
   \label{hls_new_project}
 \end{figure}
-
 
 \subsection{Petalinux}
 
@@ -140,18 +139,20 @@ zainstalowane narzędzie Vivado HLS.
 
 W procesie uczenia oraz testowania poprawności działania modelu sztucznej 
 sieci neuronowej wykorzystano zbiór odręcznie pisanych cyfr MNIST 
-(ang. THE MNIST DATABASE of handwritten digits)
-\cite{lecun-mnisthandwrittendigit-2010}
+(ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów do przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28x28 pikseli. Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/mnist.png}
+  \caption{Fragment zbioru odręcznie pisanych cyfr MNIST}
+  \label{mnist-set}
+\end{figure}
 
 \subsection{Opracowanie modelu ANN}
 
-Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie 
-modelu do danych wejściowych. Najczęściej odbywa się to poprzez wielokrotne testowanie
-systemu dla różnych parametrów sieci. W tej pracy początkowym wyborem była architektura
-MLP. Przy użyciu pakietu \emph{keras} zaimplementowano model zawierający 3 warstwy:
+Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie modelu do danych wejściowych. Najczęściej odbywa się to poprzez wielokrotne testowanie systemu dla różnych parametrów sieci. W tej pracy początkowym wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28x28 pikseli są konwertowane na tablicę 784 wartości typu \emph{float}. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
 \begin{itemize}
-  \item warstwę wejściową (784 neuronów)
+  \item warstwę wejściową (784 wejścia)
   \item warstwę ukrytą (16 neuronów)
   \item warstwę wyjściową (10 neuronów).
 \end{itemize}
@@ -160,7 +161,8 @@ MLP. Przy użyciu pakietu \emph{keras} zaimplementowano model zawierający 3 war
 % potrzebne jest większe wcięcie.
 \begin{addmargin}[10mm]{0mm}
   \begin{lstlisting}[
-      language=Python,
+      label=lst:mlp,
+      language=python,
       numbers=left,
       firstnumber=55,
       caption={Implementacja modelu ANN MLP z jedną warstwą ukrytą},
@@ -173,8 +175,7 @@ model.add(Dense(num_classes, use_bias=True, activation='sigmoid'))
 
   \end{lstlisting}
   \end{addmargin}
-
-
+    
 Podczas testowania modelu użyto zbioru MNIST, który zaimportowano, wykorzystując
 funkcję z pakietu keras. Dokonano uczenia sieci neuronowej przy użyciu zbioru 60000 
 obrazów i testowania modelu, podając na wejście sieci 10000 obrazów. Osiągnięto 
@@ -182,10 +183,6 @@ dokładność na poziomie 93,6\%.
 Wprowadzenie mian w postaci dodania większej ilości neuronów w warstwie ukrytej nie 
 powodowały zwiększenia dokładności, więc podjęto decyzję o wykorzystaniu tego modelu 
 w dalszej części projektu.
-
-Test loss: 0.22611969929933548\\
-Test accuracy: 0.9355999827384949
-
 
 \subsubsection{Implementacja modelu przy użyciu narzędzia Vivado HLS}
 

@@ -2,44 +2,174 @@
     "ltex.language": "pl-PL",
     "ltex.workspaceFolderDictionary": {
         "pl-PL": [
+            " ",
+            ".",
+            ")",
+            "199$.",
+            "99$.",
+            "accelerators",
+            "Array",
             "ASIC",
             "Automotive",
             "Backpropagation",
             "bench",
+            "Board",
+            "CAMPWRDN",
+            "CAMRST",
+            "CAMXCLK",
             "Circuit",
+            "Computer",
+            "Connected",
             "constraints",
+            "Convolutional",
             "cpp",
             "DATABASE",
+            "Dense",
+            "dev",
+            "device-tree",
             "digits",
+            "DNN",
+            "DVP",
+            "emphsemi-supervised",
+            "emphsupervised",
+            "emphunsupervised",
             "Export",
+            "feedforward",
+            "FFC",
+            "FPC",
             "FPGA",
+            "Fully",
             "Graphics",
             "handwritten",
+            "hidden",
             "HLS",
             "hlsbiases",
             "hlsinput",
             "hlsweights",
+            "i2c-tools",
+            "implementation",
             "Integrated",
             "Intellectual",
+            "IO-Cape",
+            "J2",
+            "J3",
             "keras",
             "keras2fpga",
+            "konektora",
             "kosymulacja",
             "kosymulacji",
+            "Layer",
+            "layers",
+            "Learning",
+            "learning",
             "Level",
+            "Linear",
             "LTS",
+            "Machine",
+            "method",
             "MLP",
             "MNIST",
+            "MPSoC",
+            "MPSoCang",
+            "MY-CAM002U",
+            "MY-CAM011B",
+            "Networks",
+            "Neural",
+            "ov2659",
+            "Petalinux",
             "Petalinuxa",
             "Processing",
+            "Programmable",
             "py",
+            "Rectified",
+            "rule",
+            "SBC",
+            "Secure",
+            "sigmoid",
+            "softmax",
+            "Synthesis",
+            "synthesized",
+            "systems",
             "testcore",
-            "Vivado"
+            "Theano",
+            "UART",
+            "ukrytychDummy16.",
+            "Units",
+            "using",
+            "V4L2",
+            "V4L2ang",
+            "video0",
+            "video1",
+            "Vision",
+            "Vivado",
+            "XC7Z010",
+            "XC7Z020",
+            "Z-turn",
+            "Z-Turn",
+            "Z7",
+            "Zabołotny",
+            "zrównoleglić",
+            "Zybo",
+            "Zynq"
         ]
     },
     "ltex.ignoreRuleInSentence": [
         {
             "rule": "COMMA_PARENTHESIS_WHITESPACE",
             "sentence": "^\\QWynikiem symulacji jest plik .log, w którym można znaleźć informacje o tym, jak przebiegało wywołanie testowanych funkcji.\\E$"
+        },
+        {
+            "rule": "POZA_TYM",
+            "sentence": "^\\QPo podłączeniu kamery, zainstalowaniu odpowiednich sterowników i device-tree oraz przeskanowaniu magistrali \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q przy użyciu narzędzia i2c-tools, moduł kamery zwraca poprawnie swój adres.\\E$"
+        },
+        {
+            "rule": "BRAK_KROPKI",
+            "sentence": "^\\QAdapter złącza FPC/FFC o rastrze 0,5 mm na otwory DIP\\E$"
+        },
+        {
+            "rule": "MNOZENIE",
+            "sentence": "^\\QModuł umożliwia rejestrowanie obrazu w 30 klatkach na sekundę przy rozdzielczości 1280x640 pikseli i jest tańszy od modułu MY-CAM011B.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QANNang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QArtificial Neural Network ASICang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QApplication-Specific Integrated Circuit DVPang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QDigital Video Port FPGAang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QField Programmable Gate Array FPGAang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QGraphics Processing Unit HLSang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QMulti-Processor System-on-Chip SBCang.\\E$"
+        },
+        {
+            "rule": "SKROTOWCE_BEZ_DYWIZU",
+            "sentence": "^\\QSystem on Chip SSHang.\\E$"
+        },
+        {
+            "rule": "BRAK_KROPKI",
+            "sentence": "^\\QWśród najczęściej stosowanych funkcji aktywacji wyróżnia się następujące funkcje: funkcja ReLu (ang. Rectified Linear Units): \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q Wykres funkcji ReLU\\E$"
+        },
+        {
+            "rule": "HYPER",
+            "sentence": "^\\QW procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. hyperparameters).\\E$"
         }
-    ]
+    ],
+    "python.pythonPath": "/usr/bin/python"
 }

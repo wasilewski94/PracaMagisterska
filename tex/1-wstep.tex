@@ -45,8 +45,7 @@ W znacznej większości sieci neuronowe budowane są w ten sposób, że dane są
 
 \subsubsection{Model neuronu}
 Sztuczne Sieci Neuronowe to algorytm wzorowany działaniem ludzkiego mózgu 
-i znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego 
-neuronu — Perceptron\cite{Omondi2006FPGAIO} składa się z następujących elementów:
+i znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego neuronu składa się z następujących elementów\cite{Omondi2006FPGAIO}:
 \begin{itemize}
   \item wektora wejściowego: 
   $$x = (x_1, x_2,...,x_j)^T$$
@@ -56,10 +55,11 @@ neuronu — Perceptron\cite{Omondi2006FPGAIO} składa się z następujących ele
   \item funkcji aktywacji $\phi(u)$ 
   \item wyjścia neuronu $y$. 
 \end{itemize}
-Wagi obciążające (bias) umożliwiają, niezależnie od wartości wejściowych, kontrolowanie progu aktywacji neuronu. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w kierunku poziomym. Wyjście neuronu można policzyć, stosując następujące wzory:
+Wagi obciążające (bias) umożliwiają kontrolowanie progu aktywacji neuronu, niezależnie od wartości wejściowych. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w kierunku w prawą lub w lewą stronę. Wyjście neuronu można policzyć, stosując następujące wzory:
 $$u_k = \sum_{j=1}^{N}{w_{kj}x_j} $$ 
 $$y_k = \phi(u_k + b_k) $$ 
 
+Najprostsza Sieć Neuronowa składająca się z jednego neuronu, nazywana jest \emph{Perceptronem}. Algorytm ten można wykorzystać do zadań klasyfikacji binarnej.
 
 \begin{figure}[h]
   \centering
@@ -98,15 +98,16 @@ wyróżnia się następujące funkcje:
     $$\phi(x_j) = \frac{e^{x_j}}{\sum_{k=1}^{N}{e^{x_k}}}$$
 \end{itemize}
 
+W warstwach ukrytych często używaną funkcją aktywacji jest funkcja ReLU oraz sigmoid. Funkcję sigmoid stosuje się również w warstwach wyjściowych przy zadaniach klasyfikacji binarnej. Funkcja softmax jest używana w problemach klasyfikacji wieloklasowej (np. rozpoznawanie cyfr). Stosując funkcję softmax w warstwie wyjściowej, można traktować wektor wartości wyjść sieci jako rozkład prawdopodobieństwa wyboru danego rozwiązania.
+
 \subsubsection{Perceptron wielowarstwowy}
 Jednym z pierwszych modeli Sztucznych Sieci Neuronowych był Perceptron
 Wielowarstwowy (ang. MLP — \emph{Multi-Layer Perceptron}), składający 
 się z warstwy neuronów wejściowej, ukrytych i wyjściowej (Rys.\ref{mlp}).
 Wyjście neuronów w danej warstwie staje się wejściem neuronów warstwy następnej.
 
-Często spotykaną wersją MLP jest model, z warstwami w pełni połączonymi
-(ang. FC -- \emph{Fully Connected}). W warstwie FC każde z wyjść jest podłączone do 
-wszystkich wejść neuronów w warstwie następnej.
+Sieć Neuronowa typu MLP najczęściej posiada warstwy w pełni połączone
+(ang. FC -- \emph{Fully Connected}) lub inaczej Gęste (ang. \emph{Dense}). W warstwie FC każde z wyjść jest podłączone do wszystkich wejść neuronów w warstwie następnej.
 
 \begin{figure}[h]
   \centering
@@ -133,22 +134,18 @@ całych kształtów i obiektów.
   \label{dnn}
 \end{figure}
 
-\subsubsection{Splotowe Sieci Neuronowe}
-
-Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są sieciami głębokimi, zawierającymi warstwę splotową (ang. \emph{Convolutional Layer}). Są one z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcenie i inne zakłócenia. 
 
 \subsubsection{Proces uczenia sieci}
 
-Proces uczenia sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i biasów tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
+Uczenie Sztucznej Sieci Neuronowej można podzielić na nadzorowane (ang. \emph{supervised learning}) i nienadzorowane (ang. \emph{unsupervised learning}) oraz wersję pośrednią -- uczenie częściowo nadzorowane (ang. \emph{semi-supervised learning}). W praktyce najczęściej wykorzystywanym rodzajem uczenia jest \emph{supervised learning}, jednak uczenie nienadzorowane jest ciekawym tematem badań i rozwoju algorytmów Sztucznych Sieci Neuronowych \cite{nielsen2015neural}.
+Proces uczenia nadzorowanego sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i biasów tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
 
 
 $$\Delta w_{kj} = \eta e_k(n)x_j(n) $$
 $$ e_k(n) = d_k(n) - y_k(n) $$
 
 gdzie $d_k(n)$ jest wzorcowym rozwiązaniem, a $y_k(n)$ rozwiązaniem otrzymanym.
-Wartość $\eta$ oznacza współczynnnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces.
-
-\subsubsection{Funkcja kosztu}
+Wartość $\eta$ oznacza współczynnnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces. Wpływ na szybkość uczenia ma również wielkość mini-serii (ang. \emph{mini-batch}) uczących.
 
 \subsubsection{Wsteczna propagacja błędu}
 Architekturę sieci MLP często stosuje się wraz z algorytmem wstecznej 
@@ -158,16 +155,25 @@ w taki sposób, aby zminimalizować wartość funkcji kosztu.
 
 
 \subsubsection{Hiperparametry}
-W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci. 
+W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. \emph{hyperparameters}). Są to parametry sieci, ustawiane przez użytkownika w celu otrzymania modelu, dającego najlepsze rozwiązania. Na wynik uczenia wpływ mają m.in.:
+\begin{itemize}
+  \item liczba i rodzaj warstw sieci
+  \item liczba neuronów w każdej z warstw
+  \item współczynnik szybkości uczenia $\eta$
+  \item wielkość miniserii.
+\end{itemize}
 
-\subsubsection{Overfitting}
+\subsubsection{Przeuczenie sieci}
+
+Przy używaniu Sztucznych Sieci Neuronowych w zadaniach klasyfikacji często spotykanym problemem jest przeuczenie sieci (ang. \emph{overfitting}). Przeuczona sieć jest zbyt mocno dopasowana do danych uczących i przy walidacji poprawność klasyfikacji jest znacznie mniejsza. Jednym ze sposobów na polepszenie zdolności do generalizacji trenowanego modelu sieci jest zastosowanie \emph{Dropoutu}, czyli losowego usuwania pewnej ustalonej liczby neuronów. Technika ta, pomimo swojej prostoty, daje bardzo dobre wyniki w przeciwdziałaniu przeuczeniu sieci.  
 
 
+\subsubsection{Splotowe Sieci Neuronowe}
 
--uczenie nadzorowane/nienadzorowane
-
+Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są typem sieci MLP, które znakomicie nadają się do rozpoznawania kształtów i z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcanie i inne zakłócenia\cite{haykin2009neural}. Sieci te są uczone w trybie nadzorowanym.
 
 \subsection{Implementacja Sztucznych Sieci Neuronowych w układach FPGA}
 \subsubsection{Reprezentacja liczb zmiennoprzecinkowych}
-\subsubsection{Uczenie Sztucznej Sieci Neuronowej}
+\subsubsection{Uczenie Sztucznej Sieci Neuronowej w układach FPGA}
 \subsection{Zastosowania Sztucznych Sieci Neuronowych}
+

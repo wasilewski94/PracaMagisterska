@@ -4,16 +4,7 @@
 
 \section{Wybór sprzętu}
 
-Dlaczego Sztuczne Sieci Neuronowe odpala się na GPU?
-Dlaczego nie CPU i GPU tylko FPGA?
-W większości przypadków Sztuczne Sieci Neuronowe są 
-Typically, neural networks are designed, trained, and executed on a conventional processor, often with GPU acceleration. But for embedded devices which may need to process data at multiple-MHz sample rates, the computational requirements can be overwhelming for an embedded processor where no GPU is available, creating a tempting opportunity for FPGA acceleration. (https://github.com/Xilinx/RFNoC-HLS-NeuralNet)
-Co z ASIC, dlaczego rzadko się je stosuje, jak wygląda proces tworzenia?
-Dlaczego PC ma swoje ograniczenia? Jakie możliwości mają nowe algorytmy uruchamiane na PC?
-Jaką przewagę dają układy FPGA, skąd się to bierze? porównanie zużycia mocy itp..\\
-
-Trzeba tu tylko uważać, żeby nie powielać tekstu z rozdziału cel i zakres pracy.
-
+Przy wyborze płytki wzięto pod uwagę posiadane interfejsy oraz cenę sprzętu i dostępność dokumentacji. Podjęto decyzję o zastosowaniu układu FPGA firmy \emph{Xilinx} z racji na duże wsparcie techniczne. W celu optymalizacji kosztów systemu wybrano podstawowe dwa układy z rodziny \emph{Zynq-7000 SoC Family} XC7Z010 oraz XC7Z020. Aby mieć pewność, że parametry układu będą wystarczające, wybrano układ XC7Z020. Zgodnie z porównaniem zawartym w Tabeli \ref{tab:ceny}, płytka Z-turn Board MYS-7Z020-C-S ma cenę sporo mniejszą od innych płytek z układem XC7Z020. Dokumentacja techniczna dotycząca płytki Z-turn Board jest dostępna na stronie producenta. Wadą płytki jest małe zaangażowanie społeczności w projekty z jej wykorzystaniem, jednak tak konkurencyjna cena zadecydowała o wyborze.
 
 \begin{table}[h] \centering
   \caption{Porównanie cen płytek z układami Zynq firmy Xilinx}
@@ -113,7 +104,7 @@ Dołączenie samego sygnału zegara do konektora FPC byłoby problematyczne, wi�
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.7\textwidth]{img/dvp-adapter.jpg}
+  \includegraphics[width=0.5\textwidth]{img/dvp-adapter.jpg}
   \caption{Adapter złącza FPC/FFC o rastrze 0,5 mm na otwory DIP}
   \label{cam-schematic}
 \end{figure}

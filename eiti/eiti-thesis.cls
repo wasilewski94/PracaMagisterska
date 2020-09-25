@@ -530,7 +530,6 @@
 
 \usepackage{tablefootnote} % żeby móc użyć \footnote w środku tabulara
 \usepackage{svg}
-
 % Rysowanie diagramów ANN
 \usepackage{tikz}
 \usetikzlibrary{positioning}
