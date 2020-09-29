@@ -533,3 +533,5 @@
 % Rysowanie diagramów ANN
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+
+\usepackage{verbatim}

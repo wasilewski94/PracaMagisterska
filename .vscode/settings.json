@@ -101,6 +101,7 @@
             "video0",
             "video1",
             "Vision",
+            "Vitis",
             "Vivado",
             "XC7Z010",
             "XC7Z020",
@@ -169,6 +170,38 @@
         {
             "rule": "HYPER",
             "sentence": "^\\QW procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. hyperparameters).\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QNowadays, Artificial Neural Networks (ANN) are used in many applications.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QHigh complexity of Artificial Intelligence algorithms requires high computing power, appropriate optimization methods and efficient hardware.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QIn the case of computation that is easy to parallelize it is reasonable to use FPGA systems.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QThe main aim of the thesis was to design and implement an Artificial Neural Network algorithm using SoC (System on Chip) with FPGA system and HLS (High-Level Synthesis) method.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QHLS method allows to design a project using C, C++ or System C language and use lots of C libraries, which makes working on the project faster.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QAssumption was made that the created accelerator will allow to achieve efficiency improvement in the real-time object detection algorithm.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QIt has been seen recently, that huge improvement was made in the field of Computer Vision, but most of the available implementations are made to run on PC.\\E$"
+        },
+        {
+            "rule": "MORFOLOGIK_RULE_PL_PL",
+            "sentence": "^\\QIn the thesis a performance comparison was made between implementation using FPGA to accelerate the calculations and high level software solution, tested on PC.\\E$"
         }
     ],
     "python.pythonPath": "/usr/bin/python"

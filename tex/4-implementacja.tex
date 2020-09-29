@@ -16,7 +16,7 @@ System składa się z dwóch głównych części (Rys. \ref{schemat_blokowy}):
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/schemat_blokowy.png}
+  \includegraphics[width=\textwidth]{img/schemat_blokowy.png}
   \caption{Schemat blokowy systemu}
   \label{schemat_blokowy}
 \end{figure}
@@ -26,7 +26,7 @@ System składa się z dwóch głównych części (Rys. \ref{schemat_blokowy}):
 Użycie w pracy płytki z układem Zynq determinuje użycie narzędzi wspieranych 
 przez firmę Xilinx. Zdecydowano się na użycie najnowszej (w momencie rozpoczęcia 
 projektu) wersji oprogramowania 2019.2. Producent zaleca\cite{VivadoGuide} instalację 
-programu Vivado na jednym z wspieranych systemów operacyjnych:
+programu Vivado na jednym ze wspieranych systemów operacyjnych:
 
 \begin{itemize}
   \item Microsoft Windows 7 SP1 Professional (64-bit), English/Japanese 
@@ -75,15 +75,16 @@ można ustawić odpowiednią konfigurację układu.
 \subsubsection{Pamięć Block RAM}
 Zdecydowano się na zastosowanie bloków pamięci BRAM do komunikacji pomiędzy 
 blokiem IP implementowanym z użyciem HLS a procesorem. Zaletą pamięci BRAM jest szybkość 
-działania jednak ilość pamięci jaką można wykorzystać jest mocno ograniczona. 
-Dzięki temu możliwy jest dostęp z poziomu sterownika w systemie Linux do danych
+działania jednak ilość pamięci, jaką można wykorzystać, jest mocno ograniczona. 
+Dzięki temu możliwy jest dostęp z poziomu sterownika w systemie PetaLinux do danych
 przetworzonych przez blok HLS. Pamięć alokowana jest przy użyciu bloku 
 \emph{Block Memory Generator} i podłączana do procesora dzięki blokom 
-\emph{AXI BRAM Controler}(Rys. \ref{vivado-block-neural}).
+\emph{AXI BRAM Controler}(Rys. \ref{vivado-block-neural}) oraz \emph{AXI Interconnect} 
+(Rys. \ref{vivado-block-design}).
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/vivado-neuralnet.png}
+  \includegraphics[width=\textwidth]{img/vivado-neuralnet.png}
   \caption{Szczegółowy schemat części systemu \emph{neural\_net}}
   \label{vivado-block-neural}
 \end{figure}
@@ -109,7 +110,7 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.7\textwidth]{img/hls_design_flow.png}
+  \includegraphics[width=\textwidth]{img/hls_design_flow.png}
   \caption{Proces projektowania przy użyciu metody HLS}
   \label{hls_design_flow}
 \end{figure}
@@ -131,26 +132,27 @@ zainstalowane narzędzie Vivado HLS.
   \label{hls_new_project}
 \end{figure}
 
-\subsection{Petalinux}
-
-\subsection{Uczenie Sztucznej Sieci Neuronowej}
-
 \subsection{Zbiór danych wejściowych}
 
 W procesie uczenia oraz testowania poprawności działania modelu sztucznej 
 sieci neuronowej wykorzystano zbiór odręcznie pisanych cyfr MNIST 
-(ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów do przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28x28 pikseli. Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
+(ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów do 
+przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28x28 pikseli. 
+Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{img/mnist.png}
+  \includegraphics[width=\textwidth]{img/mnist.png}
   \caption{Fragment zbioru odręcznie pisanych cyfr MNIST}
   \label{mnist-set}
 \end{figure}
 
 \subsection{Opracowanie modelu ANN}
 
-Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie modelu do danych wejściowych. Najczęściej odbywa się to poprzez wielokrotne testowanie systemu dla różnych parametrów sieci. W tej pracy początkowym wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28x28 pikseli są konwertowane na tablicę 784 wartości typu \emph{float}. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
+Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie modelu do danych wejściowych. 
+Najczęściej odbywa się to poprzez wielokrotne testowanie systemu dla różnych parametrów sieci. W tej pracy początkowym 
+wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28x28 pikseli są konwertowane na tablicę 784 wartości 
+typu \emph{float}. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
 \begin{itemize}
   \item warstwę wejściową (784 wejścia)
   \item warstwę ukrytą (16 neuronów)
@@ -175,8 +177,9 @@ model.add(Dense(num_classes, use_bias=True, activation='sigmoid'))
 
   \end{lstlisting}
   \end{addmargin}
-    
-Podczas testowania modelu użyto zbioru MNIST, który zaimportowano, wykorzystując
+
+\subsubsection{Uczenie Sztucznej Sieci Neuronowej}
+Podczas uczenia i testowania modelu użyto zbioru MNIST, który zaimportowano, wykorzystując
 funkcję z pakietu keras. Dokonano uczenia sieci neuronowej przy użyciu zbioru 60000 
 obrazów i testowania modelu, podając na wejście sieci 10000 obrazów. Osiągnięto 
 dokładność na poziomie 93,6\%. 
@@ -215,20 +218,214 @@ Następnie wykonywana jest synteza oraz kosymulacja, umożliwiająca
 weryfikację poprawności syntezy. Ponadto narzędzie generuje raport, który przedstawia
 informacje na temat zużycia zasobów i opóźnień czasowych. Po prawidłowym 
 przeprowadzeniu kosymulacji należy użyć opcji \emph{Export RTL}, co umożliwia 
-dodanie nowego bloku IP do projektu w narzędziu Vivado. 
+dodanie nowego bloku IP do projektu w narzędziu Vivado.
+
+\subsection{Synteza projektu w narzędziu Vivado}
+
+Aby przetestować działanie nowego bloku IP w narzędziu Vivado HLS, należy dodać i odpowiednio podłączyć blok do 
+schematu blokowego (ang. \emph{Block Design}) w narzędziu Vivado. Następnie należy sprawdzić, czy urządzenia zostały 
+właściwie zaadresowane w zakładce \emph{Adress Editor} i wprowadzić ewentualne zmiany. Gotowy projekt można poddać 
+automatycznej weryfikacji za pomocą funkcji \emph{Validate Design} i uruchomić syntezę i implementację. Po poprawnie 
+przeprowadzonej implementacji narzędzie umożliwia otwarcie realizacji sprzętowej projektu (opcja \emph{Open Implemented 
+Design}). Zakładka \emph{Timing} (Rys. \ref{impl_design_vivado}) umożliwia sprawdzenie, czy w zaimplementowanym 
+projekcie zostały spełnione wymagania czasowe, a w oknie \emph{Device} można zweryfikować jakie zasoby zostały użyte w 
+implementacji.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{img/impl-design-vivado.png}
+  \caption{Wynik poprawnie przeprowadzonej implementacji w narzędziu Vivado}
+  \label{impl_design_vivado}
+\end{figure}
+
+Następnym krokiem jest wygenerowanie \emph{Bitstreamu} i eksport sprzętu w postaci pliku z rozszerzeniem \emph{.xsa}.
+Dzięki temu projekt sprzętu stworzony w programie Vivado można użyć w narzędziu \emph{Vitis} 
+lub \emph{Petalinux}. Aplikacja uruchamiana w trybie \emph{standalone} bez systemu operacyjnego w programie Vitis 
+umożliwia szybką weryfikację poprawności działania zaprojektowanego systemu. Dlatego przed przejściem do implementacji 
+w systemie Petalinux przystąpiono do stworzenia projektu oprogramowania w programie Vitis.
+
+\subsection{Implementacja przy użyciu narzędzia Vitis}
+
+Po wyeksportowaniu projektu sprzętu w narzędziu Vivado można uruchomić program Vitis. Narzędzie umożliwia stworzenie 
+nowego projektu platformy, dzięki opcji \emph{New Platform Project} (Rys. \ref{new-vitis-project1}). Przy tworzeniu 
+projektu należy wybrać odpowiedni plik .xsa (Rys. \ref{new-vitis-project2}), wyeksportowany wcześniej z narzędzia 
+Vivado. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/new-vitis-project1.png}
+  \caption{Tworzenie nowego projektu w programie Vitis}
+  \label{new-vitis-project1}
+\end{figure}
 
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/new-vitis-project2.png}
+  \caption{Wybór pliku .xsa z opisem konfiguracji sprzętu w programie Vitis}
+  \label{new-vitis-project2}
+\end{figure}
 
-\subsection{Testowanie systemu}
+Następnie należy stworzyć projekt aplikacji, za pomocą opcji \emph{New Application Project} i wybraniu odpowiedniego, 
+stworzonego wcześnie projektu platformy. Narzędzie Vitis zawiera szereg aplikacji przykładowych, z których warto 
+skorzystać przy uruchamianiu systemu po raz pierwszy. Przed zbudowaniem projektu, aby zapewnić komunikację płytki 
+Z-turn Board z komputerem za pomocą konwertera USB-UART znajdującego się na płytce, należy zmienić następujące 
+ustawienia BSP (ang. \emph{Board Support Package}) dla domeny \emph{standalone}:
 
-% Algorytmy rozpoznawania obiektów mogą być wywoływane na różne sposoby. 
-% Jedną z metod jest rejestrowanie obrazu z możliwie maksymalną ilością klatek 
-% na sekundę, analizowanie każdej ramki, wyszukiwanie obiektów i klasyfikacja za 
-% pomocą algorytmu ANN. Drugim, prostszym w implementacji sposobem, jest wywoływanie 
-% zarejestrowania obrazu w momencie, gdy użytkownik, chce dokonać klasyfikacji 
-% obiektu, który znajduje się w zasięgu obiektywu kamery, a na zarejestrowanym 
-% obrazie nie ma innych obiektów. Z powodu ograniczeń zasobów systemu, na którym 
-% aplikacja była testowana oraz ograniczonego czasu wykonania projektu, podjęto 
-% decyzję o zastosowaniu drugiej metody. 
+\begin{itemize}
+  \item stdin z ps\_7uart\_0 na ps\_7uart\_1
+  \item stdout z ps\_7uart\_0 na ps\_7uart\_1
+\end{itemize}
+
+Po zbudowaniu projektu platformy można przejść do pisania kodu aplikacji. Warto zaznaczyć, że do uruchomienia i 
+debugowania aplikacji na płytce Z-turn Board, potrzebny jest programator JTAG \emph{Xilinx Platform Cable}. Aby 
+obejrzeć wyjście standardowe programu, należy otworzyć okno \emph{Vitis Serial Terminal} i wybrać odpowiedni port USB. 
+Trzeba również pamiętać o wybraniu odpowiedniej opcji uruchamiania płytki, poprzez ustawienie zworki na JP1 zwarte i 
+JP2 rozwarte.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/vitis-results.png}
+  \caption{Wynik uruchomienia aplikacji w programie Vitis}
+  \label{vitis-results}
+\end{figure}
+
+Jak widać na Rys. \ref{vitis-results}, algorytm działa poprawnie. Po uruchomieniu i sprawdzeniu poprawności obliczeń w 
+programie Vitis można przystąpić do konfigurowania systemu operacyjnego przy użyciu narzędzia Petalinux. 
+
+\subsection{Test z wykorzystaniem systemu operacyjnego Petalinux}
+
+PetaLinux Software Development Kit (SDK) jest narzędziem zawierającym wszystkie niezbędne elementy do budowania,
+rozwijania, testowania i wdrażania systemów wbudowanych opartych na systemie Linux. PetaLinux jest przeznaczony głównie 
+do systemów, opartych o układy FPGA i składa się z trzech najważniejszych elementów: 
+
+\begin{itemize}
+  \item prekonfigurowany obraz binarny systemu 
+  \item system Linux konfigurowalny do zastosowania na sprzęcie firmy Xilinx 
+  \item PetaLinux SDK zawierający narzędzia służące do projektowania i wdrażania systemu 
+\end{itemize}
+
+\subsubsection{Wstępna konfiguracja systemu Petalinux}
+
+Zgodnie z zaleceniami producenta, projekcie wykorzystano wersję narzędzia Petalinux kompatybilną z wersją Vivado -- 
+2019.2. Każdorazowo, przed użyciem Petalinuxa należy pamiętać o załadowaniu ustawień przy pomocy komendy:
+
+\begin{verbatim}
+  source <katalog-instalacyjny>/petalinux/2019.2/settings.sh
+\end{verbatim} 
+
+Narzędzie zużywa dużo przestrzeni dyskowej, jeśli wolnego miejsca będzie zbyt mało, zostanie wyświetlony odpowiedni 
+komunikat. Następnie można przejść do tworzenia nowego projektu z ustawieniami domyślnymi dla płytek z układami \emph
+{Zynq}:
+\begin{verbatim}
+  petalinux-create -t project -n <nazwa_projektu> --template_zynq
+\end{verbatim}
+
+Projekt sprzętu w programie Vivado został wyeksportowany do pliku z rozszerzeniem \emph{.xsa}. Aby zaimportować plik opisujący konfigurację sprzętu, utworzonego w programie Vivado stosujemy następującą komendę:
+
+\begin{verbatim}  
+  petalinux-config --get-hw-description <katalog_projektu_vivado>
+\end{verbatim}
+
+Po wywołaniu komendy \emph{petalinux-config} pojawia się interfejs graficzny narzędzia Petalinux, który umożliwia 
+zmianę ogólnych ustawień projektu (Rys. \ref{petalinux-config}). Przechodząc do zakładki \emph{Image Packaging 
+Configuration} (Rys. \ref{petalinux-config}), można ustawić lokalizację zewnętrznego systemu plików oraz wybrać 
+partycję karty sd, na której będzie się znajdował. Stosując opcję -c komendy \emph{petalinux-config} można dostosować 
+ustawienia jądra Linuxa (argument \emph{kernel}) oraz systemu plików (argument \emph{rootfs}).
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/petalinux-config.png}
+  \caption{Wstępna konfiguracja przy użyciu funkcji petalinux-config}
+  \label{petalinux-config}
+\end{figure}
+
+\subsubsection{Konfiguracja jądra systemu Petalinux}
+
+Po wywołaniu komendy \emph{petalinux-config -c kernel} w terminalu pojawia się menu konfiguracyjne jądra systemu 
+Petalinux. W oknie jest wiele opcji, jednak najwięcej zmian wprowadzono w zakładce \emph{Device Drivers}. 
+
+W projekcie podjęto decyzję o zastosowaniu kamery podłączonej przy użyciu portu USB. Aby umożliwić aplikacji 
+korzystającej z biblioteki OpenCV dostęp do urządzenia, potrzebne były odpowiednie sterowniki \cite{usb-camera} 
+dostępne w zakładce \emph{Multimedia Support}. Zastosowany w projekcie moduł kamery MY-CAM002U jest kompatybilny ze 
+sterownikiem UVC (ang. \emph{USB Video Class}). W konfiguracji jądra dodano również interfejs V4L2, który daje dostęp 
+do modułu kamery z poziomu aplikacji z przestrzeni użytkownika.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/petalinux-config-kernel.png}
+  \caption{Konfiguracja jądra PetaLinuxa}
+  \label{petalinux-config-kernel}
+\end{figure}
+
+Aby uzyskać dostęp z poziomu systemu Petalinux do bloku IP zaimplementowanego w narzędziu Vivado HLS, należy 
+zainstalować odpowiednie sterowniki urządzeń lub utworzyć własne. Dla wielu typów urządzeń tworzenie nowego sterownika 
+nie jest konieczne. Alternatywnym rozwiązaniem jest zastosowanie sterownika UIO (ang. \emph{Userspace Input Output 
+Driver}) \cite{uio-drivers}, który umożliwia dostęp do urządzenia w aplikacji z przestrzeni użytkownika. Znacznie 
+upraszcza to proces tworzenia oprogramowania do obsługi urządzenia i zmniejsza ryzyko powstawania trudnych w 
+debugowaniu i często niebezpiecznych dla działania systemu operacyjnego błędów. Jednak należy pamiętać, że sterowniki 
+UIO nie są przeznaczone dla dowolnego typu sprzętu. Stosuje się je do obsługi urządzeń, generujących przerwania, 
+posiadających pamięć, którą można zmapować i sterować urządzeniem poprzez pisanie do tej pamięci. 
+
+\subsubsection{Konfiguracja systemu plików}
+
+Narzędzie Petalinux umożliwia również dostosowanie systemu plików do potrzeb użytkownika. W menu konfiguracyjnym jest 
+wiele pakietów i bibliotek do różnych zastosowań. W zakładce \emph{apps} użytkownik ma dostęp do aplikacji, które 
+stworzył w obrębie danego projektu. Narzędzie Petalinux umożliwia utworzenie nowej aplikacji przy użyciu komendy:
+\begin{verbatim}
+  petalinux-create -t apps -n <nazwa_aplikacji>
+\end{verbatim}.
+
+W projekcie zdecydowano się na użycie skryptów napisanych w języku Python i biblioteki OpenCV do rejestrowania obrazu i 
+wysyłania go poprzez port Ethernet do komputera PC. W tym celu zaznaczono następujące opcje w konfiguracji systemu 
+plików:  
+
+\begin{itemize}
+  \item python i python-math
+  \item python-numpy
+  \item packagegroup-petalinux-v4lutils 
+  \item packagegroup-petalinux-opencv
+\end{itemize}
+
+
+Kolejenym etapem w procesie konfigurowania systemu Petalinux jest dostosowanie drzewa urządzeń (ang. \emph{device-tree}
+. Drzewo urządzeń można edytować za pomocą plików system-user.dtsi oraz pl-custom.dtsi dostępnych w katalogu:
+
+\begin{verbatim}
+  <katalog_projektu>/project-spec/meta-user/recipes-bsp/device-tree
+\end{verbatim}
+W przypadku wykorzystania sterowników UIO należy wpisać w polu \emph{compatible} każdego z węzłów urządzeń (pamięci 
+BRAM) wartość \emph{"generic-uio"} \cite{uio-device-tree}. Dostęp do urządzeń jest zapewniony dzięki plikom /dev/uioX, 
+gdzie X to numer urządzenia (zaczynając od 0 dla pierwszego urządzenia).
+
+\subsubsection{Przygotowanie obrazu systemu}
+
+Po dostosowaniu pliku \emph{device-tree} można uruchomić kompilację petalinuxa komendą \emph{petalinux-build}.
+Gdy system zostanie zbudowany, należy spakować wszystkie potrzebne pliki przy użyciu funkcji \emph{petalinux-package}.
+Wynikiem tej operacji są dwa pliki dostępne w katalogu images/linux BOOT.bin i image.ub, które należy przekopiować na
+odpowiednią partycję karty sd. Jeśli w konfiguracji Petalinuxa wyłączona została opcja wspierania Initial RAM
+filesystem, należy dodatkowo wypakować system plików na drugiej partycji na karcie~sd. Tak przygotowaną kartę sd można
+umieścić w slocie na płytce Z-turn, podłączyć zasilanie i uruchomić system.Istnieje opcja kompilacji jedynie wybranej 
+aplikacji stworzonej przez użytkownika przy pomocy komendy \emph{petalinux-build -c <nazwa\_aplikacji>}. W przypadku 
+wprowadzenia zmian w systemie, przed ponownym wypakowaniem systemu plików, należy sformatować partycję zawierającą 
+system plików. 
+
+\subsubsection{Uruchomienie systemu Petalinux}
+
+Komunikacja płytki Z-turn z komputerem PC odbywa się na dwa sposoby:
+\begin{itemize}
+  \item przez interfejs UART przy użyciu aplikacji Minicom (Rys. \ref{petalinux-boot})
+  \item przez port Ethernet za pomocą kilenta SSH 
+\end{itemize}
+Oba rozwiązania były stosowane równolegle na każdym etapie projektu. 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/petalinux-boot.png}
+  \caption{Uruchomienie systemu PetaLinux}
+  \label{petalinux-boot}
+\end{figure}
+
+Zaletą konsoli podłączonej za pomocą portu szeregowego jest to, że są w niej wyświetlane komunikaty jądra Linuxa. Ułatwia to debugowanie błędów, które pojawiają się w fazie uruchamiania systemu operacyjnego. Zaletą protokołu SSH jest duża przepustowość i możliwość wysyłania nawet dużych plików.
 
 

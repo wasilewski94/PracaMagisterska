@@ -20,11 +20,11 @@ Praca nad implementacją algorytmów Sztucznej Inteligencji w większości
 przypadków zaczyna się od stworzenia i uruchomienia modelu. Do tego zadania 
 często wykorzystywane są wysokopoziomowe biblioteki takie jak \emph{Keras} lub \emph{Theano}, które w znacznym stopniu przyspieszają proces tworzenia oprogramowania oraz ułatwiają wprowadzanie zmian w modelu sieci. Rozwój i dopracowywanie 
 algorytmu Sztucznej Inteligencji wymaga wielu iteracji uruchamiania kodu 
-z różnymi parametrami i właściwościami sieci. Aby w pełni wykorzystać potencjał Sztucznych Sieci Neuronowych, należy dobrać odpowiednią metody projektowania i testowania modeli.
+z różnymi parametrami i właściwościami sieci. Aby w pełni wykorzystać potencjał Sztucznych Sieci Neuronowych, należy dobrać odpowiednio metody projektowania i testowania modeli.
 
 \subsection{Wstęp teoretyczny}
 
-Sieć neuronowa jest algorytmem przetwarzającym dane, inspirowanym działaniem mózgu. ANN składa się z wielu elementów przetwarzających informacje -- neuronów. Model przetwarzania informacji jest inspirowany ludzkim mózgiem jednak w stosunku do komórki nerwowej, Neuron w Sztucznej Sieci Neuronowej jest bardzo uproszczony
+Sieć neuronowa jest algorytmem przetwarzającym dane, inspirowanym działaniem mózgu. ANN składa się z wielu elementów przetwarzających informacje -- neuronów. Model przetwarzania informacji jest inspirowany ludzkim mózgiem jednak w stosunku do komórki nerwowej, neuron w Sztucznej Sieci Neuronowej jest bardzo uproszczony
 \cite{tadeusiewicz1993sieci}. Pomimo to ANN umożliwiają rozwiązywanie złożonych
 problemów w wielu dziedzinach z dużą dokładnością.
 
@@ -77,16 +77,18 @@ wyróżnia się następujące funkcje:
     \item funkcja ReLu (ang. \emph{Rectified Linear Units}): 
     
     $$\phi(x) = max(0, x)$$
+    
     \begin{figure}[!h]
       \centering
       \includegraphics[width=\textwidth]{img/relu.png}
       \caption{Wykres funkcji ReLU}
-      \label{sigmoid}
+      \label{relu}
     \end{figure}
 
     \item funkcja sigmoid: 
     
     $$\phi(x) = \frac{a}{a + e^{-bx}}$$
+    
     \begin{figure}[!h]
       \centering
       \includegraphics[width=\textwidth]{img/sigmoid.png}
@@ -111,7 +113,7 @@ Sieć Neuronowa typu MLP najczęściej posiada warstwy w pełni połączone
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{img/mlp.png}
+  \includegraphics[width=\textwidth]{img/mlp.png}
   \caption{Model Perceptronu Wielowarstwowego}
   \label{mlp}
 \end{figure}
@@ -129,7 +131,7 @@ całych kształtów i obiektów.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/dnn-object-recog.png}
+  \includegraphics[width=\textwidth]{img/dnn-object-recog.png}
   \caption{Model Głębokiego Uczenia sieci}
   \label{dnn}
 \end{figure}
@@ -144,8 +146,8 @@ Proces uczenia nadzorowanego sieci polega na zwiększaniu dokładności ANN w ro
 $$\Delta w_{kj} = \eta e_k(n)x_j(n) $$
 $$ e_k(n) = d_k(n) - y_k(n) $$
 
-gdzie $d_k(n)$ jest wzorcowym rozwiązaniem, a $y_k(n)$ rozwiązaniem otrzymanym.
-Wartość $\eta$ oznacza współczynnnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces. Wpływ na szybkość uczenia ma również wielkość mini-serii (ang. \emph{mini-batch}) uczących.
+W powyższym wzorze $d_k(n)$ jest zakładanym rozwiązaniem, a $y_k(n)$ rozwiązaniem otrzymanym.
+Wartość $\eta$ oznacza współczynnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces. Wpływ na szybkość uczenia ma również wielkość miniserii (ang. \emph{mini-batch}) uczących. Jest to liczba elementów zbioru uczącego, podawanych na wejście algorytmu, przed zaktualizowaniem wartości wag sieci.
 
 \subsubsection{Wsteczna propagacja błędu}
 Architekturę sieci MLP często stosuje się wraz z algorytmem wstecznej 
@@ -155,12 +157,13 @@ w taki sposób, aby zminimalizować wartość funkcji kosztu.
 
 
 \subsubsection{Hiperparametry}
-W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. \emph{hyperparameters}). Są to parametry sieci, ustawiane przez użytkownika w celu otrzymania modelu, dającego najlepsze rozwiązania. Na wynik uczenia wpływ mają m.in.:
+W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. \emph{hyperparameters}). Są to parametry sieci, ustawiane przez użytkownika w celu otrzymania modelu, dającego najlepsze rozwiązania. Na wynik uczenia wpływ mają m.in. następujące Hiperparametry:
 \begin{itemize}
   \item liczba i rodzaj warstw sieci
   \item liczba neuronów w każdej z warstw
   \item współczynnik szybkości uczenia $\eta$
-  \item wielkość miniserii.
+  \item wielkość miniserii
+  \item liczba epok.
 \end{itemize}
 
 \subsubsection{Przeuczenie sieci}

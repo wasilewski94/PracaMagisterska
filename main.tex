@@ -67,7 +67,9 @@ wzrostu wydajności algorytmu detekcji obiektów znajdujących się na
 obrazie w czasie rzeczywistym. W~ostatnich latach można zaobserwować 
 wielki postęp w dziedzinie komputerowego rozpoznawania obrazów 
 (ang. \emph{Computer Vision}), jednak większość dostępnych implementacji jest 
-przeznaczona do uruchomienia na komputerze PC.
+przeznaczona do uruchomienia na komputerze PC. W pracy dokonano porównania 
+wydajności implementacji wykorzystującej układ FPGA do akceleracji obliczeń
+i wysokopoziomowego rozwiązania programowego, testowanego na komputerze PC.
 
 \slowakluczowe Sztuczne Sieci Neuronowe, HLS, komputerowe rozpoznawanie 
 obrazów, FPGA
@@ -90,12 +92,13 @@ and HLS (High-Level Synthesis) method. HLS method allows to design a
 project using C, C++ or System C language and use lots of C libraries, 
 which makes working on the project faster.
 
-
 Assumption was made that the created accelerator will allow to achieve 
 efficiency improvement in the real-time object detection algorithm. 
-Recently, it is seen that huge improvement was made in the field of 
+It has been seen recently, that huge improvement was made in the field of 
 Computer Vision, but most of the available implementations are made to 
-run on PC.
+run on PC. In the thesis a performance comparison was made between 
+implementation using FPGA to accelerate the calculations and high level
+software solution, tested on PC.
 
 \keywords Artificial Neural Networks, HLS, Computer Vision, FPGA
 
@@ -130,7 +133,6 @@ run on PC.
 %--------------------------------------------
 \cleardoublepage % Zaczynamy od nieparzystej strony
 \printbibliography
-
 %--------------------------------------------
 % Spisy (opcjonalne)
 %--------------------------------------------
@@ -152,6 +154,7 @@ run on PC.
 \acronymlist
 \acronym{ANN}{ang. \emph{Artificial Neural Network}}
 \acronym{ASIC}{ang. \emph{Application-Specific Integrated Circuit}}
+\acronym{BSP}{ang. \emph{Board Support Package}}
 \acronym{DVP}{ang. \emph{Digital Video Port}}
 \acronym{FPGA}{ang. \emph{Field Programmable Gate Array}}
 \acronym{GPU}{ang. \emph{Graphics Processing Unit}}
@@ -160,6 +163,7 @@ run on PC.
 \acronym{SBC}{ang. \emph{Single Board Computer}}
 \acronym{SoC}{ang. \emph{System on Chip}}
 \acronym{SSH}{ang. \emph{Secure Shell}}
+\acronym{UIO}{ang. \emph{Userspace Input/Output (Driver)}}
 \acronym{V4L2}{ang. \emph{Video for Linux 2}}
 
 

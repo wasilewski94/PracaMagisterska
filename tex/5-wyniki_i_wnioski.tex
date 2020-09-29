@@ -3,3 +3,27 @@
 \pagestyle{headings}
 
 \section{Wyniki i wnioski}
+
+Celem pracy było zaprojektowanie, nauczenie i przetestowanie działania algorytmu Sztucznej Sieci Neurnonowej z użyciem układu FPGA oraz porównanie z rozwiązaniem programowym. Podczas projektu powstało kilka modeli Sztucznej Sieci Neuronowej klasyfikującej odręcznie pisane cyfry. Aby porównać rozwiązanie, realizowane w technice HLS z implementacją przy użyciu pakietu \emph{keras}, każdy z modeli poddano testom, które zostały podzielone na dwie części:
+\bigskip
+\begin{enumerate}
+  \item Uruchomienie sieci przy użyciu zbioru testowego 10000 cyfr z bazy MNIST, w celu oszacowania dokładności i szybkości działania algorytmu.
+  \item Test wykonany w czasie rzeczywistym przy użyciu modułu kamery.
+\end{enumerate}
+
+Wyniki przeprowadzonych testów zostały zestawione w dalszej części rozdziału.
+
+\subsection{Test modelu sieci z jedną warstwą ukrytą}
+
+
+% Algorytmy rozpoznawania obiektów mogą być wywoływane na różne sposoby. 
+% Jedną z metod jest rejestrowanie obrazu z możliwie maksymalną ilością klatek 
+% na sekundę, analizowanie każdej ramki, wyszukiwanie obiektów i klasyfikacja za 
+% pomocą algorytmu ANN. Drugim, prostszym w implementacji sposobem, jest wywoływanie 
+% zarejestrowania obrazu w momencie, gdy użytkownik, chce dokonać klasyfikacji 
+% obiektu, który znajduje się w zasięgu obiektywu kamery, a na zarejestrowanym 
+% obrazie nie ma innych obiektów. Z powodu ograniczeń zasobów systemu, na którym 
+% aplikacja była testowana oraz ograniczonego czasu wykonania projektu, podjęto 
+% decyzję o zastosowaniu drugiej metody. 
+
+
