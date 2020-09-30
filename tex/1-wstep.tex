@@ -7,7 +7,7 @@
 
 W ostatnich latach można zaobserwować gwałtowny rozwój w dziedzinie 
 Uczenia Maszynowego (ang. \emph{Machine Learning}) i Sztucznej Inteligencji 
-(ang. \emph{Artificial Intelligence}). Coraz więcej urządzeń staje się systemami działającymi autonomicznie, bez potrzeby ingerencji człowieka. 
+(ang. \emph{Artificial Intelligence}). Coraz więcej urządzeń i systemów projektowanych jest na działanie autonomicznie, bez potrzeby ingerencji człowieka. 
 Jednym z algorytmów, który powstał już dość dawno, są Sztuczne Sieci Neuronowe (ang. \emph{Artificial Neural Networks}). Temat Sieci Neuronowych ma długą historię rozwoju, sięgającą początku lat 40. XX wieku, jednak w ostatnich latach można zaobserwować znaczny postęp w tej dziedzinie \cite{Kriesel2007NeuralNetworks}. Rozwój technologii umożliwił zastosowanie algorytmów AI w wielu aplikacjach. Działalność naukowa w kierunku Sztucznych Sieci Neuronowych spowodowała powstanie nowych modeli i architektur.
 
 Większość algorytmów wykorzystujących Sztuczną Inteligencję wymaga dużej mocy 
@@ -45,7 +45,7 @@ W znacznej większości sieci neuronowe budowane są w ten sposób, że dane są
 
 \subsubsection{Model neuronu}
 Sztuczne Sieci Neuronowe to algorytm wzorowany działaniem ludzkiego mózgu 
-i znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego neuronu składa się z następujących elementów\cite{Omondi2006FPGAIO}:
+i znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego neuronu składa się z następujących elementów \cite{Omondi2006FPGAIO}:
 \begin{itemize}
   \item wektora wejściowego: 
   $$x = (x_1, x_2,...,x_j)^T$$
@@ -139,7 +139,7 @@ całych kształtów i obiektów.
 
 \subsubsection{Proces uczenia sieci}
 
-Uczenie Sztucznej Sieci Neuronowej można podzielić na nadzorowane (ang. \emph{supervised learning}) i nienadzorowane (ang. \emph{unsupervised learning}) oraz wersję pośrednią -- uczenie częściowo nadzorowane (ang. \emph{semi-supervised learning}). W praktyce najczęściej wykorzystywanym rodzajem uczenia jest \emph{supervised learning}, jednak uczenie nienadzorowane jest ciekawym tematem badań i rozwoju algorytmów Sztucznych Sieci Neuronowych \cite{nielsen2015neural}.
+Uczenie Sztucznej Sieci Neuronowej można podzielić na nadzorowane (ang. \emph{supervised learning}) i nienadzorowane (ang. \emph{unsupervised learning}) oraz wersję pośrednią -- uczenie częściowo nadzorowane (ang. \emph{semi-supervised learning}). W praktyce najczęściej wykorzystywanym rodzajem uczenia jest \emph{supervised learning}, jednak uczenie nienadzorowane, które zakłada tworzenie modelu sieci bez ingerencji człowieka, jest ciekawym tematem badań i rozwoju algorytmów Sztucznych Sieci Neuronowych \cite{nielsen2015neural}.
 Proces uczenia nadzorowanego sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i biasów tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
 
 
@@ -147,14 +147,11 @@ $$\Delta w_{kj} = \eta e_k(n)x_j(n) $$
 $$ e_k(n) = d_k(n) - y_k(n) $$
 
 W powyższym wzorze $d_k(n)$ jest zakładanym rozwiązaniem, a $y_k(n)$ rozwiązaniem otrzymanym.
-Wartość $\eta$ oznacza współczynnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces. Wpływ na szybkość uczenia ma również wielkość miniserii (ang. \emph{mini-batch}) uczących. Jest to liczba elementów zbioru uczącego, podawanych na wejście algorytmu, przed zaktualizowaniem wartości wag sieci.
+Wartość $\eta$ oznacza współczynnik szybkości uczenia (ang. \emph{learning rate}). Gdy jest wystarczająco mały, algorytm uczenia osiąga rozwiązanie optymalne, jednak większy współczynnik $\eta$ może przyspieszyć ten proces. Wpływ na szybkość uczenia ma również wielkość miniserii (ang. \emph{mini-batch}) uczących. Jest to liczba elementów zbioru uczącego, podawanych na wejście algorytmu, przed zaktualizowaniem wartości wag sieci. Z powodu ograniczonych rozmiarów zboru uczącego, jest on wykorzystywany wielokrotnie. Jedno przejście przez wszystkie próbki ze zbioru uczącego nazywane jest epoką (ang. \emph{epoch}) \cite{tadeusiewicz2015leksykon}.
 
 \subsubsection{Wsteczna propagacja błędu}
 Architekturę sieci MLP często stosuje się wraz z algorytmem wstecznej 
-propagacji błędu (ang. \emph{Backpropagation}), która umożliwia proces uczenia sieci. Poprzez obliczenie błędu w neuronach warstwy wyjściowej i propagacji 
-wstecz błędu przez całą sieć pozwala dostosować wartość wagi każdego z połączeń
-w taki sposób, aby zminimalizować wartość funkcji kosztu.
-
+propagacji błędu (ang. \emph{Backpropagation}), która umożliwia proces uczenia sieci. Poprzez obliczenie błędu w neuronach warstwy wyjściowej i propagacji wstecz błędu przez całą sieć, algorytm pozwala dostosować wartość wagi każdego z połączeń w taki sposób, aby zminimalizować wartość funkcji kosztu. Sieć jest uczona do momentu, gdy błąd stanie się akceptowalnie mały. 
 
 \subsubsection{Hiperparametry}
 W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie ustawienie parametrów sieci, zwanych hiperparametrami (ang. \emph{hyperparameters}). Są to parametry sieci, ustawiane przez użytkownika w celu otrzymania modelu, dającego najlepsze rozwiązania. Na wynik uczenia wpływ mają m.in. następujące Hiperparametry:
@@ -173,10 +170,50 @@ Przy używaniu Sztucznych Sieci Neuronowych w zadaniach klasyfikacji często spo
 
 \subsubsection{Splotowe Sieci Neuronowe}
 
-Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są typem sieci MLP, które znakomicie nadają się do rozpoznawania kształtów i z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcanie i inne zakłócenia\cite{haykin2009neural}. Sieci te są uczone w trybie nadzorowanym.
+Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są typem sieci głębokich, które znakomicie nadają się do rozpoznawania kształtów i z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcanie i inne zakłócenia \cite{haykin2009neural}. Sieci te są uczone w trybie nadzorowanym. 
 
-\subsection{Implementacja Sztucznych Sieci Neuronowych w układach FPGA}
-\subsubsection{Reprezentacja liczb zmiennoprzecinkowych}
-\subsubsection{Uczenie Sztucznej Sieci Neuronowej w układach FPGA}
+Za ekstrakcję cech obiektów w dwuwymiarowym obrazie odpowiedzialna jest warstwa splotowa sieci. Wejście \textbf{\emph{M}} tej warstwy jest przekształcane przy użyciu odpowiedniego filtru \textbf{\emph{K}} (ang. \emph{filter}). Operację splotu w sieciach CNN można opisać wzorem:
+$$
+S(i,j) = (M*K)(i,j) =\sum_{k}{\sum_{j}{M(i - k, j - l)K(k, l)}}
+$$
+
+Wynik \textbf{\emph{S(i,j)}} nazywany jest mapą atrybutów (ang. \emph{feature map}). Warstwa splotowa umożliwia zmniejszenie rozmiaru przetwarzanych danych podczas uczenia sieci oraz zwiększa jej zdolność do generalizacji. Operację splotu przedstawiono na Rys. \ref{conv}. Zaprezentowany przypadek to splot macierzy 6x6 przy użyciu filtru o rozmiarze 3x3. 
+
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/conv.jpg}
+  \caption{Splot macierzy 6x6 przy użyciu filtru o rozmiarze 3x3}
+  \label{conv}
+\end{figure}
+
+
+
+Razem z warstwą splotową często stosowana jest warstwa grupowania (ang. \emph{pooling}), występującą najczęściej w jednym z dwóch wariantów (ang. \emph{max-pooling}) lub (ang. \emph{average pooling}). W przypadku przetwarzania obrazu metoda (ang. \emph{max-pooling}) polega na zmniejszeniu jego rozmiaru, poprzez wybranie wartości maksymalnej lub średniej, stosując okno o wybranym rozmiarze. Najczęściej wybieranym krokiem (ang. \emph{stride}) przesuwania okna jest wartość, równa jego rozmiarowi. Na Rys. \ref{pooling} przedstawiono przykład \emph{max-poolingu} o rozmiarze 2x2 ze skokiem równym rozmiarowi okna.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/pooling.jpg}
+  \caption{Max-pooling o rozmiarze 2x2}
+  \label{pooling}
+\end{figure}
+
 \subsection{Zastosowania Sztucznych Sieci Neuronowych}
+
+W dzisiejszych czasach Sztuczne Sieci Neuronowe są wykorzystywane w wielu zastosowaniach. Dziedziny, w których stosuje się algorytmy ANN to m.in.:
+\begin{itemize}
+  \item medycyna -- wspomaganie wystawiania diagnozy
+  \item przemysł -- automatyczna kontrola jakości produktów
+  \item zastosowania militarne -- wspomaganie radarów i termowizji
+  \item ekonomia -- przewidywanie notowań giełdowych
+  \item robotyka -- autonomiczne samochody (Rys. \ref{self-driving-car})
+  \item rozpoznawanie i synteza mowy -- sterowanie różnymi systemami (smartfon, komputer, urządzenia IoT) przy użyciu asystenta głosowego
+\end{itemize}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/self-driving-car.jpg}
+  \caption{Rozpoznawanie obiektów na obrazie z kamery samochodu autonomicznego}
+  \label{self-driving-car}
+\end{figure}
 
