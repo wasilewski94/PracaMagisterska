@@ -3,18 +3,21 @@
 \pagestyle{headings}
 
 \section{Implementacja}
+W początkowej fazie projektu przetestowano wiele różnych modeli ANN w celu znalezienia odpowiedniej architektury sieci do zastosowania w przetwarzaniu obrazów. Początkowo zastosowano splotową sieć neuronową, która przy niewielkiej liczbie parametrów dawała bardzo dobre wyniki klasyfikacji odręcznie pisanych cyfr z bazy MNIST. Jednak w celu zaimplementowania algorytmu w układzie FPGA ograniczono model do postaci architektury MLP. Początkowym założeniem była możliwość zmiany parametrów sieci z poziomu aplikacji.
 
 \subsection{Budowa systemu}
 
+Na początku pracy przyjęto założenie wykonywania uczenia sieci na komputerze PC z wykorzystaniem pakietu \emph{keras}, a następnie eksport modelu w postaci plików tekstowych zawierających parametry sieci. Zbiór obrazów przedstawiających odręcznie pisane cyfry, został podzielono na testowy (10000 obrazów) oraz uczący (60000 obrazów). Ponadto system powinien umożliwiać rozpoznawanie i klasyfikację cyfr na obrazie z kamery w czasie rzeczywistym.
+
 \subsubsection{Schemat blokowy systemu}
 
-System składa się z dwóch głównych części (Rys. \ref{schemat_blokowy}):
+System można podzielić na dwie główne części (Rys. \ref{schemat_blokowy}):
 \begin{itemize}
   \item aplikacja wykorzystująca pakiet keras, uruchamiana na komputerze PC
-  \item częśc uruchamiana na płytce Z-Turn Board
+  \item część uruchamiana na płytce Z-Turn Board
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/schemat_blokowy.png}
   \caption{Schemat blokowy systemu}
@@ -65,7 +68,7 @@ procesor, oraz blok \emph{AXI Interconnect}, umożliwiający podłączenie peryf
 do procesora. Po podwójnym kliknięciu na blok procesora pojawia się okno, w którym
 można ustawić odpowiednią konfigurację układu. 
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/vivado-block-design.png}
   \caption{Schemat systemu przedstawiony w narzędziu Vivado}
@@ -73,22 +76,21 @@ można ustawić odpowiednią konfigurację układu.
 \end{figure}
 
 \subsubsection{Pamięć Block RAM}
-Zdecydowano się na zastosowanie bloków pamięci BRAM do komunikacji pomiędzy 
-blokiem IP implementowanym z użyciem HLS a procesorem. Zaletą pamięci BRAM jest szybkość 
-działania jednak ilość pamięci, jaką można wykorzystać, jest mocno ograniczona. 
-Dzięki temu możliwy jest dostęp z poziomu sterownika w systemie PetaLinux do danych
-przetworzonych przez blok HLS. Pamięć alokowana jest przy użyciu bloku 
+Układy FPGA zawierają bloki dwuportowej pamięci BRAM, które można wykorzystać do komunikacji PS -- PL pomiędzy logiką programowalną (ang. PL -- \emph{Programmable Logic}) a procesorem (ang. PL -- \emph{Processing System}).
+Zaletą pamięci BRAM jest możliwość równoległego dostępu do danych z dwóch niezależnych portów, jednak ilość pamięci, jaką można wykorzystać, jest mocno ograniczona. W przypadku układu Zynq-7020 znajdującego się na płytce Z-turn jest to 140 bloków po 36Kb (łącznie 4.9Mb). Pamięć BRAM umożliwia dostęp z poziomu sterownika w systemie PetaLinux do danych
+przetworzonych przez blok HLS. Zdecydowano się na zastosowanie bloków pamięci BRAM do przechowywania parametrów modelu sieci oraz wejść i wyników obliczeń.
+
+W programie Vivado pamięć alokowana jest przy użyciu bloku 
 \emph{Block Memory Generator} i podłączana do procesora dzięki blokom 
 \emph{AXI BRAM Controler}(Rys. \ref{vivado-block-neural}) oraz \emph{AXI Interconnect} 
-(Rys. \ref{vivado-block-design}).
+(Rys. \ref{vivado-block-design}). Po odpowiednim podłączeniu bloków pamięci, w zakładce \emph{Adress Editor} można ustawić rozmiar każdego z dodanych bloków BRAM.
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/vivado-neuralnet.png}
   \caption{Szczegółowy schemat części systemu \emph{neural\_net}}
   \label{vivado-block-neural}
 \end{figure}
-
 
 \subsection{Wykorzystanie metody HLS}
 Przy użyciu metody HLS możliwe jest stworzenie własnego bloku IP (ang. 
@@ -102,7 +104,7 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 \begin{enumerate}
     \item Kompilacja, wykonanie (symulacja) i debugowanie algorytmu napisanego w języku C
     \item Synteza algorytmu w języku C w implementację RTL
-    \item Wygenerowanie raportu i analiza projektu
+    \item Wygenerowanie raportu i analiza projektu (optymalizacja)
     \item Zweryfikowanie implementacji RTL
     \item Spakowanie implementacji RTL w blok IP
 \end{enumerate}
@@ -115,12 +117,13 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
   \label{hls_design_flow}
 \end{figure}
 
-Zastosowanie syntezy wysokiego poziomu umożliwia przeniesienie algorytmu 
-napisanego w języku C/C++ lub System C na implementację w układzie FPGA. 
-Dodatkową zaletą metody HLS jest dostępność bibliotek do przetwarzania 
-obrazów oraz ułatwiających implementację operacji matematycznych. 
+Zastosowanie syntezy wysokiego poziomu umożliwia przeniesienie algorytmu napisanego w języku C/C++ lub System C na implementację w układzie FPGA. Dodatkową zaletą metody HLS jest dostępność bibliotek do przetwarzania 
+obrazów oraz ułatwiających implementację operacji matematycznych. Podczas pracy nad projektem wykorzystano bibliotekę \emph
+{<hls\_math.h>} zawierającą operacje matematyczne (np. funkcję \emph{sigmoid}), podobnie jak biblioteka \emph{<cmath.h>}. 
+Obie biblioteki można wykorzystać w implementacji akceleratora HLS, jednak użycie biblioteki \emph{<cmath.h>} może powodować 
+powstanie rozbieżnych wyników obliczeń podczas symulacji i syntezy.
 
-Przy tworzeniu nowego projektu w Vivado HLS (Rys. \ref{hls_new_project}) trzeba podać 
+Przy tworzeniu nowego projektu w Vivado HLS (Rys. \ref{hls_new_project}) trzeba wybrać 
 urządzenie, na którym uruchamiany będzie blok IP. Jeśli płytka nie jest widoczna na 
 liście, należy dodać pliki opisujące ją w odpowiednim katalogu, gdzie zostało 
 zainstalowane narzędzie Vivado HLS.  
@@ -132,6 +135,55 @@ zainstalowane narzędzie Vivado HLS.
   \label{hls_new_project}
 \end{figure}
 
+\subsection{Optymalizacja w Vivado HLS}
+
+Metoda HLS umożliwia optymalizację implementowanego algorytmu pod kątem zużycia zasobów układu FPGA oraz wprowadzanych opóźnień (ang. \emph{latency}). Zaimplementowany algorytm w języku C++ można optymalizować, stosując m.in. następujące dyrektywy:
+\begin{itemize}
+  \item rozwijanie pętli -- loop unroll
+  \item pretwarzanie potokowe -- pipeline
+  \item partycjonowanie tablic -- array partition
+  \item definiowanie zależności -- dependence
+\end{itemize} 
+Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm} \cite{hls-pragmas}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. 
+
+W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci. Wybrano model z jedną warstwą ukrytą o 16 neuronach i funkcją aktywacji sigmoid.
+
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/hls-report.png}
+  \caption{Raport po przeprowadzeniu syntezy w Vivado HLS}
+  \label{hls-report}
+\end{figure}
+
+
+\subsubsection{Rozwijanie pętli}
+
+Każda pętla for w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w działaniu kodu. W przypadku pętli o 4 iteracjach:
+\begin{verbatim}
+  multiply:
+  for (int i=0; i<3; i++) {
+    c[i] = a[i] * b[i];
+  }
+\end{verbatim}
+nie ma możliwości, żeby powyższa pętla wykonała się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli ma być wykonanych jednocześnie.
+
+
+\subsubsection{Pipeline}
+Zastosowanie dyrektywy \emph{Piepeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem
+W zależności od złożoności algorytmu 
+
+
+\subsubsection{Reprezentacja liczb zmiennoprzecinkowych}
+
+Kolejną metodą optymalizacji w metodzie HLS jest zamiana arytmetyki zmiennoprzecinkowej (ang. \emph{floating point}) na zapis 
+stałoprzecinkowy (ang. \emph{fixed\ point}). Narzędzie Vivado HLS zawiera bibliotekę \emph{ap\_fixed.h}, która ułatwia 
+definiowanie zmiennych o wybranym typie stałoprzecinkowym oraz implementowanie operacji matematycznych z użyciem różnych 
+typów stałoprzecinkowych. Użytkownik może wybrać liczbę bitów przeznaczonych na część całkowitą i ułamek danej zmiennej, co umożliwia odpowiednie dopasowanie typu zmiennych do wykonywanych obliczeń. Dzięki temu możliwe jest zmniejszenie zużycia zasobów oraz akceleracja obliczeń przy zachowaniu założonej precyzji. Przy dobieraniu liczby bitów w typie stałoprzecinkowym należy wziąć pod uwagę zakres wartości, jakie będzie w stanie przechowywać, co bywa skomplikowane w przypadku złożonych algorytmów z dużą ilością operacji matematycznych. 
+
+
+
+
 \subsection{Zbiór danych wejściowych}
 
 W procesie uczenia oraz testowania poprawności działania modelu sztucznej 
@@ -140,7 +192,7 @@ sieci neuronowej wykorzystano zbiór odręcznie pisanych cyfr MNIST
 przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28x28 pikseli. 
 Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/mnist.png}
   \caption{Fragment zbioru odręcznie pisanych cyfr MNIST}
@@ -184,7 +236,7 @@ funkcję z pakietu keras. Dokonano uczenia sieci neuronowej przy użyciu zbioru 
 obrazów i testowania modelu, podając na wejście sieci 10000 obrazów. Osiągnięto 
 dokładność na poziomie 94,97\%. Na Rys. \ref{keras-accuracy1} przedstawiono, jak zmieniała się dokładność (ang.\emph{accuracy}) w kolejnych epokach dla zbioru uczącego i walidacyjnego.
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/keras-accuracy1.png}
   \caption{Wykres zmian dokładności w kolejnych epokach -- ANN z jedną warstwą ukrytą}
@@ -214,7 +266,7 @@ Symulację w języku C wykonuje się dużo szybciej niż późniejszą symulacj�
 stosuje się ją jako pierwszy etap przed podjęciem dalszych kroków, które zajmują 
 więcej czasu.
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/vivado_hls_sim.png}
   \caption{Wynik poprawnie przeprowadzonej symulacji w Vivado HLS}
@@ -239,7 +291,7 @@ Design}). Zakładka \emph{Timing} (Rys. \ref{impl_design_vivado}) umożliwia spr
 projekcie zostały spełnione wymagania czasowe, a w oknie \emph{Device} można zweryfikować jakie zasoby zostały użyte w 
 implementacji.
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/impl-design-vivado.png}
   \caption{Wynik poprawnie przeprowadzonej implementacji w narzędziu Vivado}
@@ -259,7 +311,7 @@ nowego projektu platformy, dzięki opcji \emph{New Platform Project} (Rys. \ref{
 projektu należy wybrać odpowiedni plik .xsa (Rys. \ref{new-vitis-project2}), wyeksportowany wcześniej z narzędzia 
 Vivado. 
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=0.8\textwidth]{img/new-vitis-project1.png}
   \caption{Tworzenie nowego projektu w programie Vitis}
@@ -267,7 +319,7 @@ Vivado.
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[width=0.8\textwidth]{img/new-vitis-project2.png}
   \caption{Wybór pliku .xsa z opisem konfiguracji sprzętu w programie Vitis}
@@ -396,7 +448,7 @@ plików:
 \end{itemize}
 
 
-Kolejenym etapem w procesie konfigurowania systemu Petalinux jest dostosowanie drzewa urządzeń (ang. \emph{device-tree}
+Kolejnym etapem w procesie konfigurowania systemu Petalinux jest dostosowanie drzewa urządzeń (ang. \emph{device-tree}
 . Drzewo urządzeń można edytować za pomocą plików system-user.dtsi oraz pl-custom.dtsi dostępnych w katalogu:
 
 \begin{verbatim}

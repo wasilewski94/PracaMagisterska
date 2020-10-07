@@ -15,8 +15,7 @@ Przy wyborze płytki wzięto pod uwagę posiadane interfejsy oraz cenę sprzętu
   \label{zynq7000}
 \end{figure}
 
-Zgodnie z porównaniem zawartym w Tabeli \ref{tab:ceny}, płytka Z-turn Board MYS-7Z020-C-S ma cenę sporo mniejszą od innych płytek z układem XC7Z020. Dokumentacja techniczna dotycząca płytki Z-turn Board jest dostępna na stronie producenta. Wadą płytki jest małe zaangażowanie społeczności w projekty z jej wykorzystaniem, jednak tak konkurencyjna cena zadecydowała o wyborze.
-
+Zgodnie z porównaniem zawartym w Tabeli \ref{tab:ceny}, płytka Z-turn Board MYS-7Z020-C-S ma cenę sporo mniejszą od innych płytek z układem XC7Z020. Na stronie producenta można znaleźć pełną dokumentację dotyczącą płytki Z-turn. Wadą płytki jest małe zaangażowanie społeczności w projekty z jej wykorzystaniem, jednak tak konkurencyjna cena ułatwiła podjęcie wyboru.
 
 \begin{table}[h] \centering
   \caption{Porównanie cen płytek z układami Zynq firmy Xilinx}
@@ -36,10 +35,22 @@ Zgodnie z porównaniem zawartym w Tabeli \ref{tab:ceny}, płytka Z-turn Board MY
 
 Z-turn Board (Rys. \ref{zturn_board} jest komputerem jednopłytkowym 
 (ang. SBC – \emph{Single Board Computer}), opartym o układ SoC Xilinx 
-Zynq-7020 (XC7Z020-1CLG400C), zawierającym dwurdzeniowy procesor ARM Cortex-A9 
-i układ FPGA Artix 7. Producentem płytki jest firma MYIR Tech Limited (ang. \emph{Make 
-Your Ideas Real} ), dostarczająca sprzęt bazujący na procesorach ARM oraz 
-oprogramowanie do swoich produktów\cite{myir}. 
+Zynq-7020 (XC7Z020-1CLG400C), zawierającym dwurdzeniowy procesor ARM Cortex-A9 (866MHz)
+i układ FPGA Artix 7. Parametry układu FPGA przedstawiono w Tabeli \ref{tab:artix}.
+
+\begin{table}[h] \centering
+  \caption{Specyfikacja techniczna układu Artix-7 }
+  \centering
+  \begin{tabular} {c|c|c|c|c} \hline \label{tab:artix}
+      Logic Cells & LUT & Flip-Flop & BRAM (ilość bloków po 36Kb) & DSP \\ \hline
+       85K & 53200 & 106400  & 4.9Mb (140) & 220 \\ 
+  \end{tabular}
+\end{table}
+
+Producentem płytki jest firma MYIR Tech Limited (ang. \emph{Make Your Ideas Real} ), dostarczająca sprzęt bazujący na 
+procesorach ARM oraz oprogramowanie do swoich produktów\cite{myir}. Biorąc pod uwagę parametry, płytka charakteryzuje się 
+wysokim stosunkiem ceny do jakości, podstawowa wersja kosztuje 99\$. Dla porównania płytka Zybo Z7-20 kosztuje 199\$. Zaletą 
+płytek firmy \emph{Digilent} (ZedBoard i Zybo) jest duże wsparcie producenta i spora ilość materiałów szkoleniowych.
 
 \begin{figure}[h]
   \centering
@@ -48,15 +59,15 @@ oprogramowanie do swoich produktów\cite{myir}.
   \label{zturn_board}
 \end{figure}
 
-Biorąc pod uwagę parametry, płytka 
-charakteryzuje się wysokim stosunkiem ceny do jakości, podstawowa wersja kosztuje
-99\$. Dla porównania płytka Zybo Z7-20 kosztuje 199\$. Zestawienie cen płytek 
-zawierających układ Zynq XC7Z010 oraz XC7Z020 znajduje się w Tabeli \ref{tab:ceny}. 
 
 \subsubsection{Interfejsy komunikacyjne}
 
-Płytka Z-turn posiada interfejsy UART oraz Ethernet, które zostały wykorzystane do komunikacji komputera PC z systemem przy użyciu portu szeregowego  
-i protokołu SSH (ang. \emph{Secure Shell}). Istnieje również możliwość podłączenia wyświetlacza bezpośrednio do płytki przy użyciu portu HDMI oraz innych peryferiów przy użyciu portu USB. Dodatkowo producent oferuje płytkę rozszerzeniową Z-turn IO-Cape (Rys. \ref{iocape}), która zawiera porty do podłączenia kamery przez protokół DVP (ang. \emph{Digital Video Port}) oraz wyświetlacza LCD. 
+Płytka Z-turn posiada interfejsy UART oraz Ethernet, które zostały wykorzystane do komunikacji komputera PC z systemem przy 
+użyciu portu szeregowego  
+i protokołu SSH (ang. \emph{Secure Shell}). Istnieje również możliwość podłączenia wyświetlacza bezpośrednio do płytki przy 
+użyciu portu HDMI oraz innych peryferiów przy użyciu portu USB. Dodatkowo producent oferuje płytkę rozszerzeniową Z-turn 
+IO-Cape (Rys. \ref{iocape}), która zawiera porty do podłączenia kamery przez protokół DVP (ang. \emph{Digital Video Port}) 
+oraz wyświetlacza LCD. 
 
 \begin{figure}[h]
   \centering
@@ -72,7 +83,9 @@ moduł kamery. Przy wyborze sprzętu istotna była ceną modułu, interfejs komu
 oraz kompatybilność z SBC Z-turn Board. W przypadku wykorzystania kamery w czasie 
 rzeczywistym bardzo ważne jest niskie opóźnienie w wysyłaniu kolejnych ramek obrazu i duża szybkość transferu obrazu. 
 
-Producent płytki Z-turn Board oferuje kilka modułów kamer. Wśród nich znajdują się dwa moduły, które zostały przetestowane: MY-CAM002U USB Digital Camera Module (Rys.\ref{cam-usb}) oraz MY-CAM011B BUS Camera Module. (Rys. \ref{cam-dvp}). W Tabeli \ref{tab:kamery} przedstawiono porównanie testowanych modułów kamer. 
+Producent płytki Z-turn Board oferuje kilka modułów kamer. Wśród nich znajdują się dwa moduły, które zostały przetestowane: 
+MY-CAM002U USB Digital Camera Module (Rys.\ref{cam-usb}) oraz MY-CAM011B BUS Camera Module. (Rys. \ref{cam-dvp}). W Tabeli 
+\ref{tab:kamery} przedstawiono porównanie testowanych modułów kamer. 
 
 \begin{table}[h] \centering
   \caption{Porównanie testowanych modułów kamer}
@@ -89,7 +102,8 @@ Producent płytki Z-turn Board oferuje kilka modułów kamer. Wśród nich znajd
       & 30 fps (800x600)  & 60 fps (640x480) \\
       & 30 fps (1280x720) & 30 fps (1280x720) \\
       & 24 fps (1366x768) & \\ \hline
-      Cena modułu & 25\$\tablefootnote{http://www.myirtech.com/list.asp?id=534} & 19\$\tablefootnote{http://www.myirtech.com/list.asp?id=462} \\
+      Cena modułu & 25\$\tablefootnote{http://www.myirtech.com/list.asp?id=534} & 19\$\tablefootnote{http://www.myirtech.com/
+      list.asp?id=462} \\
     \end{tabular}
   \end{table}
   
@@ -102,9 +116,13 @@ Producent płytki Z-turn Board oferuje kilka modułów kamer. Wśród nich znajd
 
 \subsubsection{Moduł MY-CAM011B}
 
-Kamera MY-CAM011B zapewnia większą rozdzielczość maksymalną i posiada interfejs równoległy DVP. Skutkuje to mniejszymi opóźnieniami w wysyłaniu kolejnych ramek obrazu niż w przypadku kamery MY-CAM002U, podłączanej przez USB. 
+Kamera MY-CAM011B zapewnia większą rozdzielczość maksymalną i posiada interfejs równoległy DVP. Skutkuje to mniejszymi 
+opóźnieniami w wysyłaniu kolejnych ramek obrazu niż w przypadku kamery MY-CAM002U, podłączanej przez USB. 
 
-Pomimo znajdującego się na płytce IO-Cape portu interfejsu DVP, moduł kamery MY-CAM011B niestety okazał się niekompatybilny z płytką Z-turn Board. Na schemacie płytki rozszerzeniowej IO-Cape widać (Rys. \ref{cam-schematic}), że sygnał zegara (CAM\_XCLK) nie jest dołączony do żadnego portu płytki Z-Turn Board. Piny CAM\_PWRDN i CAM\_RST również nie są dołączone do złącza J2 od strony płytki Z-turn Board. 
+Pomimo znajdującego się na płytce IO-Cape portu interfejsu DVP, moduł kamery MY-CAM011B niestety okazał się niekompatybilny z 
+płytką Z-turn Board. Na schemacie płytki rozszerzeniowej IO-Cape widać (Rys. \ref{cam-schematic}), że sygnał zegara 
+(CAM\_XCLK) nie jest dołączony do żadnego portu płytki Z-Turn Board. Piny CAM\_PWRDN i CAM\_RST również nie są dołączone do 
+złącza J2 od strony płytki Z-turn Board. 
 
 \begin{figure}[!h]
   \centering
@@ -113,7 +131,10 @@ Pomimo znajdującego się na płytce IO-Cape portu interfejsu DVP, moduł kamery
   \label{cam-schematic}
 \end{figure}
 
-Dołączenie samego sygnału zegara do konektora FPC byłoby problematyczne, więc zdecydowano się na zastosowanie adaptera\footnote{https://kamami.pl/zlacza-ffc-fpc-zif/579387-adapter-zlacza-fpcffc-05mm-30-pin-na-dip.html} złącza FPC/FFC o rastrze 0,5 mm na otwory DIP raster 2,54 mm. Dzięki temu możliwe było podłączenie modułu kamery przy użyciu przewodów do złącza J3 płytki rozszerzeniowej IO-Cape \cite{ZturnIOCapeSchematic}.
+Dołączenie samego sygnału zegara do konektora FPC byłoby problematyczne, więc zdecydowano się na zastosowanie 
+adaptera\footnote{https://kamami.pl/zlacza-ffc-fpc-zif/579387-adapter-zlacza-fpcffc-05mm-30-pin-na-dip.html} złącza FPC/FFC o 
+rastrze 0,5 mm na otwory DIP raster 2,54 mm. Dzięki temu możliwe było podłączenie modułu kamery przy użyciu przewodów do 
+złącza J3 płytki rozszerzeniowej IO-Cape \cite{ZturnIOCapeSchematic}.
 
 
 \begin{figure}[!h]
@@ -124,11 +145,16 @@ Dołączenie samego sygnału zegara do konektora FPC byłoby problematyczne, wi�
 \end{figure}
 
 
-Po podłączeniu kamery, zainstalowaniu odpowiednich sterowników i \emph{device-tree} oraz przeskanowaniu magistrali $I^2C$ przy użyciu narzędzia \emph{i2c-tools}, moduł kamery zwraca poprawnie swój adres. Jednak sterownik sensora kamery \emph{ov2659.c} nie rozpoznaje podłączonego urządzenia. 
+Po podłączeniu kamery, zainstalowaniu odpowiednich sterowników i \emph{device-tree} oraz przeskanowaniu magistrali $I^2C$ 
+przy użyciu narzędzia \emph{i2c-tools}, moduł kamery zwraca poprawnie swój adres. Jednak sterownik sensora kamery \emph
+{ov2659.c} nie rozpoznaje podłączonego urządzenia. 
 
 \subsubsection{Moduł MY-CAM002B}
 
-Z uwagi na ograniczony czas projektu zdecydowano się na użycie modułu kamery MY-CAM002U USB Digital Camera Module (Rys.\ref{cam-usb}). Moduł umożliwia rejestrowanie obrazu w 30 klatkach na sekundę przy rozdzielczości 1280x640 pikseli i jest tańszy od modułu MY-CAM011B. Główną zaletą tego modułu jest łatwość podłączenia sprzętu zarówno do płytki Z-turn Board, jak i do komputera PC, co w znacznym stopniu przyspieszyło debugowanie. 
+Z uwagi na ograniczony czas projektu zdecydowano się na użycie modułu kamery MY-CAM002U USB Digital Camera Module (Rys.\ref
+{cam-usb}). Moduł umożliwia rejestrowanie obrazu w 30 klatkach na sekundę przy rozdzielczości 1280x640 pikseli i jest tańszy 
+od modułu MY-CAM011B. Główną zaletą tego modułu jest łatwość podłączenia sprzętu zarówno do płytki Z-turn Board, jak i do 
+komputera PC, co w znacznym stopniu przyspieszyło debugowanie. 
 
 \begin{figure}[!h]
   \centering
@@ -137,4 +163,7 @@ Z uwagi na ograniczony czas projektu zdecydowano się na użycie modułu kamery 
   \label{cam-usb}
 \end{figure}
 
-Kamera po podłączeniu do komputera PC działała poprawnie, bez wprowadzania jakichkolwiek zmian w systemie, zarówno w dystrybucji Ubuntu, jak i w systemie Windows. Po dodaniu odpowiednich sterowników do jądra i uruchomieniu systemu Petalinux na płytce Z-turn Board, w systemie pojawiły się pliki urządzenia pod nazwą \emph{/dev/video0} oraz \emph{/dev/video1}, co umożliwiło odebranie obrazu przy pomocy interfejsu V4L2 (ang. \emph{Video for Linux 2}) oraz OpenCV.
+Kamera po podłączeniu do komputera PC działała poprawnie, bez wprowadzania jakichkolwiek zmian w systemie, zarówno w 
+dystrybucji Ubuntu, jak i w systemie Windows. Po dodaniu odpowiednich sterowników do jądra i uruchomieniu systemu Petalinux 
+na płytce Z-turn Board, w systemie pojawiły się pliki urządzenia pod nazwą \emph{/dev/video0} oraz \emph{/dev/video1}, co 
+umożliwiło odebranie obrazu przy pomocy interfejsu V4L2 (ang. \emph{Video for Linux 2}) oraz OpenCV.
