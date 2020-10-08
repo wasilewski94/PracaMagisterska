@@ -4,10 +4,28 @@
 
 \section{Podsumowanie}
 
-Sztuczne Sieci Neuronowe są algorytmem, który bardzo dobrze wpasowuje się w zastosowanie układów FPGA. Akceleracja obliczeń w stosunku do rozwiązań programowych jest możliwa do osiągnięcia. Główne założenia projektu zostały spełnione, stworzono implementację Sztucznej Sieci Neuronowej w układzie FPGA przy użyciu syntezy wysokiego poziomu. Podczas projektu znaleziono elementy implementacji wprowadzające największe opóźnienia i z powodzeniem wyeliminowano lub zmniejszono ich wpływ na czas wykonania algorytmu oraz zużycie zasobów sprzętowych.
+Sztuczne Sieci Neuronowe są algorytmem, który bardzo dobrze wpasowuje się w zastosowanie układów FPGA. Akceleracja obliczeń w stosunku do rozwiązań programowych jest możliwa do osiągnięcia. Główne założenia projektu zostały spełnione, stworzono implementację Sztucznej Sieci Neuronowej w układzie FPGA przy użyciu syntezy wysokiego poziomu. Podczas projektu znaleziono elementy implementacji wprowadzające największe opóźnienia i z powodzeniem wyeliminowano lub zmniejszono ich wpływ na czas wykonania algorytmu oraz zużycie zasobów sprzętowych. Osiągnięto rozwiązanie zapewniające akcelerację obliczeń w Sztucznych Sieciach Neuronowych.
 
 \subsection{Wnioski dotyczące techniki HLS}
 W dziedzinie rozwijania oprogramowania można zaobserwować tendencję przechodzenia w kierunku rozwiązań wysokopoziomowych.
-Ta zależność jest widoczna również w przypadku programowania układów FPGA. Powstają nowe biblioteki i narzędzia usprawniające proces tworzenia implementacji akceleratorów obliczeń. W większości przypadków programista nie musi już posiadać dużej wiedzy o sprzęcie, aby osiągnąć rozwiązanie na akceptowalnym poziomie. Jednak w przypadku złożonych algorytmów bywa, że osiągnięcie implementacji optymalnej, porównywalnej z implementacją w języku HDL jest bardzo trudne lub nawet niemożliwe.  
+Ta zależność jest widoczna również w przypadku programowania układów FPGA. Powstają nowe biblioteki i narzędzia usprawniające proces tworzenia implementacji akceleratorów obliczeń. W większości przypadków programista nie musi już posiadać dużej wiedzy o sprzęcie, aby osiągnąć rozwiązanie na akceptowalnym poziomie. Jednak w przypadku złożonych algorytmów bywa, że osiągnięcie implementacji optymalnej, porównywalnej z implementacją w języku HDL jest trudne lub nawet niemożliwe.
 
 \subsection{Możliwości rozwoju projektu}
+
+Użycie w projekcie metody HLS umożliwiło znalezienie elementów implementacji wprowadzających duże opóźnienienia i powodujących duże zużycie zasobów układu FPGA. W końcowym etapie projektu problematyczny okazał się długi czas syntezy i implementacji. 
+% czego nie dało się zrobić 
+
+W pracy zaprezentowano zastosowanie Sztucznej Sieci Neuronowej do rozpoznawania obiektów 
+znajdujących się na obrazie z kamery podłączanej przez USB w czasie rzeczywistym. Część algorytmu 
+odpowiedzialna za detekowanie cyfr na obrazie, była uruchamiana na procesorze ARM przy użyciu 
+biblioteki OpenCV co wprowadzało spore opóźnienia i ograniczało wartość FPS oraz maksymalną liczbę 
+cyfr możliwych do znalezienia w danym momencie. W przypadku zastosowania systemu do zadań 
+klasyfikacji obrazów możliwym usprawnieniem projektu jest zastosowanie kamery podłączanej przez 
+interfejs równoległy bezpośrednio do układu FPGA w celu zminimalizowania opóźnień. Dodatkowym 
+usprawnieniem może być dalsza optymalizacja algorytmu przy użyciu techniki HLS w celu osiągnięcia maksymalnej akceleracji obliczeń i minimalnego zużycia zasobów logiki programowalnej.
+
+Zaletą rozwiązania zawartego w projekcie jest duża uniwersalność. Dzięki możliwości zmiany 
+parametrów sieci w funkcji akceleratora użytkownik ma możliwość dokonywania zmian w modelu ANN z 
+poziomu aplikacji. Daje to duże możliwości zastosowania systemu w różnych zadaniach związanych z 
+dziedziną \emph{Machine Learning}. Zastosowanie układu FPGA umożliwia znalezienie optymalnego 
+rozwiązania zapewniającego kompromis pomiędzy zużyciem mocy, a szybkością działania systemu, co jest bardzo istotne w przypadku zastosowania w systemach wbudowanych.

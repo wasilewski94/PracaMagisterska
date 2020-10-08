@@ -139,14 +139,14 @@ zainstalowane narzędzie Vivado HLS.
 
 Metoda HLS umożliwia optymalizację implementowanego algorytmu pod kątem zużycia zasobów układu FPGA oraz wprowadzanych opóźnień (ang. \emph{latency}). Zaimplementowany algorytm w języku C++ można optymalizować, stosując m.in. następujące dyrektywy:
 \begin{itemize}
-  \item rozwijanie pętli -- loop unroll
-  \item pretwarzanie potokowe -- pipeline
-  \item partycjonowanie tablic -- array partition
-  \item definiowanie zależności -- dependence
+  \item rozwijanie pętli -- \emph{loop unroll}
+  \item przetwarzanie potokowe -- \emph{pipeline}
+  \item partycjonowanie tablic -- \emph{array partition}
+  \item definiowanie zależności -- \emph{dependence}
 \end{itemize} 
-Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm} \cite{hls-pragmas}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. 
+Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. 
 
-W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci. Wybrano model z jedną warstwą ukrytą o 16 neuronach i funkcją aktywacji sigmoid.
+W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci.
 
 
 \begin{figure}[!h]
@@ -166,22 +166,30 @@ Każda pętla for w danej implementacji wprowadza pewne opóźnienie (ang. \emph
     c[i] = a[i] * b[i];
   }
 \end{verbatim}
-nie ma możliwości, żeby powyższa pętla wykonała się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli ma być wykonanych jednocześnie.
-
+nie ma możliwości, żeby powyższa pętla wykonała się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
 
 \subsubsection{Pipeline}
-Zastosowanie dyrektywy \emph{Piepeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem
-W zależności od złożoności algorytmu 
+Zastosowanie dyrektywy \emph{Piepeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem dyrektywy PIPELINE jest II (ang. \emph{Initiation Interval}), który informuje o tym, ile taktów zegara będzie pomiędzy rozpoczęciem wykonywania kolejnych instrukcji.
+W zależności od złożoności algorytmu i zależności zmiennych w danej pętli, osiągnięcie II=1 może wymagać wprowadzenia zmian w kodzie lub zastosowania dodatkowych dyrektyw.
 
+\subsubsection{Dyrektywa \emph{Dependence}}
 
-\subsubsection{Reprezentacja liczb zmiennoprzecinkowych}
+Kompilator Vivado HLS automatycznie wykrywa zależności pomiędzy zmniennymi wewnątrz pętli i pomiędzy różnymi iteracjami pętli (ang. \emph{loop-carry dependence}) \cite{hls-pragmas}. W niektórych złożonych implementacjach może dojść do nieprawidłowego zinterpretowania zależności. W tym wypadku można zastosować dyrektywę DEPENDENCE na zmiennej znajdującej się wewnątrz danej pętli lub funkcji, podając jako parametr wartość \emph{false}.
+
+\subsubsection{Partycjonowanie pamięci}
+
+W przypadku posiadania w kodzie zmiennych tablicowych zawierających dużo elementów, można zastosować dyrektywę ARRAY PARTITION, umożliwia podzielenie dużej tablicy na mniejsze lub w całości na pojedyncze elementy. Powoduje to powstanie nowych portów pamięci, których liczba zależy od wartości parametru \emph{factor} podanego w dyrektywie. Partycjonowanie pamięci umożliwia osiągnięcie większego zrównoleglenia dostępu (zapis i odczyt) do pamięci. W przypadku zastosowania dyrektywy:
+\begin{verbatim}
+  #pragma HLS ARRAY_PARTITION variable=w block factor=4 dim=1
+\end{verbatim}
+tablica w zostanie podzielona na 4 równe tablice. 
+
+\subsubsection{Arytmetyka zmiennoprzecinkowa}
 
 Kolejną metodą optymalizacji w metodzie HLS jest zamiana arytmetyki zmiennoprzecinkowej (ang. \emph{floating point}) na zapis 
 stałoprzecinkowy (ang. \emph{fixed\ point}). Narzędzie Vivado HLS zawiera bibliotekę \emph{ap\_fixed.h}, która ułatwia 
 definiowanie zmiennych o wybranym typie stałoprzecinkowym oraz implementowanie operacji matematycznych z użyciem różnych 
-typów stałoprzecinkowych. Użytkownik może wybrać liczbę bitów przeznaczonych na część całkowitą i ułamek danej zmiennej, co umożliwia odpowiednie dopasowanie typu zmiennych do wykonywanych obliczeń. Dzięki temu możliwe jest zmniejszenie zużycia zasobów oraz akceleracja obliczeń przy zachowaniu założonej precyzji. Przy dobieraniu liczby bitów w typie stałoprzecinkowym należy wziąć pod uwagę zakres wartości, jakie będzie w stanie przechowywać, co bywa skomplikowane w przypadku złożonych algorytmów z dużą ilością operacji matematycznych. 
-
-
+typów stałoprzecinkowych. Programista może wybrać liczbę bitów przeznaczonych na część całkowitą i ułamek danej zmiennej, co umożliwia odpowiednie dopasowanie typu zmiennych do wykonywanych obliczeń. Dzięki temu możliwe jest zmniejszenie zużycia zasobów oraz akceleracja obliczeń przy zachowaniu założonej precyzji. Przy dobieraniu liczby bitów w typie stałoprzecinkowym należy wziąć pod uwagę zakres wartości, jakie będzie w stanie przechowywać, co bywa skomplikowane w przypadku złożonych algorytmów z dużą ilością operacji matematycznych. 
 
 
 \subsection{Zbiór danych wejściowych}
@@ -253,7 +261,7 @@ Korzystając z narzędzia Vivado HLS, napisano program w języku C++ implementuj
 zaprojektowany wcześniej model sieci. W procesie uczenia ustalono wartości wag i 
 biasów. Dwa główne pliki projektu w narzędziu Vivado HLS to core.cpp, zawierający 
 implementację algorytmu ANN oraz test\_core.cpp, który służy do przetestowania
-algorytmu po przeprowadzeniu syntezy (ang. test bench).   
+algorytmu po przeprowadzeniu syntezy (ang. \emph{test bench}).   
 Pliki zawierające wartości wejściowe, a także wagi i biasy są importowane 
 do programu test\_core.cpp. 
 
@@ -313,7 +321,7 @@ Vivado.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/new-vitis-project1.png}
+  \includegraphics[width=0.9\textwidth]{img/new-vitis-project1.png}
   \caption{Tworzenie nowego projektu w programie Vitis}
   \label{new-vitis-project1}
 \end{figure}
@@ -321,7 +329,7 @@ Vivado.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/new-vitis-project2.png}
+  \includegraphics[width=0.9\textwidth]{img/new-vitis-project2.png}
   \caption{Wybór pliku .xsa z opisem konfiguracji sprzętu w programie Vitis}
   \label{new-vitis-project2}
 \end{figure}
