@@ -34,7 +34,7 @@ w postaci GPU. Jednak wydajne układy graficzne nie zawsze są dostępne w syste
 Alternatywnym sposobem na przyspieszenie obliczeń związanych z implementacją algorytmów ANN jest zastosowanie układów FPGA. Dodatkowym atutem po stronie układów FPGA jest mniejsze zużycie mocy. Dzięki odpowiednim metodom optymalizacji, przy wykorzystaniu układów FPGA można osiągnąć znacznie mniejsze zużycie zasobów i przyspieszenie obliczeń.
 
 Przewagą zastosowania układów GPU jest łatwość implementacji skomplikowanych obliczeń dzięki zastosowaniu architektury \emph
-{CUDA} (ang. \emph{Compute Unified Device Architecture}), opracowanej przez firmę \emph{Nvidia}. Dzięki CUDA, zrównoleglanie obliczeń jest możliwe przy użyciu języków programowania takich jak C, C++, Fortran, Python i MATLAB \cite{cuda} i nie wymaga tyle wiedzy o sprzęcie co użycie metody HLS. Pomimo to technika HLS jest cały czas rozwijana. Powstają narzędzia dedykowane do zastosowań akceleracji obliczeń w Sztucznych Sieciach Neuronowych. W trakcie pisania tej pracy pojawiło się nowe narzędzie producenta \emph{Xilinx} -- \emph{Vitis AI}, zapewniające wsparcie w tworzeniu rozwiązań ML z użyciem układów FPGA. \emph{Vitis AI} jest zbiorem bibliotek i API (ang. \emph{Application Programming Interface}) stworzonym do zastosowań wydajnego uruchamiania algorytmów AI \cite{vitis-ai}. To pokazuje, że synteza wysokiego poziomu w układach FPGA charakteryzuje się pozytywną tendencją rozwoju.
+{CUDA} (ang. \emph{Compute Unified Device Architecture}), opracowanej przez firmę \emph{Nvidia}. Dzięki CUDA, zrównoleglenie obliczeń jest możliwe przy użyciu języków programowania takich jak C, C++, Fortran, Python i MATLAB \cite{cuda} i nie wymaga tyle wiedzy o sprzęcie co użycie metody HLS. Pomimo to technika HLS jest cały czas rozwijana. Powstają narzędzia dedykowane do zastosowań akceleracji obliczeń w Sztucznych Sieciach Neuronowych. W trakcie pisania tej pracy pojawiło się nowe narzędzie producenta \emph{Xilinx} -- \emph{Vitis AI}, zapewniające wsparcie w tworzeniu rozwiązań ML z użyciem układów FPGA. \emph{Vitis AI} jest zbiorem bibliotek i API (ang. \emph{Application Programming Interface}) stworzonym do zastosowań wydajnego uruchamiania algorytmów AI \cite{vitis-ai}. To pokazuje, że synteza wysokiego poziomu w układach FPGA charakteryzuje się pozytywną tendencją rozwoju.
 
 \begin{figure}[h]
     \centering
@@ -50,7 +50,7 @@ Learning spowodował powstanie modeli sieci zawierających wiele parametrów. Co
 akceleracji obliczeń w Sztucznych Sieciach Neuronowych. Większość obliczeń w ramach danej warstwy można zrównoleglić, więc 
 zastosowania układów FPGA daje duże możliwości optymalizacji.
 
-Najczęściej spotykanym podejściem jest zastosowanie ANN do wnioskowania (ang. \emph{inference}) nauczonej 
+Najczęściej spotykanym podejściem jest zastosowanie ANN w układach FPGA do przyspieszenia obliczeń związanych z wnioskowaniem (ang. \emph{inference}) nauczonej 
 wcześniej sieci na nowych danych w czasie rzeczywistym. Model jest uczony na komputerze PC przy użyciu bibliotek takich jak 
 \emph{keras}, \emph{Caffe} czy \emph{PyTorch}, najczęściej z wykorzystaniem GPU. Po przeprowadzeniu walidacji model sieci jest eksportowany, odpowiednio przetwarzany i implementowany w układzie FPGA. 
 
@@ -66,6 +66,8 @@ Istnieje również możliwość zaimplementowania algorytmu uczenia ANN na ukła
     \item implementacja modelu ze zmiennymi parametrami utrudnia optymalizację w HLS
 \end{itemize}
 
+% \subsection{Klasyfikacja obrazów przy użyciu Sztucznych Sieci Neuronowych}
 
+% Sztuczne Sieci Neuronowe z powodzeniem rozwiązują zadania klasyfikacji obrazów. Dostępne są coraz większe zbiory obrazów przeznaczonych do uczenia ANN, takie jak \emph{ImageNet} czy \emph{CIFAR-10}. Nowe architektury sieci osiągają coraz większą dokładność klasyfikacji
 
-% W tej pracy zastosowano architekturę sieci służącą do klasyfikacji obrazów odręcznie pisanych cyfr 
+% W tej pracy zastosowano architekturę sieci służącą do klasyfikacji obrazów odręcznie pisanych cyfr przy użyciu 

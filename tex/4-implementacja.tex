@@ -144,7 +144,15 @@ Metoda HLS umożliwia optymalizację implementowanego algorytmu pod kątem zuży
   \item partycjonowanie tablic -- \emph{array partition}
   \item definiowanie zależności -- \emph{dependence}
 \end{itemize} 
-Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. 
+Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. Dodatkowo przydatnym narzędziem jest \emph{Schedule Viewer} dostpęny w zakładce \emph{Analysis} (Rys. \ref{scheduler}), umożliwiający analizę czasu wykonania instrukcji w kolejnych cyklach zegara.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/scheduler.png}
+  \caption{Widok narzędzia Schedule Viewer w Vivado HLS}
+  \label{scheduler}
+\end{figure}
+
 
 W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci.
 
@@ -159,14 +167,7 @@ W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możli
 
 \subsubsection{Rozwijanie pętli}
 
-Każda pętla for w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w działaniu kodu. W przypadku pętli o 4 iteracjach:
-\begin{verbatim}
-  multiply:
-  for (int i=0; i<3; i++) {
-    c[i] = a[i] * b[i];
-  }
-\end{verbatim}
-nie ma możliwości, żeby powyższa pętla wykonała się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
+Każda pętla w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w działaniu kodu. Przykładowo, gdy pętla składa się z 4 iteracji, nie ma możliwości, żeby kod wykonał się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
 
 \subsubsection{Pipeline}
 Zastosowanie dyrektywy \emph{Piepeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem dyrektywy PIPELINE jest II (ang. \emph{Initiation Interval}), który informuje o tym, ile taktów zegara będzie pomiędzy rozpoczęciem wykonywania kolejnych instrukcji.
@@ -178,11 +179,11 @@ Kompilator Vivado HLS automatycznie wykrywa zależności pomiędzy zmniennymi we
 
 \subsubsection{Partycjonowanie pamięci}
 
-W przypadku posiadania w kodzie zmiennych tablicowych zawierających dużo elementów, można zastosować dyrektywę ARRAY PARTITION, umożliwia podzielenie dużej tablicy na mniejsze lub w całości na pojedyncze elementy. Powoduje to powstanie nowych portów pamięci, których liczba zależy od wartości parametru \emph{factor} podanego w dyrektywie. Partycjonowanie pamięci umożliwia osiągnięcie większego zrównoleglenia dostępu (zapis i odczyt) do pamięci. W przypadku zastosowania dyrektywy:
+W przypadku posiadania w kodzie zmiennych tablicowych, zawierających dużo elementów, można zastosować dyrektywę ARRAY PARTITION, umożliwia podzielenie dużej tablicy na mniejsze lub w całości na pojedyncze elementy. Powoduje to powstanie nowych portów pamięci, których liczba zależy od wartości parametru \emph{factor} podanego w dyrektywie. Partycjonowanie pamięci umożliwia osiągnięcie większego zrównoleglenia dostępu (zapis i odczyt) do pamięci. W przypadku zastosowania dyrektywy:
 \begin{verbatim}
   #pragma HLS ARRAY_PARTITION variable=w block factor=4 dim=1
 \end{verbatim}
-tablica w zostanie podzielona na 4 równe tablice. 
+tablica \emph{w} zostanie podzielona na 4 tablice zawierające $\frac{N}{4}$ elementów, gdzie N jest początkowym rozmiarem tablicy. 
 
 \subsubsection{Arytmetyka zmiennoprzecinkowa}
 
@@ -197,7 +198,7 @@ typów stałoprzecinkowych. Programista może wybrać liczbę bitów przeznaczon
 W procesie uczenia oraz testowania poprawności działania modelu sztucznej 
 sieci neuronowej wykorzystano zbiór odręcznie pisanych cyfr MNIST 
 (ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów do 
-przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28x28 pikseli. 
+przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28$\times$28 pikseli. 
 Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
 \begin{figure}[!h]
@@ -211,7 +212,7 @@ Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
 Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie modelu do danych wejściowych. 
 Najczęściej odbywa się to poprzez wielokrotne testowanie systemu dla różnych parametrów sieci. W tej pracy początkowym 
-wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28x28 pikseli są konwertowane na tablicę 784 wartości 
+wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28$\times$28 pikseli są konwertowane na tablicę 784 wartości 
 typu \emph{float}. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
 \begin{itemize}
   \item warstwę wejściową (784 wejścia)

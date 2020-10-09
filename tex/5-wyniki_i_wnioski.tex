@@ -6,15 +6,15 @@
 
 Celem pracy było zaprojektowanie, nauczenie i przetestowanie działania algorytmu Sztucznej Sieci Neurnonowej z użyciem 
 układu FPGA oraz porównanie z rozwiązaniem programowym uruchamianym na komputerze PC. Podczas projektu powstało kilka modeli Sztucznej Sieci 
-Neuronowej klasyfikującej odręcznie pisane cyfry. Aby porównać rozwiązanie, realizowane w technice HLS z implementacją przy użyciu pakietu \emph{keras}, każdy z modeli poddano testom, które zostały podzielone na dwie części:
-\bigskip
-\begin{enumerate}
+Neuronowej klasyfikującej odręcznie pisane cyfry.
+Aby porównać rozwiązanie, realizowane w technice HLS z implementacją przy użyciu pakietu \emph{keras}, każdy z modeli poddano testom, które zostały podzielone na następujące części:
+
+\begin{itemize}
   \item Uruchomienie sieci przy użyciu zbioru testowego 10000 cyfr z bazy MNIST, w celu oszacowania dokładności i 
   szybkości działania algorytmu.
   \item Test wykonany w czasie rzeczywistym przy użyciu modułu kamery.
-\end{enumerate}
-
-Wyniki przeprowadzonych testów zostały zestawione w dalszej części rozdziału.
+  \item Optymalizacja implementacji w narzędziu Vivado HLS
+\end{itemize}
 
 \subsection{Test modelu sieci z jedną warstwą ukrytą}
 
@@ -56,7 +56,7 @@ konturów można przejść do przygotowania obrazów do klasyfikacji.
     \label{1hid-layer-pc-img}
   \end{figure}
 
-Odpowiednio przycięty do rozmiaru 28x28 pikseli i wycentrowany obraz ręcznie pisanej cyfry może 
+Odpowiednio przycięty do rozmiaru 28$\times$28 pikseli i wycentrowany obraz ręcznie pisanej cyfry może 
 zostać poddany klasyfikacji za pomocą nauczonego wcześniej modelu ANN. W wyniku testu otrzymano 
 wyniki przedstawione na Rys. \ref{1hid-layer-pc-img}. 
 
@@ -153,7 +153,7 @@ Kolejną metodą optymalizacji kodu jest zastosowanie arytmetyki stałoprzecinko
 
 \subsection{Porównanie czasu wykonania różnych implementacji}
 
-Aby przetestować wydajność klasyfikacji danego modelu sieci w implementacji software'owej wykorzystano metodę \emph{model.predict()}.
+Aby przetestować wydajność klasyfikacji danego modelu sieci w implementacji programowej, uruchamianej na komputerze PC z użyciem pakietu \emph{keras}, wykorzystano metodę \emph{model.predict()}. Jako argument funkcja przyjmuje zbiór testowy z bazy MNIST.
 Implementacja modelu w HLS z możliwością zmiany parametrów sieci nie dała zadowalających rezultatów. Wyniki dla różnych architektur sieci zestawiono w Tabeli \ref{tab:czas-wykonania}. 
 
 \begin{table}[h] \centering
@@ -233,18 +233,17 @@ Zajętość elementów BRAM wyniosła ponad 4000\%, co wynika z użycia bramu na
   \label{hls-report4}
 \end{figure}
 
-W wyniku syntezy otrzymano rozwiązanie wprowadzające niewielkie opóźnienia i akceptowalne zużycie zasobów. Wyeksportowano blok HLS do narzędzia Vivado i przeprowadzono syntezę i implementację projektu. Po wygenerowaniu Bitstreamu i eksporcie projekt przetestowano rozwiązanie przy użyciu programu Vitis. Ostatecznie osiągnięto wyniki przedstawione w Tabeli \ref{tab:czas-wykonania2}.
-
+% Pierwszą implementację wykonano podając na blok HLS sygnał zegara o częstotliwości 250Hz. Jednak okazało się, że program nie działa poprawnie, więc ustawiono 100 MHz przy drugim podejściu. 
+W wyniku syntezy otrzymano rozwiązanie wprowadzające niewielkie opóźnienia i akceptowalne zużycie zasobów. 
+Wyeksportowano blok HLS do narzędzia Vivado i przeprowadzono syntezę i implementację projektu. Po wygenerowaniu Bitstreamu i eksporcie projekt przetestowano rozwiązanie przy użyciu programu Vitis. Średni czas klasyfikacji jednej cyfry był ponad 7 razy krótszy niż w przypadku uruchomienia na CPU. Niestety spadła również dokładność klasyfikacji o ponad 10\%. Wyniki przedstawiono w Tabeli \ref{tab:czas-wykonania2}.
 
 \begin{table}[h] \centering
-  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- po optymalizacji} W pierwszym wywołaniu otrzymano średni czas wykonania algorytmu 0.145374 \emph{ms}.
-
+  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- po optymalizacji} 
   \centering
-  \begin{tabular} {c|c|c} \hline \label{tab:czas-wykonania2}
+  \begin{tabular} {c|c|c|c} \hline \label{tab:czas-wykonania2}
       
-      & czas wykonania & dokładność klasyfikacji\\ \hline
-     aplikacja z użyciem keras & 0.463247 \emph{ms} & 93,9\% \\
-     akcelerator HLS & 0.145374 \emph{ms} & 93,5\% \\
+      & czas wykonania & dokładność klasyfikacji & przyspieszenie obliczeń\\ \hline
+     CPU & 0.516343 \emph{ms} & 91,6\%  & \\
+     HLS & 0.070542 \emph{ms} & 81,0\% & 7.32$\times$ \\
     \end{tabular}
   \end{table}
-   

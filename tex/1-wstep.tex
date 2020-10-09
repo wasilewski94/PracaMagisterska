@@ -7,7 +7,7 @@
 
 W ostatnich latach można zaobserwować gwałtowny rozwój w dziedzinie 
 Uczenia Maszynowego (ang. \emph{Machine Learning}) i Sztucznej Inteligencji 
-(ang. \emph{Artificial Intelligence}). Coraz więcej urządzeń i systemów projektowanych jest na działanie autonomicznie, bez potrzeby ingerencji człowieka. 
+(ang. \emph{Artificial Intelligence}). Coraz więcej urządzeń i systemów projektowanych jest w sposób zapewniający działanie autonomicznie, bez potrzeby ingerencji człowieka. 
 Jednym z algorytmów, który powstał już dość dawno, są Sztuczne Sieci Neuronowe (ang. \emph{Artificial Neural Networks}). Temat Sieci Neuronowych ma długą historię rozwoju, sięgającą początku lat 40. XX wieku, jednak w ostatnich latach można zaobserwować znaczny postęp w tej dziedzinie \cite{Kriesel2007NeuralNetworks}. Rozwój technologii umożliwił zastosowanie algorytmów AI w wielu aplikacjach. Działalność naukowa w kierunku Sztucznych Sieci Neuronowych spowodowała powstanie nowych modeli i architektur.
 
 Większość algorytmów wykorzystujących Sztuczną Inteligencję wymaga dużej mocy 
@@ -167,7 +167,6 @@ W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie us
 
 Przy używaniu Sztucznych Sieci Neuronowych w zadaniach klasyfikacji często spotykanym problemem jest przeuczenie sieci (ang. \emph{overfitting}). Przeuczona sieć jest zbyt mocno dopasowana do danych uczących i przy walidacji poprawność klasyfikacji jest znacznie mniejsza. Jednym ze sposobów na polepszenie zdolności do generalizacji trenowanego modelu sieci jest zastosowanie \emph{Dropoutu}, czyli losowego usuwania pewnej ustalonej liczby neuronów. Technika ta, pomimo swojej prostoty, daje bardzo dobre wyniki w przeciwdziałaniu przeuczeniu sieci.  
 
-
 \subsubsection{Splotowe Sieci Neuronowe}
 
 Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są typem sieci głębokich, które znakomicie nadają się do rozpoznawania kształtów i z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcanie i inne zakłócenia \cite{haykin2009neural}. Sieci te są uczone w trybie nadzorowanym. 
@@ -186,7 +185,6 @@ Wynik \textbf{\emph{S(i,j)}} nazywany jest mapą atrybutów (ang. \emph{feature 
   \caption{Splot macierzy 6x6 przy użyciu filtru o rozmiarze 3x3}
   \label{conv}
 \end{figure}
-
 
 
 Razem z warstwą splotową często stosowana jest warstwa grupowania (ang. \emph{pooling}), występującą najczęściej w jednym z dwóch wariantów (ang. \emph{max-pooling}) lub (ang. \emph{average pooling}). W przypadku przetwarzania obrazu metoda (ang. \emph{max-pooling}) polega na zmniejszeniu jego rozmiaru, poprzez wybranie wartości maksymalnej lub średniej, stosując okno o wybranym rozmiarze. Najczęściej wybieranym krokiem (ang. \emph{stride}) przesuwania okna jest wartość, równa jego rozmiarowi. Na Rys. \ref{pooling} przedstawiono przykład \emph{max-poolingu} o rozmiarze 2x2 ze skokiem równym rozmiarowi okna.
