@@ -7,7 +7,7 @@ W początkowej fazie projektu przetestowano wiele różnych modeli ANN w celu zn
 
 \subsection{Budowa systemu}
 
-Na początku pracy przyjęto założenie wykonywania uczenia sieci na komputerze PC z~wykorzystaniem pakietu \emph{keras}, a następnie eksport modelu w postaci plików tekstowych zawierających parametry sieci. Zbiór obrazów przedstawiających odręcznie pisane cyfry, został podzielono na testowy (10000 obrazów) oraz uczący (60000 obrazów). Ponadto system powinien umożliwiać rozpoznawanie i klasyfikację cyfr na obrazie z kamery w~czasie rzeczywistym.
+Na początku pracy przyjęto założenie wykonywania uczenia sieci na komputerze PC z~wykorzystaniem pakietu \emph{keras}, a następnie eksport modelu w postaci plików tekstowych zawierających parametry sieci. Zbiór obrazów przedstawiających odręcznie pisane cyfry, został podzielony na testowy (10000 obrazów) oraz uczący (60000 obrazów). Ponadto system powinien umożliwiać rozpoznawanie i klasyfikację cyfr na obrazie z kamery w~czasie rzeczywistym.
 
 \subsubsection{Schemat blokowy systemu}
 
@@ -154,8 +154,8 @@ Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak z
   \label{scheduler}
 \end{figure}
 
-
-W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci.
+Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci.
+W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci. Umożliwiło to analizę opóźnień i sprawdzenie, które elementy implementacji wprowadzają największe opóźnienia i zużycie zasobów układu FPGA. 
 
 
 \begin{figure}
@@ -167,7 +167,7 @@ W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możli
 
 \subsubsection{Rozwijanie pętli}
 
-Każda pętla w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w~działaniu kodu. Przykładowo, gdy pętla składa się z 4 iteracji, nie ma możliwości, żeby kod wykonał się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
+Każda pętla w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w~działaniu kodu. Przykładowo, gdy pętla składa się z 4 iteracji, nie ma możliwości, żeby kod wykonał się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}). W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
 
 \subsubsection{Pipeline}
 Zastosowanie dyrektywy \emph{pipeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem dyrektywy PIPELINE jest \emph{II} (ang. \emph{Initiation Interval}), który informuje o tym, ile taktów zegara będzie pomiędzy rozpoczęciem wykonywania kolejnych instrukcji. W zależności od poziomu skomplikowania implementacji i zależności zmiennych w danej pętli, osiągnięcie \emph{II=1} może wymagać wprowadzenia zmian w kodzie lub zastosowania dodatkowych dyrektyw. Wpływ zastosowania dyrektywy \emph{pipeline} na ilość cykli zegara potrzebnych do wykonania pętli zaprezentowano na Rys. \ref{pipeline}.
@@ -203,8 +203,7 @@ typów stałoprzecinkowych. Programista może wybrać liczbę bitów przeznaczon
 
 W procesie uczenia oraz testowania poprawności działania modelu sztucznej 
 sieci neuronowej wykorzystano zbiór odręcznie pisanych cyfr MNIST 
-(ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów do 
-przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28$\times$28 pikseli. 
+(ang. THE MNIST DATABASE of handwritten digits)\cite{lecun-mnisthandwrittendigit-2010}. Jest to baza 60000 obrazów przeznaczonych do uczenia sieci oraz 10000 do walidacji. Każdy obraz przedstawia jedną cyfrę w formacie 28$\times$28 pikseli. 
 Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
 \begin{figure}[!h]
@@ -264,11 +263,11 @@ dokładność na poziomie 94,97\%. Na Rys. \ref{keras-accuracy1} przedstawiono, 
 \subsubsection{Implementacja modelu przy użyciu narzędzia Vivado HLS}
 
 Korzystając z narzędzia Vivado HLS, napisano program w języku C++ implementujący 
-zaprojektowany wcześniej model sieci. W procesie uczenia ustalono wartości wag i 
-biasów. Dwa główne pliki projektu w narzędziu Vivado HLS to core.cpp, zawierający 
+zaprojektowany wcześniej model sieci. W procesie uczenia ustalono wartości parametrów 
+sieci i wyeksportowano w postaci plików tekstowych. Dwa główne pliki projektu w narzędziu Vivado HLS to core.cpp, zawierający 
 implementację algorytmu ANN oraz test\_core.cpp, który służy do przetestowania
 algorytmu po przeprowadzeniu syntezy (ang. \emph{test bench}).   
-Pliki zawierające wartości wejściowe, a także wagi i biasy są importowane 
+Pliki zawierające wartości wejściowe oraz parametry sieci są importowane 
 do programu test\_core.cpp. 
 
 Pierwszym etapem jest Symulacja C, która jest wstępną weryfikacją poprawności

@@ -11,8 +11,16 @@ W projekcie zaimplementowano i przetestowano kilka różnych modeli Sztucznych S
   \item test wykonany w czasie rzeczywistym przy użyciu modułu kamery
   \item zbadanie wpływu optymalizacji w narzędziu Vivado HLS.
 \end{itemize}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{img/stanowisko.jpg}
+  \caption{Stanowisko do wykonania testu na płytce Z-turn z użyciem kamery}
+  \label{stanowisko}
+\end{figure}
+
 Zbadano wpływ różnych rozwiązań optymalizacji w narzędziu Vivado HLS na szybkość wykonywanych obliczeń oraz zajętość zasobów układu FPGA.
-Wyniki testów z nich zamieszczone są w dalszej części rozdziału.
+Wyniki testów zamieszczone są w dalszej części rozdziału.
 
 \subsection{Test modelu sieci z jedną warstwą ukrytą}
 
@@ -27,11 +35,11 @@ Model poddany testom w każdym z neuronów zawierał funkcję aktywacji \emph{si
 Test z użyciem akceleratora HLS wykonano, podając na wejście sieci 10000 obrazów zapisanych w postaci plików tekstowych, zawierających po 784 wartości w przedziale od 0 do 1. Wynik testu, widoczny na Rys. \ref{wynik1} potwierdził poprawność działania algorytmu. Osiągnięto dokładność na poziomie 94,97\%, co pokrywa się z wynikiem uzyskanym z~wykorzystaniem biblioteki \emph{keras}, na komputerze PC.
 
 \begin{figure}[!h]
-    \centering
-    \includegraphics[width=\textwidth]{img/wynik1.png}
-    \caption{Wynik testu uruchomionego na SBC Z-turn -- ANN z jedną warstwą ukrytą}
-    \label{wynik1}
-  \end{figure}
+  \centering
+  \includegraphics[width=\textwidth]{img/wynik1.png}
+  \caption{Wynik testu uruchomionego na SBC Z-turn -- ANN z jedną warstwą ukrytą}
+  \label{wynik1}
+\end{figure}
 
 
 \subsubsection{Test klasyfikacji cyfr z użyciem kamery}
@@ -91,8 +99,7 @@ Aby umożliwić użytkownikowi wyświetlanie obrazu w czasie rzeczywistym, wykor
     \label{1hid-layer-zturn-img}
 \end{figure}
 
-Po otrzymaniu wyników pierwszego testu podjęto decyzję o modyfikacji modelu Sztucznej Sieci 
-Neuronowej. Pierwszą zmianą było dodanie kolejnej warstwy ukrytej.
+Po otrzymaniu wyników pierwszego testu podjęto decyzję o modyfikacji modelu Sztucznej Sieci Neuronowej. Pierwszą zmianą było dodanie kolejnej warstwy ukrytej.
 
 \subsection{Test modelu posiadającego dwie warstwy ukryte}
 
@@ -115,7 +122,7 @@ przeuczenia sieci.
   \begin{itemize}
     \item dane wejściowe \emph{x} (obraz odręcznie pisanej cyfry)
     \item wagi sieci neuronowej \emph{w}
-    \item biasy sieci neuronowej \emph{b}
+    \item wyrazy wolne każdego z neuronów (bias) \emph{b}
     \item adres tablicy na dane wyjściowe sieci \emph{res}
     \item model sieci w postaci tablicy \emph{model} zawierającej:
     \begin{itemize}

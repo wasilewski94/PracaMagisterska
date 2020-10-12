@@ -187,7 +187,7 @@ Wynik \textbf{\emph{S(i,j)}} nazywany jest mapą atrybutów (ang. \emph{feature 
 \end{figure}
 
 
-Razem z warstwą splotową często stosowana jest warstwa grupowania (ang. \emph{pooling}), występującą najczęściej w jednym z dwóch wariantów (ang. \emph{max-pooling}) lub (ang. \emph{average pooling}). W przypadku przetwarzania obrazu metoda (ang. \emph{max-pooling}) polega na zmniejszeniu jego rozmiaru, poprzez wybranie wartości maksymalnej lub średniej, stosując okno o wybranym rozmiarze. Najczęściej wybieranym krokiem (ang. \emph{stride}) przesuwania okna jest wartość, równa jego rozmiarowi. Na Rys. \ref{pooling} przedstawiono przykład \emph{max-poolingu} o rozmiarze 2x2 ze skokiem równym rozmiarowi okna.
+Razem z warstwą splotową często stosowana jest warstwa grupowania (ang. \emph{pooling}), występującą najczęściej w jednym z dwóch wariantów (ang. \emph{max-pooling}) lub (ang. \emph{average pooling}). W przypadku przetwarzania obrazu metoda (ang. \emph{max-pooling}) polega na zmniejszeniu jego rozmiaru, poprzez wybranie wartości maksymalnej lub średniej, stosując okno o wybranym rozmiarze. Najczęściej wybieranym krokiem (ang. \emph{stride}) przesuwania okna jest wartość, równa jego rozmiarowi. Na Rys. \ref{pooling} przedstawiono przykład \emph{max-poolingu} o rozmiarze 2x2 ze skokiem równym rozmiarowi okna. Dodanie do modelu Sztucznej Sieci Neuronowej warstw splotowych i \emph{pooling} powoduje zmniejszenie ilości danych przetwarzanych przez algorytm i co za tym idzie redukcję liczby parametrów w~trakcie uczenia. 
 
 \begin{figure}[!h]
   \centering
