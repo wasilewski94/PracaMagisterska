@@ -145,7 +145,7 @@ Metoda HLS umożliwia optymalizację implementowanego algorytmu pod kątem zuży
   \item partycjonowanie tablic -- \emph{array partition}
   \item definiowanie zależności -- \emph{dependence}
 \end{itemize} 
-Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. Dodatkowo przydatnym narzędziem jest \emph{Schedule Viewer} dostpęny w zakładce \emph{Analysis} (Rys. \ref{scheduler}), umożliwiający analizę czasu wykonania instrukcji w kolejnych cyklach zegara.
+Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak zazwyczaj wiąże się ze zużyciem większej ilości zasobów logiki programowalnej. W narzędziu Vivado HLS dyrektywy są implementowane przy użyciu \emph{pragm}, umieszczanych w odpowiednie miejsce w kodzie. Po wprowadzeniu zmian w kodzie i przeprowadzeniu syntezy narzędzie Vivado HLS generuje raport, który umożliwia wstępne sprawdzenie efektów optymalizacji. Na Rys. \ref{hls-report} przedstawiono raport po przeprowadzeniu syntezy implementacji, w której wszystkie pętle są zależne od parametrów modelu ustawionych z poziomu aplikacji. Stąd, widoczne w raporcie znaki zapytania w tabeli \emph{Latency}, gdyż opóźnienia zależą od parametrów funkcji akceleratora. Poza opóźnieniami warto przeanalizować ilość zużytych zasobów, a w szczególności pole \emph{Utilization}, informujące o procentowym zużyciu zasobów. Dodatkowo przydatnym narzędziem jest \emph{Schedule Viewer} dostpęny w~zakładce \emph{Analysis} (Rys. \ref{scheduler}), umożliwiający analizę czasu wykonania instrukcji w kolejnych cyklach zegara.
 
 \begin{figure}[!h]
   \centering
@@ -311,7 +311,7 @@ projekcie zostały spełnione wymagania czasowe, a w oknie \emph{Device} można 
   \label{impl_design_vivado}
 \end{figure}
 
-Następnym krokiem jest wygenerowanie \emph{Bitstreamu} i eksport sprzętu w postaci pliku z rozszerzeniem \emph{.xsa}.
+Następnym krokiem jest wygenerowanie \emph{Bitstreamu} i eksport sprzętu w postaci pliku z~rozszerzeniem \emph{.xsa}.
 Dzięki temu projekt sprzętu stworzony w programie Vivado można użyć w narzędziu \emph{Vitis} 
 lub \emph{Petalinux}. Aplikacja uruchamiana w trybie \emph{standalone} bez systemu operacyjnego w programie Vitis 
 umożliwia szybką weryfikację poprawności działania zaprojektowanego systemu. Dlatego przed przejściem do implementacji 

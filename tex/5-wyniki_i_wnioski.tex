@@ -132,6 +132,29 @@ ustalone na etapie tworzenia projektu oraz ilość pamięci BRAM w układzie \em
 Ponadto z poziomu aplikacji użytkownik ma możliwość ustawienia parametru progu przycinania sieci 
 (ang. \emph{pruning threshold}). Dzięki temu możliwe jest wyeliminowanie redundantnych wag sieci, które nie mają znacznego wpływu na wartość wyjścia sieci i~skrócenie obliczeń.
 
+
+\subsection{Porównanie czasu wykonania różnych implementacji}
+
+Aby przetestować wydajność klasyfikacji danego modelu sieci w implementacji programowej, uruchamianej na komputerze PC z użyciem pakietu \emph{keras}, wykorzystano metodę \emph{model.predict()}. Jako argument funkcja przyjmuje zbiór testowy z bazy MNIST.
+Implementacja modelu w HLS z możliwością zmiany parametrów sieci nie dała zadowalających rezultatów. Wyniki dla różnych architektur sieci zestawiono w Tabeli \ref{tab:czas-wykonania}. 
+
+\begin{table}[h] \centering
+  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z~implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- pierwsze podejście}
+  \centering
+  \begin{tabular} {c|c|c} \hline \label{tab:czas-wykonania}  
+    implementowany model & aplikacja z użyciem keras & akcelerator HLS\\ \hline \hline
+    FC10-sig-FC16-sig-FC16-sig-FC10-sig & 0.572 \emph{ms} & 0.635 \emph{ms} \\
+    FC16-sig-FC10-sig & 0.569 \emph{ms} & 0.941 \emph{ms} \\
+    FC64-sig-FC16-sig-FC10-sig & 0.535 \emph{ms} & 3.796 \emph{ms} \\
+    FC16-sig-FC10-soft & 0.457 \emph{ms} & 0.938 \emph{ms} \\
+    FC16-relu-FC10-soft & 0.435 \emph{ms} & 0.942 \emph{ms} \\
+  \end{tabular}
+\end{table}
+
+Wykonanie klasyfikacji przy użyciu pakietu keras daje porównywalne wyniki dla każdego z testowanych modeli. W przypadku użycia sieci zawierającej dużą liczbę neuronów w pierwszej warstwie ukrytej czas wykonania obliczeń znacznie rośnie.
+
+
+
 \subsection{Dostosowanie parametrów w implementacji HLS}
 
 Implementacja umożliwiająca zmianę parametrów modelu sieci z poziomu aplikacji jest bardzo wygodnym 
@@ -163,7 +186,7 @@ Wykonano analizę wpływu zmian parametru \emph{II} dyrektywy PIPELINE na zajęt
   \centering
   \begin{tabular} {c|c|c|c|c} \hline \label{tab:ii-relu}  
 
-                  & \emph{II} = 1               & 2               & 3               & 4        \\\hline
+                  & \emph{II} = 1   & \emph{II} = 2   & \emph{II} = 3   & \emph{II} = 4   \\\hline
     opóźnienie    & 59.963  $\mu s$ & 68.630 $\mu s$  & 68.928 $\mu s$  & 70.606 $\mu s$  \\
     BRAM          & 5\%             & 4\%             & 4\%             & 4\%             \\
     DSP           & 15\%            & 10\%            & 9\%             & 8\%             \\
@@ -171,7 +194,6 @@ Wykonano analizę wpływu zmian parametru \emph{II} dyrektywy PIPELINE na zajęt
     LUT           & 59\%            & 59\%            & 58\%            & 58\%            \\
   \end{tabular}
 \end{table}
-
 
 
 \subsection{Arytmetyka stałoprzecinkowa}
@@ -213,47 +235,18 @@ W celu sprawdzenia, czy zajętość zasobów jest związana z obliczaniem funkcj
   \end{tabular}
 \end{table}
 
-\subsection{}
 
-Aby przetestować wydajność klasyfikacji danego modelu sieci w implementacji programowej, uruchamianej na komputerze PC z użyciem pakietu \emph{keras}, wykorzystano metodę \emph{model.predict()}. Jako argument funkcja przyjmuje zbiór testowy z bazy MNIST.
-Implementacja modelu w HLS z możliwością zmiany parametrów sieci nie dała zadowalających rezultatów. Wyniki dla różnych architektur sieci zestawiono w Tabeli \ref{tab:czas-wykonania}. 
+\subsection{Wyniki po wykonaniu optymalizacji HLS}
+Po wstępnych testach zdecydowano zmienić założenia implementacji i dokonać optymalizacji wybranej architektury sieci neuronowej. Do testów i optymalizacji w Vivado HLS wybrano model, składający się z następujących warstw:
 
-\begin{table}[h] \centering
-  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z~implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- pierwsze podejście}
-  \centering
-  \begin{tabular} {c|c|c} \hline \label{tab:czas-wykonania}  
-    implementowany model & aplikacja z użyciem keras & akcelerator HLS\\ \hline \hline
-    FC10-sig-FC16-sig-FC16-sig-FC10-sig & 0.572 \emph{ms} & 0.635 \emph{ms} \\
-    FC16-sig-FC10-sig & 0.569 \emph{ms} & 0.941 \emph{ms} \\
-    FC64-sig-FC16-sig-FC10-sig & 0.535 \emph{ms} & 3.796 \emph{ms} \\
-    FC16-sig-FC10-soft & 0.457 \emph{ms} & 0.938 \emph{ms} \\
-    FC16-relu-FC10-soft & 0.435 \emph{ms} & 0.942 \emph{ms} \\
-  \end{tabular}
-\end{table}
+\begin{itemize}
+  \item warstwa wejściowa -- 784 wejścia sieci
+  \item warstwa ukryta  -- 16 neuronów
+  \item warstwa wyjściowa -- 10 neuronów
+\end{itemize}
 
-Wykonanie klasyfikacji przy użyciu pakietu keras daje porównywalne wyniki dla każdego z testowanych modeli. W przypadku użycia sieci zawierającej dużą liczbę neuronów w pierwszej warstwie ukrytej czas wykonania obliczeń znacznie rośnie.
-
-
-\subsubsection{Wyniki po wykonaniu optymalizacji HLS}
-Po wstępnych testach zdecydowano zmienić założenia implementacji i dokonać optymalizacji wybranej architektury sieci neuronowej. Wybrano następujący model:
-
-\begin{verbatim}
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-flatten_1 (Flatten)          (None, 784)               0         
-_________________________________________________________________
-dense_1 (Dense)              (None, 16)                12560     
-_________________________________________________________________
-dense_2 (Dense)              (None, 10)                170       
-=================================================================
-Total params: 12,730
-Trainable params: 12,730
-Non-trainable params: 0
-_________________________________________________________________
-\end{verbatim}
-
-W wyniku uczenia sieci otrzymano dokładność klasyfikacji na poziomie 94,14\%.
+W każdym neuronie zastosowano funkcję aktywacji sigmoid. Wykonano uczenie sieci, stosując liczbę epok równą 20.
+W wyniku testu sieci przy użyciu pakietu keras otrzymano dokładność klasyfikacji na poziomie 94,14\%.
 
 Wybrany model, zawierający wszystkie funkcje aktywacji sigmoid, zaimplementowano w programie Vivado HLS. Ustalenie wartości parametrów liczby wejść i neuronów na etapie implementacji HLS dało większe możliwości optymalizacji. Raport z syntezy umieszczono na Rys. \ref{hls-report2}. Widać, że parametr II (ang. \emph{Initiation Interval}) jest duży i jest jeszcze możliwość optymalizacji algorytmu. Zużycie zasobów jest na akceptowalnym poziomie.
 
@@ -270,7 +263,7 @@ poziomie 2,7.
 
 Po przeanalizowaniu kodu i komunikatów kompilatora Vivado HLS zidentyfikowano problem, powodujący tak duży parametr II. Była to zależność niewłaściwie interpretowana przez kompilator Vivado HLS w pętli wykonującej obliczenia dla danego neuronu.
 
-Aby osiągnąć \emph{II =1} potrzebny był dodatkowy bufor przechowujący sumę iloczynów wejść i wag neuronu w danej iteracji. Dopiero po wyjściu z pętli, gdy sumy iloczynów są policzone dla każdego neuronu w danej warstwie, w kolejnej pętli liczona jest funkcja aktywacji każdego z neuronów. Takie podejście umożliwia osiągnięcie parametru \emph{II = 1}~dla obu pętli.
+Aby osiągnąć \emph{II = 1} potrzebny był dodatkowy bufor przechowujący sumę iloczynów wejść i wag neuronu w danej iteracji. Dopiero po wyjściu z pętli, gdy sumy iloczynów są policzone dla każdego neuronu w danej warstwie, w kolejnej pętli liczona jest funkcja aktywacji każdego z neuronów. Takie podejście umożliwia osiągnięcie parametru \emph{II = 1}~dla obu pętli.
 
 Osiągnięto parametr \emph{II = 1} jednak drastycznie wzrosło zużycie zasobów układu FPGA, co widać na Rys. \ref{hls-report3}.
 

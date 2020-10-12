@@ -31,9 +31,9 @@ implementacji modelu ANN oraz wprowadzanie zmian w projekcie. Implementacja dane
 W większości przypadków Sztuczne Sieci Neuronowe są projektowane, uczone i uruchamiane na procesorze z akceleratorem obliczeń 
 w postaci GPU. Jednak wydajne układy graficzne nie zawsze są dostępne w systemach wbudowanych oraz wprowadzają dodatkowe koszty systemu i duże zużycie mocy.
 
-Alternatywnym sposobem na przyspieszenie obliczeń związanych z implementacją algorytmów ANN jest zastosowanie układów FPGA. Dodatkowym atutem po stronie układów FPGA jest mniejsze zużycie mocy. Dzięki odpowiednim metodom optymalizacji, przy wykorzystaniu układów FPGA można osiągnąć znacznie mniejsze zużycie zasobów i przyspieszenie obliczeń.
+Alternatywnym sposobem na przyspieszenie obliczeń związanych z implementacją algorytmów ANN jest zastosowanie układów FPGA. Dodatkowym atutem po stronie układów FPGA jest mniejsze zużycie mocy. Dzięki odpowiednim metodom optymalizacji, przy wykorzystaniu układów FPGA można osiągnąć znacznie mniejsze zużycie zasobów i~przyspieszenie obliczeń.
 
-Przewagą zastosowania układów GPU jest łatwość implementacji skomplikowanych obliczeń dzięki zastosowaniu architektury \emph
+Przewagą zastosowania układów GPU jest łatwość implementacji skomplikowanych obliczeń, dzięki zastosowaniu architektury \emph
 {CUDA} (ang. \emph{Compute Unified Device Architecture}), opracowanej przez firmę \emph{Nvidia}. Dzięki CUDA, zrównoleglenie obliczeń jest możliwe przy użyciu języków programowania takich jak C, C++, Fortran, Python i MATLAB \cite{cuda} i nie wymaga tyle wiedzy o sprzęcie co użycie metody HLS. Pomimo to technika HLS jest cały czas rozwijana. Powstają narzędzia dedykowane do zastosowań akceleracji obliczeń w Sztucznych Sieciach Neuronowych. W trakcie pisania tej pracy pojawiło się nowe narzędzie producenta \emph{Xilinx} -- \emph{Vitis AI}, zapewniające wsparcie w tworzeniu rozwiązań ML z użyciem układów FPGA. \emph{Vitis AI} jest zbiorem bibliotek i API (ang. \emph{Application Programming Interface}) stworzonym do zastosowań wydajnego uruchamiania algorytmów AI \cite{vitis-ai}. To pokazuje, że synteza wysokiego poziomu w układach FPGA charakteryzuje się pozytywną tendencją rozwoju.
 
 \begin{figure}[h]
