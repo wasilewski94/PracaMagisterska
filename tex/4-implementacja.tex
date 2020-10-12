@@ -3,11 +3,11 @@
 \pagestyle{headings}
 
 \section{Implementacja}
-W początkowej fazie projektu przetestowano wiele różnych modeli ANN w celu znalezienia odpowiedniej architektury sieci do zastosowania w przetwarzaniu obrazów. Początkowo zastosowano splotową sieć neuronową, która przy niewielkiej liczbie parametrów dawała bardzo dobre wyniki klasyfikacji odręcznie pisanych cyfr z bazy MNIST. Jednak w celu zaimplementowania algorytmu w układzie FPGA ograniczono model do postaci architektury MLP. Początkowym założeniem była możliwość zmiany parametrów sieci z poziomu aplikacji.
+W początkowej fazie projektu przetestowano wiele różnych modeli ANN w celu znalezienia odpowiedniej architektury sieci do zastosowania w przetwarzaniu obrazów. Początkowo zastosowano splotową sieć neuronową, która przy niewielkiej liczbie parametrów dawała bardzo dobre wyniki klasyfikacji odręcznie pisanych cyfr z bazy MNIST. Jednak w celu zaimplementowania algorytmu w układzie FPGA ograniczono model do postaci architektury MLP. Początkowym założeniem była możliwość zmiany parametrów sieci z~poziomu aplikacji.
 
 \subsection{Budowa systemu}
 
-Na początku pracy przyjęto założenie wykonywania uczenia sieci na komputerze PC z wykorzystaniem pakietu \emph{keras}, a następnie eksport modelu w postaci plików tekstowych zawierających parametry sieci. Zbiór obrazów przedstawiających odręcznie pisane cyfry, został podzielono na testowy (10000 obrazów) oraz uczący (60000 obrazów). Ponadto system powinien umożliwiać rozpoznawanie i klasyfikację cyfr na obrazie z kamery w czasie rzeczywistym.
+Na początku pracy przyjęto założenie wykonywania uczenia sieci na komputerze PC z~wykorzystaniem pakietu \emph{keras}, a następnie eksport modelu w postaci plików tekstowych zawierających parametry sieci. Zbiór obrazów przedstawiających odręcznie pisane cyfry, został podzielono na testowy (10000 obrazów) oraz uczący (60000 obrazów). Ponadto system powinien umożliwiać rozpoznawanie i klasyfikację cyfr na obrazie z kamery w~czasie rzeczywistym.
 
 \subsubsection{Schemat blokowy systemu}
 
@@ -28,7 +28,7 @@ System można podzielić na dwie główne części (Rys. \ref{schemat_blokowy}):
 
 Użycie w pracy płytki z układem Zynq determinuje użycie narzędzi wspieranych 
 przez firmę Xilinx. Zdecydowano się na użycie najnowszej (w momencie rozpoczęcia 
-projektu) wersji oprogramowania 2019.2. Producent zaleca\cite{VivadoGuide} instalację 
+projektu) wersji oprogramowania 2019.2. Producent zaleca \cite{VivadoGuide} instalację 
 programu Vivado na jednym ze wspieranych systemów operacyjnych:
 
 \begin{itemize}
@@ -44,7 +44,7 @@ programu Vivado na jednym ze wspieranych systemów operacyjnych:
 \bigskip
 W projekcie wykorzystywane było również narzędzie Petalinux, które wymaga 
 zainstalowania na maszynie z systemem operacyjnym Linux. Zgodnie z 
-dokumentacją\cite{PetalinuxGuide} jest to jedna z trzech dystrybucji:
+dokumentacją \cite{PetalinuxGuide} jest to jedna z trzech dystrybucji:
 
 \begin{itemize}
 \item Red Hat Enterprise Workstation/Server 7.4, 7.5, 7.6 (64-bit)
@@ -71,7 +71,7 @@ można ustawić odpowiednią konfigurację układu.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/vivado-block-design.png}
-  \caption{Schemat systemu przedstawiony w narzędziu Vivado}
+  \caption{Zrzut ekranu przedstawiający schemat systemu w środowisku Vivado}
   \label{vivado-block-design}
 \end{figure}
 
@@ -88,7 +88,7 @@ W programie Vivado pamięć alokowana jest przy użyciu bloku
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/vivado-neuralnet.png}
-  \caption{Szczegółowy schemat części systemu \emph{neural\_net}}
+  \caption{Zrzut ekranu przedstawiający szczegółowy schemat części systemu \emph{neural\_net} w~środowisku Vivado}
   \label{vivado-block-neural}
 \end{figure}
 
@@ -97,7 +97,7 @@ Przy użyciu metody HLS możliwe jest stworzenie własnego bloku IP (ang.
 Intellectual Property), który następnie jest umieszczany w katalogu IP i można 
 go wielokrotnie wykorzystać w projekcie RTL (ang. Register Transfer Level).
 Do projektu z użyciem HLS (Rys.\ref{hls_design_flow}) potrzebny jest plik 
-z algorytmem w języku C/C++ lub System C, plik testowy napisany w języku C 
+z algorytmem w języku C/C++ lub System C, plik testowy napisany w~języku C 
 (ang. \emph{test bench}) oraz plik z opisem ograniczeń sprzętowych (ang. constraints).
 Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 
@@ -113,7 +113,7 @@ Kolejne etapy projektu z wykorzystaniem metody HLS \cite{hlsXilinxGuide}:
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/hls_design_flow.png}
-  \caption{Proces projektowania przy użyciu metody HLS}
+  \caption{Proces projektowania przy użyciu metody HLS \cite{hlsXilinxGuide}}
   \label{hls_design_flow}
 \end{figure}
 
@@ -123,17 +123,18 @@ obrazów oraz ułatwiających implementację operacji matematycznych. Podczas pr
 Obie biblioteki można wykorzystać w implementacji akceleratora HLS, jednak użycie biblioteki \emph{<cmath.h>} może powodować 
 powstanie rozbieżnych wyników obliczeń podczas symulacji i syntezy.
 
-Przy tworzeniu nowego projektu w Vivado HLS (Rys. \ref{hls_new_project}) trzeba wybrać 
+% (Rys. \ref{hls_new_project})
+Przy tworzeniu nowego projektu w Vivado HLS trzeba wybrać 
 urządzenie, na którym uruchamiany będzie blok IP. Jeśli płytka nie jest widoczna na 
 liście, należy dodać pliki opisujące ją w odpowiednim katalogu, gdzie zostało 
 zainstalowane narzędzie Vivado HLS.  
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=\textwidth]{img/vivado-hls-new.png}
-  \caption{Wybór płytki podczas tworzenia projektu w Vivado HLS}
-  \label{hls_new_project}
-\end{figure}
+% \begin{figure}[!h]
+%   \centering
+%   \includegraphics[width=\textwidth]{img/vivado-hls-new.png}
+%   \caption{Wybór płytki podczas tworzenia projektu w Vivado HLS}
+%   \label{hls_new_project}
+% \end{figure}
 
 \subsection{Optymalizacja w Vivado HLS}
 
@@ -157,40 +158,45 @@ Wykorzystanie tych metod umożliwia poprawę wydajności implementacji, jednak z
 W prezentowanym przypadku analiza na poziomie implementacji HLS nie była możliwa ze względu na zbyt dużą ilość zmiennych parametrów, ustalanych na etapie uruchomienia aplikacji. Przeprowadzono testy z poziomu aplikacji w systemie Petalinux dla różnych modeli sieci. Na tym etapie projektu w celu pełnego skorzystania z metod optymalizacji w Vivado HLS, podjęto decyzję o wybraniu modelu sieci, który zostanie na stałe zaimplementowany, bez możliwości zmiany liczby neuronów i warstw sieci.
 
 
-\begin{figure}[!h]
+\begin{figure}
   \centering
   \includegraphics[width=\textwidth]{img/hls-report.png}
   \caption{Raport po przeprowadzeniu syntezy w Vivado HLS}
   \label{hls-report}
 \end{figure}
 
-
 \subsubsection{Rozwijanie pętli}
 
-Każda pętla w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w działaniu kodu. Przykładowo, gdy pętla składa się z 4 iteracji, nie ma możliwości, żeby kod wykonał się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
+Każda pętla w danej implementacji wprowadza pewne opóźnienie (ang. \emph{latency}) w~działaniu kodu. Przykładowo, gdy pętla składa się z 4 iteracji, nie ma możliwości, żeby kod wykonał się szybciej niż w 4 cyklach zegara. Aby przyspieszyć wykonanie kodu, można zastosować rozwijanie pętli (ang. \emph{loop unrolling}. W przypadku rozwijania całej pętli wszystkie iteracje danej pętli wykonują się równolegle. W przypadku pętli o wielu iteracjach i ograniczonych zasobach można zastosować rozwijanie częściowe. Użytkownik podaje wartość współczynnika, która informuje o tym, ile iteracji pętli rozpocznie wykonanie jednocześnie.
 
 \subsubsection{Pipeline}
-Zastosowanie dyrektywy \emph{Piepeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem dyrektywy PIPELINE jest II (ang. \emph{Initiation Interval}), który informuje o tym, ile taktów zegara będzie pomiędzy rozpoczęciem wykonywania kolejnych instrukcji.
-W zależności od złożoności algorytmu i zależności zmiennych w danej pętli, osiągnięcie II=1 może wymagać wprowadzenia zmian w kodzie lub zastosowania dodatkowych dyrektyw.
+Zastosowanie dyrektywy \emph{pipeline} umożliwia wykonanie jednej iteracji funkcji lub pętli przed zakończeniem wykonywania poprzedniej. Argumentem dyrektywy PIPELINE jest \emph{II} (ang. \emph{Initiation Interval}), który informuje o tym, ile taktów zegara będzie pomiędzy rozpoczęciem wykonywania kolejnych instrukcji. W zależności od poziomu skomplikowania implementacji i zależności zmiennych w danej pętli, osiągnięcie \emph{II=1} może wymagać wprowadzenia zmian w kodzie lub zastosowania dodatkowych dyrektyw. Wpływ zastosowania dyrektywy \emph{pipeline} na ilość cykli zegara potrzebnych do wykonania pętli zaprezentowano na Rys. \ref{pipeline}.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/pipeline.png}
+  \caption{Wynik zastosowania dyrektywy \emph{pipeline} w celu optymalizacji pętli, (A) -- bez dyrektywy \emph{pipeline},  (B) -- z zastosowaniem dyrektywy \emph{pipeline} \cite{pipeline}}
+  \label{pipeline}
+\end{figure}
 
 \subsubsection{Dyrektywa \emph{Dependence}}
 
-Kompilator Vivado HLS automatycznie wykrywa zależności pomiędzy zmniennymi wewnątrz pętli i pomiędzy różnymi iteracjami pętli (ang. \emph{loop-carry dependence}) \cite{hls-pragmas}. W niektórych złożonych implementacjach może dojść do nieprawidłowego zinterpretowania zależności. W tym wypadku można zastosować dyrektywę DEPENDENCE na zmiennej znajdującej się wewnątrz danej pętli lub funkcji, podając jako parametr wartość \emph{false}.
+Kompilator Vivado HLS automatycznie wykrywa zależności pomiędzy zmiennymi wewnątrz pętli i pomiędzy różnymi iteracjami pętli (ang. \emph{loop-carry dependence}) \cite{hls-pragmas}. W~niektórych złożonych implementacjach może dojść do nieprawidłowego zinterpretowania zależności. W tym wypadku można zastosować dyrektywę DEPENDENCE na zmiennej znajdującej się wewnątrz danej pętli lub funkcji, podając jako parametr wartość \emph{false}.
 
 \subsubsection{Partycjonowanie pamięci}
 
-W przypadku posiadania w kodzie zmiennych tablicowych, zawierających dużo elementów, można zastosować dyrektywę ARRAY PARTITION, umożliwia podzielenie dużej tablicy na mniejsze lub w całości na pojedyncze elementy. Powoduje to powstanie nowych portów pamięci, których liczba zależy od wartości parametru \emph{factor} podanego w dyrektywie. Partycjonowanie pamięci umożliwia osiągnięcie większego zrównoleglenia dostępu (zapis i odczyt) do pamięci. W przypadku zastosowania dyrektywy:
+W przypadku posiadania w kodzie zmiennych tablicowych, zawierających dużo elementów, można zastosować dyrektywę ARRAY PARTITION. Powoduje to rozdzielenie pamięci do większej liczby bloków, których liczba zależy od wartości parametru \emph{factor} podanego w dyrektywie. Partycjonowanie pamięci umożliwia zwielokrotnienie dostępu (zapis i odczyt) do pamięci. W przypadku zastosowania dyrektywy:
 \begin{verbatim}
   #pragma HLS ARRAY_PARTITION variable=w block factor=4 dim=1
 \end{verbatim}
-tablica \emph{w} zostanie podzielona na 4 tablice zawierające $\frac{N}{4}$ elementów, gdzie N jest początkowym rozmiarem tablicy. 
+pamięć przypisana do zmiennej \emph{w} zostanie podzielona na 4 bloki zawierające $\frac{N}{4}$ elementów, gdzie N jest początkowym rozmiarem tablicy. 
 
 \subsubsection{Arytmetyka zmiennoprzecinkowa}
 
 Kolejną metodą optymalizacji w metodzie HLS jest zamiana arytmetyki zmiennoprzecinkowej (ang. \emph{floating point}) na zapis 
 stałoprzecinkowy (ang. \emph{fixed\ point}). Narzędzie Vivado HLS zawiera bibliotekę \emph{ap\_fixed.h}, która ułatwia 
-definiowanie zmiennych o wybranym typie stałoprzecinkowym oraz implementowanie operacji matematycznych z użyciem różnych 
-typów stałoprzecinkowych. Programista może wybrać liczbę bitów przeznaczonych na część całkowitą i ułamek danej zmiennej, co umożliwia odpowiednie dopasowanie typu zmiennych do wykonywanych obliczeń. Dzięki temu możliwe jest zmniejszenie zużycia zasobów oraz akceleracja obliczeń przy zachowaniu założonej precyzji. Przy dobieraniu liczby bitów w typie stałoprzecinkowym należy wziąć pod uwagę zakres wartości, jakie będzie w stanie przechowywać, co bywa skomplikowane w przypadku złożonych algorytmów z dużą ilością operacji matematycznych. 
+definiowanie zmiennych o~wybranym typie stałoprzecinkowym oraz implementowanie operacji matematycznych z~użyciem różnych 
+typów stałoprzecinkowych. Programista może wybrać liczbę bitów przeznaczonych na część całkowitą i ułamek danej zmiennej, co umożliwia odpowiednie dopasowanie typu zmiennych do wykonywanych obliczeń. Dzięki temu możliwe jest zmniejszenie zużycia zasobów oraz akceleracja obliczeń przy zachowaniu założonej precyzji. Przy dobieraniu liczby bitów w typie stałoprzecinkowym należy wziąć pod uwagę zakres wartości, jakie będzie w stanie przechowywać, co bywa skomplikowane w~przypadku złożonych algorytmów z dużą ilością operacji matematycznych. 
 
 
 \subsection{Zbiór danych wejściowych}
@@ -204,7 +210,7 @@ Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/mnist.png}
-  \caption{Fragment zbioru odręcznie pisanych cyfr MNIST}
+  \caption{Fragment zbioru odręcznie pisanych cyfr MNIST \cite{lecun-mnisthandwrittendigit-2010}}
   \label{mnist-set}
 \end{figure}
 
@@ -212,8 +218,7 @@ Fragment zbioru MNIST przedstawiono na Rys. \ref{mnist-set}.
 
 Przy projektowaniu algorytmu ANN bardzo ważnym aspektem jest odpowiednie dopasowanie modelu do danych wejściowych. 
 Najczęściej odbywa się to poprzez wielokrotne testowanie systemu dla różnych parametrów sieci. W tej pracy początkowym 
-wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28$\times$28 pikseli są konwertowane na tablicę 784 wartości 
-typu \emph{float}. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
+wyborem była architektura MLP. Dane wejściowe w postaci obrazów 28$\times$28 pikseli są konwertowane na tablicę 784 wartości z przedziału od 0 do 1. Fragment kodu przedstawia Listing \ref{lst:mlp}. Model zawiera następujące warstwy:
 \begin{itemize}
   \item warstwę wejściową (784 wejścia)
   \item warstwę ukrytą (16 neuronów)
@@ -291,14 +296,13 @@ dodanie nowego bloku IP do projektu w narzędziu Vivado.
 
 \subsection{Synteza projektu w narzędziu Vivado}
 
-Aby przetestować działanie nowego bloku IP w narzędziu Vivado HLS, należy dodać i odpowiednio podłączyć blok do 
+Aby przetestować działanie nowego bloku IP w narzędziu Vivado HLS, należy dodać i~odpowiednio podłączyć blok do 
 schematu blokowego (ang. \emph{Block Design}) w narzędziu Vivado. Następnie należy sprawdzić, czy urządzenia zostały 
-właściwie zaadresowane w zakładce \emph{Adress Editor} i wprowadzić ewentualne zmiany. Gotowy projekt można poddać 
+właściwie zaadresowane w~zakładce \emph{Adress Editor} i wprowadzić ewentualne zmiany. Gotowy projekt można poddać 
 automatycznej weryfikacji za pomocą funkcji \emph{Validate Design} i uruchomić syntezę i implementację. Po poprawnie 
 przeprowadzonej implementacji narzędzie umożliwia otwarcie realizacji sprzętowej projektu (opcja \emph{Open Implemented 
 Design}). Zakładka \emph{Timing} (Rys. \ref{impl_design_vivado}) umożliwia sprawdzenie, czy w zaimplementowanym 
-projekcie zostały spełnione wymagania czasowe, a w oknie \emph{Device} można zweryfikować jakie zasoby zostały użyte w 
-implementacji.
+projekcie zostały spełnione wymagania czasowe, a w oknie \emph{Device} można zweryfikować jakie zasoby zostały użyte w~implementacji.
 
 \begin{figure}[!h]
   \centering
@@ -311,7 +315,7 @@ Następnym krokiem jest wygenerowanie \emph{Bitstreamu} i eksport sprzętu w pos
 Dzięki temu projekt sprzętu stworzony w programie Vivado można użyć w narzędziu \emph{Vitis} 
 lub \emph{Petalinux}. Aplikacja uruchamiana w trybie \emph{standalone} bez systemu operacyjnego w programie Vitis 
 umożliwia szybką weryfikację poprawności działania zaprojektowanego systemu. Dlatego przed przejściem do implementacji 
-w systemie Petalinux przystąpiono do stworzenia projektu oprogramowania w programie Vitis.
+w~systemie Petalinux przystąpiono do stworzenia projektu oprogramowania w programie Vitis.
 
 \subsection{Implementacja przy użyciu narzędzia Vitis}
 
@@ -427,7 +431,7 @@ do modułu kamery z poziomu aplikacji z przestrzeni użytkownika.
   \label{petalinux-config-kernel}
 \end{figure}
 
-Aby uzyskać dostęp z poziomu systemu Petalinux do bloku IP zaimplementowanego w narzędziu Vivado HLS, należy 
+Aby uzyskać dostęp z poziomu systemu Petalinux do bloku IP zaimplementowanego w~narzędziu Vivado HLS, należy 
 zainstalować odpowiednie sterowniki urządzeń lub utworzyć własne. Dla wielu typów urządzeń tworzenie nowego sterownika 
 nie jest konieczne. Alternatywnym rozwiązaniem jest zastosowanie sterownika UIO (ang. \emph{Userspace Input Output 
 Driver}) \cite{uio-drivers}, który umożliwia dostęp do urządzenia w aplikacji z przestrzeni użytkownika. Znacznie 
@@ -463,7 +467,7 @@ Kolejnym etapem w procesie konfigurowania systemu Petalinux jest dostosowanie dr
 \begin{verbatim}
   <katalog_projektu>/project-spec/meta-user/recipes-bsp/device-tree
 \end{verbatim}
-W przypadku wykorzystania sterowników UIO należy wpisać w polu \emph{compatible} każdego z węzłów urządzeń (pamięci 
+W przypadku wykorzystania sterowników UIO należy wpisać w polu \emph{compatible} każdego z~węzłów urządzeń (pamięci 
 BRAM) wartość \emph{"generic-uio"} \cite{uio-device-tree}. Dostęp do urządzeń jest zapewniony dzięki plikom /dev/uioX, 
 gdzie X to numer urządzenia (zaczynając od 0 dla pierwszego urządzenia).
 
@@ -471,11 +475,11 @@ gdzie X to numer urządzenia (zaczynając od 0 dla pierwszego urządzenia).
 
 Po dostosowaniu pliku \emph{device-tree} można uruchomić kompilację petalinuxa komendą \emph{petalinux-build}.
 Gdy system zostanie zbudowany, należy spakować wszystkie potrzebne pliki przy użyciu funkcji \emph{petalinux-package}.
-Wynikiem tej operacji są dwa pliki dostępne w katalogu images/linux BOOT.bin i image.ub, które należy przekopiować na
+Wynikiem tej operacji są dwa pliki dostępne w~katalogu images/linux BOOT.bin i image.ub, które należy przekopiować na
 odpowiednią partycję karty sd. Jeśli w konfiguracji Petalinuxa wyłączona została opcja wspierania Initial RAM
 filesystem, należy dodatkowo wypakować system plików na drugiej partycji na karcie~sd. Tak przygotowaną kartę sd można
 umieścić w slocie na płytce Z-turn, podłączyć zasilanie i uruchomić system.Istnieje opcja kompilacji jedynie wybranej 
-aplikacji stworzonej przez użytkownika przy pomocy komendy \emph{petalinux-build -c <nazwa\_aplikacji>}. W przypadku 
+aplikacji stworzonej przez użytkownika przy pomocy komendy \emph{petalinux-build -c <nazwa\_aplikacji>}. W~przypadku 
 wprowadzenia zmian w systemie, przed ponownym wypakowaniem systemu plików, należy sformatować partycję zawierającą 
 system plików. 
 
@@ -495,6 +499,6 @@ Oba rozwiązania były stosowane równolegle na każdym etapie projektu.
   \label{petalinux-boot}
 \end{figure}
 
-Zaletą konsoli podłączonej za pomocą portu szeregowego jest to, że są w niej wyświetlane komunikaty jądra Linuxa. Ułatwia to debugowanie błędów, które pojawiają się w fazie uruchamiania systemu operacyjnego. Zaletą protokołu SSH jest duża przepustowość i możliwość wysyłania nawet dużych plików.
+Zaletą konsoli podłączonej za pomocą portu szeregowego jest to, że są w niej wyświetlane komunikaty jądra Linuxa. Ułatwia to debugowanie błędów, które pojawiają się w~fazie uruchamiania systemu operacyjnego. Zaletą protokołu SSH jest duża przepustowość i możliwość wysyłania nawet dużych plików.
 
 

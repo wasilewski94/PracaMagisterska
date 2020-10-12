@@ -18,15 +18,15 @@ FPGA i tym samym zwiększyć efektywność algorytmu.
 
 Praca nad implementacją algorytmów Sztucznej Inteligencji w większości 
 przypadków zaczyna się od stworzenia i uruchomienia modelu. Do tego zadania 
-często wykorzystywane są wysokopoziomowe biblioteki takie jak \emph{Keras} lub \emph{Theano}, które w znacznym stopniu przyspieszają proces tworzenia oprogramowania oraz ułatwiają wprowadzanie zmian w modelu sieci. Rozwój i dopracowywanie 
+często wykorzystywane są wysokopoziomowe biblioteki takie jak \emph{keras} lub \emph{Theano}, które w znacznym stopniu przyspieszają proces tworzenia oprogramowania oraz ułatwiają wprowadzanie zmian w modelu sieci. Rozwój i dopracowywanie 
 algorytmu Sztucznej Inteligencji wymaga wielu iteracji uruchamiania kodu 
-z różnymi parametrami i właściwościami sieci. Aby w pełni wykorzystać potencjał Sztucznych Sieci Neuronowych, należy dobrać odpowiednio metody projektowania i testowania modeli.
+z różnymi parametrami i właściwościami sieci. Aby w~pełni wykorzystać potencjał Sztucznych Sieci Neuronowych, należy dobrać odpowiednio metody projektowania i testowania modeli.
 
 \subsection{Wstęp teoretyczny}
 
 Sieć neuronowa jest algorytmem przetwarzającym dane, inspirowanym działaniem mózgu. ANN składa się z wielu elementów przetwarzających informacje -- neuronów. Model przetwarzania informacji jest inspirowany ludzkim mózgiem jednak w stosunku do komórki nerwowej, neuron w Sztucznej Sieci Neuronowej jest bardzo uproszczony
 \cite{tadeusiewicz1993sieci}. Pomimo to ANN umożliwiają rozwiązywanie złożonych
-problemów w wielu dziedzinach z dużą dokładnością.
+problemów w wielu dziedzinach z~dużą dokładnością.
 
 Pomiędzy neuronami prowadzone są połączenia, z których każde ma swoją wagę, która 
 zmienia wartość w trakcie uczenia sieci. Warstwę sieci, w której wszystkie wyjścia każdego z neuronów są podłączone do wszystkich neuronów w warstwie następnej, nazywa się warstwą w pełni połączoną (ang. FC — \emph{Fully Connected}).
@@ -38,24 +38,24 @@ W znacznej większości sieci neuronowe budowane są w ten sposób, że dane są
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{img/ann.png}
-  \caption{Schemat w pełni połączonej jednokierunkowej Sieci Neuronowej}
+  \caption{Schemat w pełni połączonej jednokierunkowej Sieci Neuronowej (wygenerowany na stronie: \url{http://alexlenail.me/NN-SVG/})}
   \label{ann-img}
 \end{figure}
 
 
 \subsubsection{Model neuronu}
-Sztuczne Sieci Neuronowe to algorytm wzorowany działaniem ludzkiego mózgu 
-i znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego neuronu składa się z następujących elementów \cite{Omondi2006FPGAIO}:
+Sztuczne Sieci Neuronowe to algorytm inspirowany działaniem ludzkiego mózgu 
+i~znajdujących się w nim neuronów. Model matematyczny (Rys. \ref{neuron}) pojedynczego neuronu składa się z następujących elementów \cite{Omondi2006FPGAIO}:
 \begin{itemize}
   \item wektora wejściowego: 
   $$x = (x_1, x_2,...,x_j)^T$$
   \item wektora wag przypisanych do każdego z wejść
   $$w = (w_{k1}, w_{k2},...,w_{kj})^T$$
-  \item wag obciążających (bias) $b$
+  \item wyrazów wolnych (bias) $b$
   \item funkcji aktywacji $\phi(u)$ 
   \item wyjścia neuronu $y$. 
 \end{itemize}
-Wagi obciążające (bias) umożliwiają kontrolowanie progu aktywacji neuronu, niezależnie od wartości wejściowych. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w kierunku w prawą lub w lewą stronę. Wyjście neuronu można policzyć, stosując następujące wzory:
+Wyrazy wolne (bias) umożliwiają kontrolowanie progu aktywacji neuronu, niezależnie od wartości wejściowych. W praktyce oznacza to przesuwanie wykresu funkcji aktywacji w~zależności od znaku w prawą lub w lewą stronę. Wyjście neuronu można policzyć, stosując następujące wzory:
 $$u_k = \sum_{j=1}^{N}{w_{kj}x_j} $$ 
 $$y_k = \phi(u_k + b_k) $$ 
 
@@ -64,7 +64,7 @@ Najprostsza Sieć Neuronowa składająca się z jednego neuronu, nazywana jest \
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{img/neuron.png}
-  \caption{Model neuronu}
+  \caption{Model neuronu \cite{haykin2009neural}}
   \label{neuron}
 \end{figure}
 
@@ -132,7 +132,7 @@ całych kształtów i obiektów.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/dnn-object-recog.png}
-  \caption{Model Głębokiego Uczenia sieci}
+  \caption{Model Głębokiego Uczenia sieci \cite{Goodfellow-et-al-2016}}
   \label{dnn}
 \end{figure}
 
@@ -140,7 +140,7 @@ całych kształtów i obiektów.
 \subsubsection{Proces uczenia sieci}
 
 Uczenie Sztucznej Sieci Neuronowej można podzielić na nadzorowane (ang. \emph{supervised learning}) i nienadzorowane (ang. \emph{unsupervised learning}) oraz wersję pośrednią -- uczenie częściowo nadzorowane (ang. \emph{semi-supervised learning}). W praktyce najczęściej wykorzystywanym rodzajem uczenia jest \emph{supervised learning}, jednak uczenie nienadzorowane, które zakłada tworzenie modelu sieci bez ingerencji człowieka, jest ciekawym tematem badań i rozwoju algorytmów Sztucznych Sieci Neuronowych \cite{nielsen2015neural}.
-Proces uczenia nadzorowanego sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i biasów tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
+Proces uczenia nadzorowanego sieci polega na zwiększaniu dokładności ANN w rozwiązywaniu danego problemu. Odbywa się to poprzez iteracyjne korygowanie wartości wag i wyrazów wolnych (bias) tak, aby zminimalizować błąd pomiędzy rozwiązaniem wzorcowym i otrzymanym. Jeden z algorytmów zmiany wag podczas uczenia jest reguła delty (ang. \emph{delta rule}):
 
 
 $$\Delta w_{kj} = \eta e_k(n)x_j(n) $$
@@ -165,13 +165,13 @@ W procesie uczenia Sztucznej Sieci Neuronowej bardzo istotne jest odpowiednie us
 
 \subsubsection{Przeuczenie sieci}
 
-Przy używaniu Sztucznych Sieci Neuronowych w zadaniach klasyfikacji często spotykanym problemem jest przeuczenie sieci (ang. \emph{overfitting}). Przeuczona sieć jest zbyt mocno dopasowana do danych uczących i przy walidacji poprawność klasyfikacji jest znacznie mniejsza. Jednym ze sposobów na polepszenie zdolności do generalizacji trenowanego modelu sieci jest zastosowanie \emph{Dropoutu}, czyli losowego usuwania pewnej ustalonej liczby neuronów. Technika ta, pomimo swojej prostoty, daje bardzo dobre wyniki w przeciwdziałaniu przeuczeniu sieci.  
+Przy używaniu Sztucznych Sieci Neuronowych w zadaniach klasyfikacji często spotykanym problemem jest przeuczenie sieci (ang. \emph{overfitting}). Przeuczona sieć jest zbyt mocno dopasowana do danych uczących i przy walidacji poprawność klasyfikacji jest znacznie mniejsza. Jednym ze sposobów na polepszenie zdolności do generalizacji trenowanego modelu sieci jest zastosowanie \emph{Dropoutu}, czyli losowego usuwania pewnej ustalonej liczby neuronów. Technika ta, pomimo swojej prostoty, daje bardzo dobre wyniki w~przeciwdziałaniu przeuczeniu sieci.  
 
 \subsubsection{Splotowe Sieci Neuronowe}
 
 Splotowe Sieci Neuronowe (ang. \emph{CNN -- Convolutional Neural Networks}) są typem sieci głębokich, które znakomicie nadają się do rozpoznawania kształtów i z powodzeniem stosowane w wielu zagadnieniach klasyfikacji obrazów. Charakteryzują się dużą odpornością na rotację, skalowanie, zniekształcanie i inne zakłócenia \cite{haykin2009neural}. Sieci te są uczone w trybie nadzorowanym. 
 
-Za ekstrakcję cech obiektów w dwuwymiarowym obrazie odpowiedzialna jest warstwa splotowa sieci. Wejście \textbf{\emph{M}} tej warstwy jest przekształcane przy użyciu odpowiedniego filtru \textbf{\emph{K}} (ang. \emph{filter}). Operację splotu w sieciach CNN można opisać wzorem:
+Za ekstrakcję cech obiektów w dwuwymiarowym obrazie odpowiedzialna jest warstwa splotowa sieci. Wejście \textbf{\emph{M}} tej warstwy jest przekształcane przy użyciu odpowiedniego filtru \textbf{\emph{K}}. Operację splotu w sieciach CNN można opisać wzorem:
 $$
 S(i,j) = (M*K)(i,j) =\sum_{k}{\sum_{j}{M(i - k, j - l)K(k, l)}}
 $$
@@ -211,7 +211,7 @@ W dzisiejszych czasach Sztuczne Sieci Neuronowe są wykorzystywane w wielu zasto
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{img/self-driving-car.jpg}
-  \caption{Rozpoznawanie obiektów na obrazie z kamery samochodu autonomicznego}
+  \caption{Rozpoznawanie obiektów na obrazie z kamery samochodu autonomicznego \cite{self-drive-obraz}}
   \label{self-driving-car}
 \end{figure}
 

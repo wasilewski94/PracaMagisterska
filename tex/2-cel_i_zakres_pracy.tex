@@ -39,7 +39,7 @@ Przewagą zastosowania układów GPU jest łatwość implementacji skomplikowany
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{img/vitis-AI.jpg}
-    \caption{Struktura narzędzia Vitis-AI}
+    \caption{Struktura narzędzia Vitis-AI \cite{vitis-AI-obraz}}
     \label{vitisAI}
   \end{figure}
 
@@ -52,14 +52,14 @@ zastosowania układów FPGA daje duże możliwości optymalizacji.
 
 Najczęściej spotykanym podejściem jest zastosowanie ANN w układach FPGA do przyspieszenia obliczeń związanych z wnioskowaniem (ang. \emph{inference}) nauczonej 
 wcześniej sieci na nowych danych w czasie rzeczywistym. Model jest uczony na komputerze PC przy użyciu bibliotek takich jak 
-\emph{keras}, \emph{Caffe} czy \emph{PyTorch}, najczęściej z wykorzystaniem GPU. Po przeprowadzeniu walidacji model sieci jest eksportowany, odpowiednio przetwarzany i implementowany w układzie FPGA. 
+\emph{keras}, \emph{Caffe} czy \emph{PyTorch}, najczęściej z wykorzystaniem GPU. Po przeprowadzeniu walidacji model sieci jest eksportowany, odpowiednio przetwarzany i~implementowany w układzie FPGA. 
 
 
 %przykłady implementacji
 
 \subsubsection{Uczenie Sztucznej Sieci Neuronowej w układach FPGA}
 
-Istnieje również możliwość zaimplementowania algorytmu uczenia ANN na układzie FPGA. Takie rozwiązanie pozwala na zrównoleglenie obliczeń, które jest istotne w przypadku wielu epok uczenia sieci, jednak wiąże się z następującymi problemami:
+Istnieje również możliwość zaimplementowania algorytmu uczenia ANN na układzie FPGA. Takie rozwiązanie pozwala na zrównoleglenie obliczeń, które jest istotne w~przypadku wielu epok uczenia sieci, jednak wiąże się z następującymi problemami:
 \begin{itemize}
     \item algorytm uczenia wymaga dużych zasobów pamięci
     \item skomplikowana implementacja algorytmu utrudnia wprowadzanie zmian w architekturze sieci

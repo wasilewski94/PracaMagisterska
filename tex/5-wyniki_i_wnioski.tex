@@ -3,22 +3,28 @@
 \pagestyle{headings}
 
 \section{Wyniki i wnioski}
-
-Celem pracy było zaprojektowanie, nauczenie i przetestowanie działania algorytmu Sztucznej Sieci Neurnonowej z użyciem 
-układu FPGA oraz porównanie z rozwiązaniem programowym uruchamianym na komputerze PC. Podczas projektu powstało kilka modeli Sztucznej Sieci 
-Neuronowej klasyfikującej odręcznie pisane cyfry.
-Aby porównać rozwiązanie, realizowane w technice HLS z implementacją przy użyciu pakietu \emph{keras}, każdy z modeli poddano testom, które zostały podzielone na następujące części:
-
+Celem pracy było zbadanie wpływu zastosowania akceleratorów, realizowanych w~technice HLS na szybkość działania algorytmów ANN.
+W projekcie zaimplementowano i przetestowano kilka różnych modeli Sztucznych Sieci Neuronowych, klasyfikujących odręcznie pisane cyfry. Aby porównać rozwiązanie, realizowane w technice HLS z implementacją przy użyciu pakietu \emph{keras}, uruchamianą na komputerze PC każdy z modeli poddano testom, które zostały podzielone na następujące części:
 \begin{itemize}
-  \item Uruchomienie sieci przy użyciu zbioru testowego 10000 cyfr z bazy MNIST, w celu oszacowania dokładności i 
+  \item uruchomienie sieci przy użyciu zbioru testowego 10000 cyfr z bazy MNIST, w celu oszacowania dokładności i 
   szybkości działania algorytmu.
-  \item Test wykonany w czasie rzeczywistym przy użyciu modułu kamery.
-  \item Optymalizacja implementacji w narzędziu Vivado HLS
+  \item test wykonany w czasie rzeczywistym przy użyciu modułu kamery
+  \item zbadanie wpływu optymalizacji w narzędziu Vivado HLS.
 \end{itemize}
+Zbadano wpływ różnych rozwiązań optymalizacji w narzędziu Vivado HLS na szybkość wykonywanych obliczeń oraz zajętość zasobów układu FPGA.
+Wyniki testów z nich zamieszczone są w dalszej części rozdziału.
 
 \subsection{Test modelu sieci z jedną warstwą ukrytą}
 
-Wykonano test, podając na wejście sieci 10000 obrazów. Wynik testu, widoczny na Rys. \ref{wynik1} potwierdził poprawność działania algorytmu. Osiągnięto dokładność na poziomie 94,97\%, co pokrywa się z wynikiem uzyskanym z wykorzystaniem biblioteki \emph{keras}.
+Model Sztucznej Sieci Neuronowej z jedną warstwą ukrytą zaimplementowano w~skrypcie pythona z użyciem biblioteki \emph{keras}. Wykonano uczenie sieci w 20 epokach z~wielkością mini-serii równą 128.
+Model poddany testom w każdym z neuronów zawierał funkcję aktywacji \emph{sigmoid} i składał się z następujących warstw: 
+\begin{itemize}
+  \item warstwa wejściowa (784 wejścia)
+  \item warstwa ukryta (16 neuronów)
+  \item warstwa wyjściowa (10 neuronów).
+\end{itemize}
+
+Test z użyciem akceleratora HLS wykonano, podając na wejście sieci 10000 obrazów zapisanych w postaci plików tekstowych, zawierających po 784 wartości w przedziale od 0 do 1. Wynik testu, widoczny na Rys. \ref{wynik1} potwierdził poprawność działania algorytmu. Osiągnięto dokładność na poziomie 94,97\%, co pokrywa się z wynikiem uzyskanym z~wykorzystaniem biblioteki \emph{keras}, na komputerze PC.
 
 \begin{figure}[!h]
     \centering
@@ -41,8 +47,8 @@ Pierwszą symulację wykonano na komputerze PC przy użyciu biblioteki OpenCV i 
 Ze względu na sporą ilość obliczeń początkowo zdecydowano się na zarejestrowanie obrazu oraz 
 detekcję cyfr przy użyciu biblioteki OpenCV. 
 
-Obraz był rejestrowany w rozdzielczości 640x480 pikseli przy użyciu funkcji \emph{cv2.VideoCapture
-(2)}. Następnym krokiem było przekształcenie barwy obrazu na skalę szarości, rozmycie obrazu oraz 
+Obraz był rejestrowany przy użyciu funkcji \emph{cv2.VideoCapture()} w rozdzielczości 640$\times$480 pikseli. 
+Następnym krokiem było przekształcenie barwy obrazu na skalę szarości, rozmycie obrazu oraz 
 za pomocą funkcji \emph{cv2.adaptiveThreshold} przekształcenie w obraz binarny z odwróconymi 
 kolorami. Istotne jest, żeby obraz zawierał białą cyfrę na czarnym tle, ponieważ takie obrazy były 
 w zbiorze uczącym.  Następnie użyto funkcji \emph{cv2.findContours}, która zwraca współrzędne 
@@ -76,7 +82,7 @@ klasyfikacji sieci 70\%.
 
 W teście na płytce Z-turn zastosowano metodę rejestrowania obrazu taką jak na komputerze PC, jednak 
 do rozpoznania cyfr wykorzystano akcelerator obliczeń ANN zaimplementowany w układzie FPGA.  
-Aby umożliwić użytkownikowi wyświetlanie obrazu w czasie rzeczywistym, wykorzystano pakiety \emph{pickle} i \emph{socket} do wysyłania kolejnych ramek obrazu przez protokół TCP (ang. \emph{Transmission Control Protocol}). Aplikacja \emph{camera\_server.py} po uruchomieniu na płytce Z-turn oczekuje na połączenie pod zadanym adresem IP 10.42.0.1. Uruchomienie aplikacji \emph{camera\_client} na komputerze PC podłączonym z płytką przy użyciu kabla \emph{Ethernet} powoduje rozpoczęcie rejestrowania obrazu, detekcję i zapisanie obrazów przedstawiających cyfry do plików tekstowych. Działający w tle sterownik UIO \emph{rtdigitrecognition} zawiera mechanizm \emph{inotify}, pozwalający na monitorowanie zmian w pliku \emph{input.txt}, zawierającym dane wejściowe sieci i reagowanie w przypadku zapisania nowych danych. Wynik klasyfikacji odręcznie pisanej cyfry jest zapisywany do pliku \emph{out.txt} i odczytywany w aplikacji rejestrującej obraz, w celu wyświetlenia wyniku przy odpowiedniej cyfrze. Wynik testu przedstawiono na Rys. \ref{1hid-layer-zturn-img}.
+Aby umożliwić użytkownikowi wyświetlanie obrazu w czasie rzeczywistym, wykorzystano pakiety \emph{pickle} i \emph{socket} do wysyłania kolejnych ramek obrazu przez protokół TCP (ang. \emph{Transmission Control Protocol}). Aplikacja \emph{camera\_server.py} po uruchomieniu na płytce Z-turn oczekuje na połączenie pod zadanym adresem IP 10.42.0.1. Uruchomienie aplikacji \emph{camera\_client} na komputerze PC podłączonym z płytką przy użyciu kabla \emph{Ethernet} powoduje rozpoczęcie rejestrowania obrazu, detekcję i zapisanie obrazów przedstawiających cyfry do plików tekstowych. Działający w tle sterownik UIO \emph{rtdigitrecognition} zawiera mechanizm \emph{inotify}, pozwalający na monitorowanie zmian w~pliku \emph{input.txt}, zawierającym dane wejściowe sieci i reagowanie w przypadku zapisania nowych danych. Wynik klasyfikacji odręcznie pisanej cyfry jest zapisywany do pliku \emph{out.txt} i odczytywany w aplikacji rejestrującej obraz, w celu wyświetlenia wyniku przy odpowiedniej cyfrze. Wynik testu przedstawiono na Rys. \ref{1hid-layer-zturn-img}.
 
 \begin{figure}[!h]
     \centering
@@ -90,9 +96,11 @@ Neuronowej. Pierwszą zmianą było dodanie kolejnej warstwy ukrytej.
 
 \subsection{Test modelu posiadającego dwie warstwy ukryte}
 
-Dodano do istniejącego modelu kolejną warstwę ukrytą zawierającą 64 neurony. Po wykonaniu 50 epok 
-otrzymano dokładność na poziomie 97,17\%. Wykres zmiany dokładności w kolejnych epokach 
-przedstawiono na Rys. \ref{keras-accuracy2}.
+Dodano do istniejącego modelu kolejną warstwę ukrytą zawierającą 64 neurony. Po wykonaniu 50 epok uczenia 
+sieci otrzymano dokładność na poziomie 97,17\%. Wykres z~przebiegu uczenia sieci przedstawiający dokładność 
+klasyfikacji w kolejnych epokach przedstawiono na Rys. \ref{keras-accuracy2}. Na wykresie widać, że dokładność
+po 20 epoce uczenia przestaje rosnąć, więc zwiększanie liczby epok nie da lepszych rezultatów i może prowadzić do 
+przeuczenia sieci.   
 
 \begin{figure}
     \centering
@@ -102,7 +110,7 @@ przedstawiono na Rys. \ref{keras-accuracy2}.
 \end{figure}
 
 
-\subsection{Implementacja modelu ANN w Vivado HLS}
+\subsection{Implementacja akceleratora obliczeń ANN w Vivado HLS}
   Parametry modelu sieci ANN stworzonego, nauczonego i przetestowanego w skrypcie Pythona z użyciem biblioteki keras są przekazywane do funkcji w Vivado HLS. Funkcja \emph{calcPerceptron()} jako argument przyjmuje następujące dane:
   \begin{itemize}
     \item dane wejściowe \emph{x} (obraz odręcznie pisanej cyfry)
@@ -122,13 +130,13 @@ aplikacji. Ograniczeniami są rozmiary tablic zawierających parametry sieci, kt
 ustalone na etapie tworzenia projektu oraz ilość pamięci BRAM w układzie \emph{Zynq}.
    
 Ponadto z poziomu aplikacji użytkownik ma możliwość ustawienia parametru progu przycinania sieci 
-(ang. \emph{pruning threshold}). Dzięki temu możliwe jest wyeliminowanie redundantnych wag sieci, które nie mają znacznego wpływu na wartość wyjścia sieci i skrócenie obliczeń.
+(ang. \emph{pruning threshold}). Dzięki temu możliwe jest wyeliminowanie redundantnych wag sieci, które nie mają znacznego wpływu na wartość wyjścia sieci i~skrócenie obliczeń.
 
 \subsection{Dostosowanie parametrów w implementacji HLS}
 
 Implementacja umożliwiająca zmianę parametrów modelu sieci z poziomu aplikacji jest bardzo wygodnym 
 rozwiązaniem, umożliwiającym szybkie przeprowadzenie testów dla różnych modeli sieci. Jednak 
-zdefiniowanie w implementacji HLS parametrów sieci w postaci zmiennych, spowodowało znaczne 
+zdefiniowanie w implementacji HLS parametrów sieci w~postaci zmiennych, spowodowało znaczne 
 ograniczenia w możliwościach optymalizacji. 
 
 \subsubsection{Optymalizacja pętli}
@@ -140,41 +148,94 @@ Pierwszym napotkanym problemem był brak możliwości pełnego rozwinięcia pęt
   #pragma HLS UNROLL
 \end{verbatim}
 spowodowany zapisaniem warunku zakończenia pętli w zmiennej, będącej parametrem funkcji bloku HLS. 
+W wyniku wykonania syntezy kompilator Vivado HLS zwracał komunikat informujący o braku możliwości pełnego rozwinięcia pętli.
 
-% opisz jakie były ograniczenia 
+Aby osiągnąć maksymalną akcelerację obliczeń i optymalizację zasobów zmieniono założenia projektu. Parametry modelu zostały ustalone na etapie implementacji bloku HLS. Dzięki temu możliwe było osiągnięcie znacznie lepszych wyników optymalizacji w~narzędziu Vivado HLS.
 
-Aby osiągnąć maksymalną akcelerację obliczeń i optymalizację zasobów zmieniono założenia projektu. Parametry modelu zostały ustalone na etapie implementacji bloku HLS. Dzięki temu możliwe było osiągnięcie znacznie lepszych wyników optymalizacji w narzędziu Vivado HLS.
+Następnym problemem związanym z rozwijaniem pętli był komunikat Vivado HLS o~braku możliwości wykonania operacji wczytania danych z jednej z tablic, spowodowany użyciem pamięci BRAM, posiadającej tylko dwa porty. Sugerowanym rozwiązaniem jest użycie innego bloku pamięci pozwalającego na równoległy odczyt dużej ilości danych lub partycjonowanie tablicy.
 
-Następnym problemem związanym z rozwijaniem pętli był komunikat Vivado HLS o braku możliwości wykonania operacji wczytania danych z jednej z tablic spowodowany posiadaniem tylko dwóch portów pamięci BRAM. Sugerowanym rozwiązaniem jest użycie innego bloku pamięci pozwalającego na równoległy odczyt dużej ilości danych lub partycjonowanie tablicy.
+\subsubsection{Dobranie parametru \emph{II}}
+
+Wykonano analizę wpływu zmian parametru \emph{II} dyrektywy PIPELINE na zajętość zasobów układu FPGA oraz czas wykonywania obliczeń. Pożądaną wartością tego parametru jest 1, jednak bywa, że wiąże się to z dużym zużyciem zasobów. W ramach kompromisu pomiędzy szybkością działania a zużyciem mocy można zmieniać parametr \emph{II}. Wyniki testów zamieszczono w Tabeli \ref{tab:ii-relu}.
+
+\begin{table}[h] \centering
+  \caption{Wpływ zmian parametru \emph{II} na wydajność systemu}
+  \centering
+  \begin{tabular} {c|c|c|c|c} \hline \label{tab:ii-relu}  
+
+                  & \emph{II} = 1               & 2               & 3               & 4        \\\hline
+    opóźnienie    & 59.963  $\mu s$ & 68.630 $\mu s$  & 68.928 $\mu s$  & 70.606 $\mu s$  \\
+    BRAM          & 5\%             & 4\%             & 4\%             & 4\%             \\
+    DSP           & 15\%            & 10\%            & 9\%             & 8\%             \\
+    FF            & 20\%            & 20\%            & 20\%            & 19\%            \\
+    LUT           & 59\%            & 59\%            & 58\%            & 58\%            \\
+  \end{tabular}
+\end{table}
+
+
 
 \subsection{Arytmetyka stałoprzecinkowa}
 
-Kolejną metodą optymalizacji kodu jest zastosowanie arytmetyki stałoprzecinkowej. Przy użyciu biblioteki \emph{<ap\_fixed.h>} zaimplementowano oddzielne typy dla każdej ze zmiennych reprezentujących parametry sieci. Po wykonaniu analizy raportu dla różnych konfiguracji typów stałoprzecinkowych okazało się, że wprowadzenie arytmetyki stałoprzecinkowej w tym projekcie daje duże zużycie zasobów (ponad 100\%), przy nieznacznym spadku opóźnień. W związku z tym zdecydowano się na wykorzystanie typu zmiennoprzecinkowego.
+Kolejną metodą optymalizacji kodu jest zastosowanie arytmetyki stałoprzecinkowej. Przy użyciu typu \emph{ap\_fixed<W, I>} możliwe jest ustalenie liczby bitów przeznaczonych na część całkowitą \textbf{I} oraz liczby bitów \textbf{W}, przeznaczonej na całą zmienną. Ponadto biblioteka pozwala na ustalenie, co się stanie w przypadku przekroczenia maksymalnej lub minimalnej wartości, jaka może być reprezentowana przez ustaloną liczbę bitów.
 
-\subsection{Porównanie czasu wykonania różnych implementacji}
+W kodzie akceleratora HLS zaimplementowano oddzielne typy dla każdej ze zmiennych reprezentujących parametry sieci. Po wykonaniu analizy raportu dla różnych konfiguracji typów stałoprzecinkowych okazało się, że wprowadzenie arytmetyki stałoprzecinkowej w tym projekcie powoduje duże zużycie zasobów (ponad 100\%), przy nieznacznym spadku opóźnień. W związku z tym zdecydowano się na wykorzystanie typu zmiennoprzecinkowego.
+
+Wykonano testy dla różnych typów wykorzystanych do deklaracji zmiennych w kodzie HLS. Użycie typu \emph{ap\_fixed} spowodowało zmniejszenie wprowadzanych opóźnień, ale liczba układów DSP urosła do wartości 362\%, co uniemożliwiło implementację tego rozwiązania. Dla każdego z typów najpierw uruchomiono symulację w Vivado HLS, aby sprawdzić poprawność wykonywanych obliczeń.
+Typem o najmniejszej liczbie bitów, który dawał jeszcze poprawny wynik w symulacji był ap\_fixed<10,6>. Oprócz typów stałoprzecinkowych przetestowano również typy zmiennoprzecinkowe \emph{half} (16-bitowy) oraz \emph{float} (32-bitowy). Test wykonano na modelu zawierającym wszystkie funkcje aktywacji typu sigmoid.
+
+\begin{table}[h] \centering
+  \caption{Porównanie implementacji z wykorzystaniem różnych typów zmiennych}
+  \centering
+  \begin{tabular} {c|c|c|c|c|c} \hline \label{tab:fixed-vs-float}  
+                  & float           & half            & ap\_fixed<12,7> & ap\_fixed<10,6> & ap\_fixed<16,7> \\ \hline
+    opóźnienie    & 77.703 $\mu s$  & 78.063 $\mu s$  & 63,723 $\mu s$  & 63,723 $\mu s$  & 63,723 $\mu s$  \\
+    BRAM          & 7\%             & 3\%             & 2\%             & 2\%             & 3\%             \\
+    DSP           & 10\%            & 9\%             & \textbf{362\%}  & \textbf{362\%}  & \textbf{362\%}  \\
+    FF            & 36\%            & 19\%            & 28\%            & 24\%            & 39\%            \\
+    LUT           & 62\%            & 57\%            & 49\%            & 49\%            & 50\%            \\
+    \emph{II}     & 4               & 4               & 4               & 4               &  4              \\
+  \end{tabular}
+\end{table}
+
+W celu sprawdzenia, czy zajętość zasobów jest związana z obliczaniem funkcji sigmoid, powtórzono test na modelu zawierającym funkcje aktywacji ReLU oraz softmax w ostatniej warstwie. Wyniki przedstawiono w Tabeli \ref{tab:fixed-vs-float-relu}. Widać, że zmiana funkcji aktywacji nie miała znaczącego wpływu na zużycie zasobów układu FPGA. Czas wykonywania obliczeń dla typóœ zmiennoprzecinkowych jest nieco krótszy, lecz dla typów stałoprzecinkowych zużycie elementów DSP nadal przekracza 36\%.
+
+\begin{table}[h] \centering
+  \caption{Porównanie implementacji z wykorzystaniem różnych typów zmiennych -- funkcja aktywacji ReLU}
+  \centering
+  \begin{tabular} {c|c|c|c|c} \hline \label{tab:fixed-vs-float-relu}  
+                  & float           & half            & ap\_fixed<12,7> & ap\_fixed<10,6> \\ \hline
+    opóźnienie    & 58.306 $\mu s$  & 59.963 $\mu s$  & 75,750 $\mu s$  & 75,720 $\mu s$  \\
+    BRAM          & 10\%             & 5\%             & 2\%             & 2\%            \\
+    DSP           & 19\%            & 15\%             & \textbf{361\%}  & \textbf{361\%} \\
+    FF            & 39\%            & 20\%            & 25\%            & 21\%            \\
+    LUT           & 69\%            & 59\%            & 46\%            & 46\%            \\
+    \emph{II}     & 1               & 1               & 1               & 1               \\
+  \end{tabular}
+\end{table}
+
+\subsection{}
 
 Aby przetestować wydajność klasyfikacji danego modelu sieci w implementacji programowej, uruchamianej na komputerze PC z użyciem pakietu \emph{keras}, wykorzystano metodę \emph{model.predict()}. Jako argument funkcja przyjmuje zbiór testowy z bazy MNIST.
 Implementacja modelu w HLS z możliwością zmiany parametrów sieci nie dała zadowalających rezultatów. Wyniki dla różnych architektur sieci zestawiono w Tabeli \ref{tab:czas-wykonania}. 
 
 \begin{table}[h] \centering
-  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- pierwsze podejście}
+  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z~implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- pierwsze podejście}
   \centering
-  \begin{tabular} {c|c|c} \hline \label{tab:czas-wykonania}
-      
-    implementowany model & aplikacja z użyciem keras & akcelerator HLS\\ \hline
+  \begin{tabular} {c|c|c} \hline \label{tab:czas-wykonania}  
+    implementowany model & aplikacja z użyciem keras & akcelerator HLS\\ \hline \hline
     FC10-sig-FC16-sig-FC16-sig-FC10-sig & 0.572 \emph{ms} & 0.635 \emph{ms} \\
     FC16-sig-FC10-sig & 0.569 \emph{ms} & 0.941 \emph{ms} \\
     FC64-sig-FC16-sig-FC10-sig & 0.535 \emph{ms} & 3.796 \emph{ms} \\
     FC16-sig-FC10-soft & 0.457 \emph{ms} & 0.938 \emph{ms} \\
     FC16-relu-FC10-soft & 0.435 \emph{ms} & 0.942 \emph{ms} \\
-    \end{tabular}
-  \end{table}
+  \end{tabular}
+\end{table}
 
-  Wykonanie klasyfikacji przy użyciu pakietu keras daje porównywalne wyniki dla każdego z testowanych modeli. W przypadku użycia sieci zawierającej dużą liczbę neuronów w pierwszej warstwie ukrytej czas wykonania obliczeń znacznie rośnie.
+Wykonanie klasyfikacji przy użyciu pakietu keras daje porównywalne wyniki dla każdego z testowanych modeli. W przypadku użycia sieci zawierającej dużą liczbę neuronów w pierwszej warstwie ukrytej czas wykonania obliczeń znacznie rośnie.
 
 
-  \subsubsection{Wyniki po wykonaniu optymalizacji HLS}
-  Po wstępnych testach zdecydowano zmienić założenia implementacji i dokonać optymalizacji wybranej architektury sieci neuronowej. Wybrano następujący model:
+\subsubsection{Wyniki po wykonaniu optymalizacji HLS}
+Po wstępnych testach zdecydowano zmienić założenia implementacji i dokonać optymalizacji wybranej architektury sieci neuronowej. Wybrano następujący model:
 
 \begin{verbatim}
 _________________________________________________________________
@@ -194,7 +255,7 @@ _________________________________________________________________
 
 W wyniku uczenia sieci otrzymano dokładność klasyfikacji na poziomie 94,14\%.
 
-Wybrany model zaimplementowano w programie Vivado HLS. Ustalenie wartości parametrów liczby wejść i neuronów na etapie implementacji HLS dało większe możliwości optymalizacji. Raport z syntezy umieszczono na Rys. \ref{hls-report2}. Widać, że parametr II (ang. \emph{Initiation Interval}) jest duży i jest jeszcze możliwość optymalizacji algorytmu. Zużycie zasobów jest na akceptowalnym poziomie.
+Wybrany model, zawierający wszystkie funkcje aktywacji sigmoid, zaimplementowano w programie Vivado HLS. Ustalenie wartości parametrów liczby wejść i neuronów na etapie implementacji HLS dało większe możliwości optymalizacji. Raport z syntezy umieszczono na Rys. \ref{hls-report2}. Widać, że parametr II (ang. \emph{Initiation Interval}) jest duży i jest jeszcze możliwość optymalizacji algorytmu. Zużycie zasobów jest na akceptowalnym poziomie.
 
 \begin{figure}[!h]
   \centering
@@ -203,15 +264,15 @@ Wybrany model zaimplementowano w programie Vivado HLS. Ustalenie wartości param
   \label{hls-report2}
 \end{figure}
 
-W wyniku pierwszych testów porównawych otrzymano średni czas klasyfikacji jednego obrazu z użyciem akceleratora HLS 
-0.167110 \emph{ms}, a z zastosowaniem pakietu keras 0.463247 \emph{ms}. Daje to akcelerację obliczeń na 
+W wyniku pierwszych testów otrzymano średni czas klasyfikacji jednego obrazu z~użyciem akceleratora HLS 
+0.167110 \emph{ms}, a z zastosowaniem pakietu keras 0.463247~\emph{ms}. Daje to akcelerację obliczeń na 
 poziomie 2,7.
 
 Po przeanalizowaniu kodu i komunikatów kompilatora Vivado HLS zidentyfikowano problem, powodujący tak duży parametr II. Była to zależność niewłaściwie interpretowana przez kompilator Vivado HLS w pętli wykonującej obliczenia dla danego neuronu.
 
-Aby osiągnąć II = 1 potrzebny był dodatkowy bufor przechowujący sumę iloczynów wejść i wag neuronu w danej iteracji. Dopiero po wyjściu z pętli, gdy sumy iloczynów są policzone dla każdego neuronu w danej warstwie, w kolejnej pętli liczona jest funkcja aktywacji każdego z neuronów. Takie podejście umożliwia osiągnięcie parametru II = 1 dla obu pętli.
+Aby osiągnąć \emph{II =1} potrzebny był dodatkowy bufor przechowujący sumę iloczynów wejść i wag neuronu w danej iteracji. Dopiero po wyjściu z pętli, gdy sumy iloczynów są policzone dla każdego neuronu w danej warstwie, w kolejnej pętli liczona jest funkcja aktywacji każdego z neuronów. Takie podejście umożliwia osiągnięcie parametru \emph{II = 1}~dla obu pętli.
 
-Osiągnięto parametr II=1 jednak drastycznie wzrosło zużycie zasobów układu FPGA co widać na Rys. \ref{hls-report3}.
+Osiągnięto parametr \emph{II = 1} jednak drastycznie wzrosło zużycie zasobów układu FPGA, co widać na Rys. \ref{hls-report3}.
 
 \begin{figure}[!h]
   \centering
@@ -220,7 +281,7 @@ Osiągnięto parametr II=1 jednak drastycznie wzrosło zużycie zasobów układu
   \label{hls-report3}
 \end{figure}
 
-Zajętość elementów BRAM wyniosła ponad 4000\%, co wynika z użycia bramu na przechowanie całej tablicy zawierającej wagi sieci. Aby temu zapobiec, skorzystano z dyrektywy RESOURCE, pozwalającej na wyspecyfikowanie, jakie zasoby będą użyte do zaimplementowania danej zmiennej. Zastosowano dyrektywę zapewniającą implementację tablicy wag jako dwuportową pamięć typu ROM:
+Zajętość elementów BRAM wyniosła ponad 4000\%, co wynika z użycia pamięci BRAM do przechowania całej tablicy zawierającej wagi sieci. Aby temu zapobiec, skorzystano z~dyrektywy RESOURCE, pozwalającej na wyspecyfikowanie, jakie zasoby będą użyte do zaimplementowania danej zmiennej. Zastosowano dyrektywę zapewniającą implementację tablicy wag jako dwuportową pamięć typu ROM:
 \begin{verbatim}
   #pragma HLS RESOURCE variable=w core=ROM_2P_BRAM
 \end{verbatim}
@@ -233,12 +294,11 @@ Zajętość elementów BRAM wyniosła ponad 4000\%, co wynika z użycia bramu na
   \label{hls-report4}
 \end{figure}
 
-% Pierwszą implementację wykonano podając na blok HLS sygnał zegara o częstotliwości 250Hz. Jednak okazało się, że program nie działa poprawnie, więc ustawiono 100 MHz przy drugim podejściu. 
-W wyniku syntezy otrzymano rozwiązanie wprowadzające niewielkie opóźnienia i akceptowalne zużycie zasobów. 
-Wyeksportowano blok HLS do narzędzia Vivado i przeprowadzono syntezę i implementację projektu. Po wygenerowaniu Bitstreamu i eksporcie projekt przetestowano rozwiązanie przy użyciu programu Vitis. Średni czas klasyfikacji jednej cyfry był ponad 7 razy krótszy niż w przypadku uruchomienia na CPU. Niestety spadła również dokładność klasyfikacji o ponad 10\%. Wyniki przedstawiono w Tabeli \ref{tab:czas-wykonania2}.
+Początkowo, implementację wykonano podając na blok HLS sygnał zegara o częstotliwości 250Hz. Jednak okazało się, że program nie działa poprawnie i po wykonaniu klasyfikacji jednego obrazu wchodził w stan zawieszenia. Po ustawieniu zegara na częstotliwość 100 MHz problem został rozwiązany i otrzymano poprawne wyniki. W wyniku syntezy otrzymano rozwiązanie wprowadzające niewielkie opóźnienia i akceptowalne zużycie zasobów. 
+Wyeksportowano blok HLS do narzędzia Vivado i przeprowadzono syntezę i implementację projektu. Po wygenerowaniu Bitstreamu i eksporcie implementacji sprzętowej przetestowano rozwiązanie przy użyciu programu Vitis. Średni czas klasyfikacji jednej cyfry był ponad 7 razy krótszy niż w przypadku uruchomienia na CPU. Niestety spadła również dokładność klasyfikacji o~ponad 10\%. Wyniki przedstawiono w~Tabeli \ref{tab:czas-wykonania2}.
 
 \begin{table}[h] \centering
-  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- po optymalizacji} 
+  \caption{Porównanie czasu wykonania implementacji software'owej przy użyciu pakietu keras z~implementacją w układzie FPGA z wykorzystaniem akceleratora HLS -- po optymalizacji} 
   \centering
   \begin{tabular} {c|c|c|c} \hline \label{tab:czas-wykonania2}
       
@@ -247,3 +307,4 @@ Wyeksportowano blok HLS do narzędzia Vivado i przeprowadzono syntezę i impleme
      HLS & 0.070542 \emph{ms} & 81,0\% & 7.32$\times$ \\
     \end{tabular}
   \end{table}
+

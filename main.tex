@@ -51,25 +51,26 @@
 Sztuczne Sieci Neuronowe są w dzisiejszych czasach wykorzystywane w wielu 
 zastosowaniach. Duża złożoność algorytmów Sztucznej Inteligencji wymaga 
 dużej mocy obliczeniowej oraz odpowiednich metod optymalizacji 
-i właściwego wyboru sprzętu. W przypadku obliczeń, które można 
-zrównoleglić, rozsądnym wyborem są układy FPGA (ang. \emph{Field Programmable Gate 
-Array}). 
+i właściwego wyboru sprzętu. W przypadku obliczeń, które 
+można zrównoleglić, rozsądnym wyborem są układy FPGA (ang. \emph{Field 
+Programmable Gate Array}). 
 
-Głównym celem pracy było zaprojektowanie i implementacja sztucznej sieci
-neuronowej przy wykorzystaniu systemu SoC (ang. \emph{System on Chip}) z układem 
-FPGA i techniki HLS (ang. \emph{High Level Synthesis}). Użycie techniki HLS
-pozwala na projektowanie przy wykorzystaniu języka C, C++ lub System 
-C i umożliwia korzystanie z wielu bibliotek zaimplementowanych w języku 
-C i C++, co znacznie przyspiesza pracę nad projektem.
+Głównym celem pracy było zbadanie wydajności implementacji Sztucznych Sieci Neuronowych 
+z wykorzystaniem akceleratorów, realizowanych w technice HLS (ang. \emph{High 
+Level Synthesis}). Dokonano porównania szybkości wykonywania obliczeń w systemie,
+zaimplementowanym z użyciem układu FPGA z rozwiązaniami programowymi, 
+uruchamianymi na komputerze PC. Założeniem projektu było stworzenie akceleratora, 
+umożliwiającego osiągnięcie wzrostu wydajności algorytmu detekcji obiektów znajdujących się na 
+obrazie w czasie rzeczywistym. 
 
-Założeniem pracy było stworzenie akceleratora, umożliwiającego osiągnięcie
-wzrostu wydajności algorytmu detekcji obiektów znajdujących się na 
-obrazie w czasie rzeczywistym. W~ostatnich latach można zaobserwować 
-wielki postęp w dziedzinie komputerowego rozpoznawania obrazów 
+Wykonano projekt implementacji Sztucznej Sieci Neuronowej przy wykorzystaniu systemu 
+SoC (ang. \emph{System on Chip}) z układem FPGA i techniki HLS. 
+Użycie metody HLS pozwala na projektowanie przy wykorzystaniu 
+języka C, C++ lub System C i umożliwia korzystanie z wielu bibliotek zaimplementowanych 
+w języku C i C++, co znacznie przyspiesza pracę nad projektem. W~ostatnich latach można 
+zaobserwować wielki postęp w dziedzinie komputerowego rozpoznawania obrazów 
 (ang. \emph{Computer Vision}), jednak większość dostępnych implementacji jest 
-przeznaczona do uruchomienia na komputerze PC. W pracy dokonano porównania 
-wydajności implementacji wykorzystującej układ FPGA do akceleracji obliczeń
-i wysokopoziomowego rozwiązania programowego, testowanego na komputerze PC.
+przeznaczona do uruchomienia na komputerze~PC.
 
 \slowakluczowe Sztuczne Sieci Neuronowe, HLS, komputerowe rozpoznawanie 
 obrazów, FPGA
@@ -84,21 +85,22 @@ Nowadays, Artificial Neural Networks (ANN) are used in many applications.
 High complexity of Artificial Intelligence algorithms requires high 
 computing power, appropriate optimization methods and efficient hardware. 
 In the case of computation that is easy to parallelize it is reasonable 
-to use FPGA systems.
+to use FPGA systems. 
 
-The main aim of the thesis was to design and implement an Artificial 
-Neural Network algorithm using SoC (System on Chip) with FPGA system 
-and HLS (High-Level Synthesis) method. HLS method allows to design a 
-project using C, C++ or System C language and use lots of C libraries, 
-which makes working on the project faster.
+The main aim of the thesis was to investigate the performance of 
+Artificial Neural Networks implementation using accelerators synthesized 
+by HLS (High-Level Synthesis) method. A performance comparison was made
+between implementation using FPGA and software solutions, tested on PC.
+Assumption of the project was to create an accelerator, that enables
+to achieve efficiency improvement in the real-time object detection algorithm. 
 
-Assumption was made that the created accelerator will allow to achieve 
-efficiency improvement in the real-time object detection algorithm. 
-It has been seen recently, that huge improvement was made in the field of 
-Computer Vision, but most of the available implementations are made to 
-run on PC. In the thesis a performance comparison was made between 
-implementation using FPGA to accelerate the calculations and high level
-software solution, tested on PC.
+The Artificial Neural Network implementation was made using SoC (System on 
+Chip) with FPGA system and HLS method. The HLS enables to design a 
+project using C, C++ or System C language and to use lots of C libraries, 
+which makes working on the project faster. It has been seen recently, that 
+huge improvement was made in the field of Computer Vision, but most of the 
+available implementations are made to run on PC. 
+
 
 \keywords Artificial Neural Networks, HLS, Computer Vision, FPGA
 
@@ -171,8 +173,6 @@ software solution, tested on PC.
 \acronym{TCP}{ang. \emph{Transmission Control Protocol}}
 \acronym{UIO}{ang. \emph{Userspace Input/Output (Driver)}}
 \acronym{V4L2}{ang. \emph{Video for Linux 2}}
-
-Initiation Interval
 
 \listoffigurestoc     % Spis rysunków.
 \vspace{1cm}          % vertical space
